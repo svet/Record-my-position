@@ -1,17 +1,11 @@
-//
-//  main.m
-//  Record_my_position
-//
-//  Created by Grzegorz Adam Hankiewicz on 19/10/10.
-//  Copyright 2010 Electric Hands Software. All rights reserved.
-//
+// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 
 #import <UIKit/UIKit.h>
 
-int main(int argc, char *argv[]) {
-    
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    int retVal = UIApplicationMain(argc, argv, nil, nil);
-    [pool release];
-    return retVal;
+int main(int argc, char *argv[])
+{
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	int retVal = UIApplicationMain(argc, argv, nil, nil);
+	[pool release];
+	return retVal;
 }
