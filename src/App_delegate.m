@@ -1,11 +1,8 @@
 // vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 
-#import "AppDelegate_iPhone.h"
+#import "App_delegate.h"
 
-@implementation AppDelegate_iPhone
-
-@synthesize window;
-
+@implementation App_delegate
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -15,7 +12,7 @@
 {
 	// Override point for customization after application launch.
 
-	[window makeKeyAndVisible];
+	[window_ makeKeyAndVisible];
 
 	return YES;
 }
@@ -89,7 +86,7 @@
 
 - (void)dealloc
 {
-	[window release];
+	[window_ release];
 	[super dealloc];
 }
 
