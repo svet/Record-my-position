@@ -2,6 +2,9 @@
 
 #import "App_delegate.h"
 
+#import "Tab_controller.h"
+
+
 @implementation App_delegate
 
 #pragma mark -
@@ -10,7 +13,11 @@
 - (BOOL)application:(UIApplication *)application
 	didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	// Override point for customization after application launch.
+	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	window_.backgroundColor = [UIColor whiteColor];
+
+	tab_controller_ = [Tab_controller new];
+	[window_ addSubview:tab_controller_.view];
 
 	[window_ makeKeyAndVisible];
 
@@ -86,6 +93,7 @@
 
 - (void)dealloc
 {
+	[tab_controller_ release];
 	[window_ release];
 	[super dealloc];
 }
