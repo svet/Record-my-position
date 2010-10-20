@@ -2,6 +2,7 @@
 
 #import "App_delegate.h"
 
+#import "DB.h"
 #import "Tab_controller.h"
 #import "macro.h"
 
@@ -19,6 +20,12 @@
 {
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	window_.backgroundColor = [UIColor whiteColor];
+
+	db_ = [DB open_database];
+	if (!db_) {
+		[self handle_error:@"Couldn't open database" abort:YES];
+		return NO;
+	}
 
 	tab_controller_ = [Tab_controller new];
 	[window_ addSubview:tab_controller_.view];
@@ -42,7 +49,7 @@
 	 this method to pause the game.
 	 */
 }
-
+#if 0
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
 	/*
@@ -74,13 +81,22 @@
 	 interface.
 	 */
 }
+#endif
 
+/** Application shutdown. Save cache and stuff...
+ * Note that the method could be called even during initialisation,
+ * so you can't make any guarantees about objects being available.
+ *
+ * If background running is supported, applicationDidEnterBackground
+ * is used instead.
+ **/
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	/*
 	 Called when the application is about to terminate.
 	 See also applicationDidEnterBackground:.
 	 */
+	[[DB get_db] close];
 }
 
 #pragma mark -
@@ -102,6 +118,33 @@
 	[super dealloc];
 }
 
+/** Handle reporting of errors to the user.
+ * Pass the message for the error and a boolean telling to force
+ exit or let the user acknowledge the problem.
+ */
+- (void)handle_error:(NSString*)message abort:(BOOL)abort
+{
+	if (abort)
+		abort_after_alert_ = YES;
+
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+		message:NON_NIL_STRING(message) delegate:self
+		cancelButtonTitle:(abort ? @"Abort" : @"OK") otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+	DLOG(@"Error: %@", message);
+}
+
+#pragma mark UIAlertViewDelegate protocol
+
+- (void)alertView:(UIAlertView *)alertView
+	clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if (abort_after_alert_) {
+		DLOG(@"User closed dialog which aborts program. Bye bye!");
+		exit(1);
+	}
+}
 
 #pragma mark Global functions
 

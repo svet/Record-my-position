@@ -15,10 +15,16 @@
 
 	/// Pointer to the global database access object.
 	DB *db_;
+
+	/// Set this to YES if you want the pop up error to exit.
+	BOOL abort_after_alert_;
 }
 
 /// Pointer to the global database access object.
 @property (nonatomic, readonly) DB *db;
+
+
+- (void)handle_error:(NSString*)message abort:(BOOL)abort;
 
 @end
 
