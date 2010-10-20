@@ -13,6 +13,12 @@
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		D56AD431126ED2FF003E9903 /* Tab_controller.m in Sources */ = {isa = PBXBuildFile; fileRef = D56AD430126ED2FF003E9903 /* Tab_controller.m */; };
 		D59D0351126E372400F4D543 /* App_delegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D59D0350126E372400F4D543 /* App_delegate.m */; };
+		D5BEDA3E126F8C100056DB78 /* DB.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA3C126F8C100056DB78 /* DB.m */; };
+		D5BEDA96126F8C6A0056DB78 /* EGODatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA78126F8C6A0056DB78 /* EGODatabase.m */; };
+		D5BEDA97126F8C6A0056DB78 /* EGODatabaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7A126F8C6A0056DB78 /* EGODatabaseRequest.m */; };
+		D5BEDA98126F8C6A0056DB78 /* EGODatabaseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7C126F8C6A0056DB78 /* EGODatabaseResult.m */; };
+		D5BEDA99126F8C6A0056DB78 /* EGODatabaseRow.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7E126F8C6A0056DB78 /* EGODatabaseRow.m */; };
+		D5BEDAA2126F8D130056DB78 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +33,18 @@
 		D56AD430126ED2FF003E9903 /* Tab_controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tab_controller.m; sourceTree = "<group>"; };
 		D59D034F126E372400F4D543 /* App_delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = App_delegate.h; sourceTree = "<group>"; };
 		D59D0350126E372400F4D543 /* App_delegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = App_delegate.m; sourceTree = "<group>"; };
+		D5BEDA3B126F8C100056DB78 /* DB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DB.h; sourceTree = "<group>"; };
+		D5BEDA3C126F8C100056DB78 /* DB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DB.m; sourceTree = "<group>"; };
+		D5BEDA3D126F8C100056DB78 /* macro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macro.h; sourceTree = "<group>"; };
+		D5BEDA77126F8C6A0056DB78 /* EGODatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGODatabase.h; sourceTree = "<group>"; };
+		D5BEDA78126F8C6A0056DB78 /* EGODatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGODatabase.m; sourceTree = "<group>"; };
+		D5BEDA79126F8C6A0056DB78 /* EGODatabaseRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGODatabaseRequest.h; sourceTree = "<group>"; };
+		D5BEDA7A126F8C6A0056DB78 /* EGODatabaseRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGODatabaseRequest.m; sourceTree = "<group>"; };
+		D5BEDA7B126F8C6A0056DB78 /* EGODatabaseResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGODatabaseResult.h; sourceTree = "<group>"; };
+		D5BEDA7C126F8C6A0056DB78 /* EGODatabaseResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGODatabaseResult.m; sourceTree = "<group>"; };
+		D5BEDA7D126F8C6A0056DB78 /* EGODatabaseRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGODatabaseRow.h; sourceTree = "<group>"; };
+		D5BEDA7E126F8C6A0056DB78 /* EGODatabaseRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGODatabaseRow.m; sourceTree = "<group>"; };
+		D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +55,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
+				D5BEDAA2126F8D130056DB78 /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +81,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				D5BEDA51126F8C6A0056DB78 /* external */,
 				D506B265126D974B00902BDD /* src */,
 				28EEBF621118D79A00187D67 /* Shared */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -86,6 +106,7 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -95,10 +116,36 @@
 			children = (
 				D59D034F126E372400F4D543 /* App_delegate.h */,
 				D59D0350126E372400F4D543 /* App_delegate.m */,
+				D5BEDA3B126F8C100056DB78 /* DB.h */,
+				D5BEDA3C126F8C100056DB78 /* DB.m */,
+				D5BEDA3D126F8C100056DB78 /* macro.h */,
 				D56AD42F126ED2FF003E9903 /* Tab_controller.h */,
 				D56AD430126ED2FF003E9903 /* Tab_controller.m */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		D5BEDA51126F8C6A0056DB78 /* external */ = {
+			isa = PBXGroup;
+			children = (
+				D5BEDA52126F8C6A0056DB78 /* egodatabase */,
+			);
+			path = external;
+			sourceTree = "<group>";
+		};
+		D5BEDA52126F8C6A0056DB78 /* egodatabase */ = {
+			isa = PBXGroup;
+			children = (
+				D5BEDA77126F8C6A0056DB78 /* EGODatabase.h */,
+				D5BEDA78126F8C6A0056DB78 /* EGODatabase.m */,
+				D5BEDA79126F8C6A0056DB78 /* EGODatabaseRequest.h */,
+				D5BEDA7A126F8C6A0056DB78 /* EGODatabaseRequest.m */,
+				D5BEDA7B126F8C6A0056DB78 /* EGODatabaseResult.h */,
+				D5BEDA7C126F8C6A0056DB78 /* EGODatabaseResult.m */,
+				D5BEDA7D126F8C6A0056DB78 /* EGODatabaseRow.h */,
+				D5BEDA7E126F8C6A0056DB78 /* EGODatabaseRow.m */,
+			);
+			path = egodatabase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,6 +210,11 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				D59D0351126E372400F4D543 /* App_delegate.m in Sources */,
 				D56AD431126ED2FF003E9903 /* Tab_controller.m in Sources */,
+				D5BEDA3E126F8C100056DB78 /* DB.m in Sources */,
+				D5BEDA96126F8C6A0056DB78 /* EGODatabase.m in Sources */,
+				D5BEDA97126F8C6A0056DB78 /* EGODatabaseRequest.m in Sources */,
+				D5BEDA98126F8C6A0056DB78 /* EGODatabaseResult.m in Sources */,
+				D5BEDA99126F8C6A0056DB78 /* EGODatabaseRow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +256,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = external;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PREBINDING = NO;
 				SDKROOT = iphonesimulator4.1;
@@ -219,6 +272,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = external;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
