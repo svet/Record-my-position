@@ -4,6 +4,8 @@
 
 @interface Capture_tab : UIViewController
 {
+	UILabel *start_title_;
+	UISwitch *switch_;
 }
 
 - (id)init;
