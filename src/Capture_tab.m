@@ -48,8 +48,6 @@
 
 	start_title_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 210, 20)];
 	start_title_.text = @"1";
-	start_title_.numberOfLines = 0;
-	start_title_.lineBreakMode = UILineBreakModeTailTruncation;
 	start_title_.backgroundColor = [UIColor clearColor];
 	start_title_.textColor = [UIColor blackColor];
 	[self.view addSubview:start_title_];
@@ -59,37 +57,35 @@
 		forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:switch_];
 
-	longitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 50, 300, 20)];
+	longitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 90, 300, 20)];
 	longitude_.text = @"2";
-	longitude_.numberOfLines = 0;
-	longitude_.lineBreakMode = UILineBreakModeTailTruncation;
 	longitude_.backgroundColor = [UIColor clearColor];
 	longitude_.textColor = [UIColor blackColor];
 	[self.view addSubview:longitude_];
 
-	latitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 70, 300, 20)];
+	latitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, 300, 20)];
 	latitude_.text = @"3";
-	latitude_.numberOfLines = 0;
-	latitude_.lineBreakMode = UILineBreakModeTailTruncation;
 	latitude_.backgroundColor = [UIColor clearColor];
 	latitude_.textColor = [UIColor blackColor];
 	[self.view addSubview:latitude_];
 
-	precission_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 90, 300, 20)];
+	precission_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 130, 300, 20)];
 	precission_.text = @"4";
-	precission_.numberOfLines = 0;
-	precission_.lineBreakMode = UILineBreakModeTailTruncation;
 	precission_.backgroundColor = [UIColor clearColor];
 	precission_.textColor = [UIColor blackColor];
 	[self.view addSubview:precission_];
 
-	altitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, 300, 20)];
+	altitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 150, 300, 20)];
 	altitude_.text = @"5";
-	altitude_.numberOfLines = 0;
-	altitude_.lineBreakMode = UILineBreakModeTailTruncation;
 	altitude_.backgroundColor = [UIColor clearColor];
 	altitude_.textColor = [UIColor blackColor];
 	[self.view addSubview:altitude_];
+
+	ago_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 170, 300, 20)];
+	ago_.text = @"6";
+	ago_.backgroundColor = [UIColor clearColor];
+	ago_.textColor = [UIColor blackColor];
+	[self.view addSubview:ago_];
 
 	clock_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 300, 300, 100)];
 	clock_.text = @"00:00:00";
@@ -176,6 +172,7 @@
 		latitude_.text = @"";
 		precission_.text = @"";
 		altitude_.text = @"";
+		ago_.text = @"";
 		return;
 	}
 
@@ -192,6 +189,11 @@
 	altitude_.text = (location.verticalAccuracy < 0) ? @"Altitude: ?" :
 		[NSString stringWithFormat:@"Altitude: %0.0fm +/- %0.1fm",
 			location.altitude, location.verticalAccuracy];
+
+	NSTimeInterval diff = [now timeIntervalSinceDate:location.timestamp];
+	ago_.text = [NSString stringWithFormat:@"%@ ago", (diff > 60 ? 
+		[NSString stringWithFormat:@"%d minute(s)", (int)diff / 60] :
+		[NSString stringWithFormat:@"%d second(s)", (int)diff])];
 }
 
 /** Watches GPS changes.
