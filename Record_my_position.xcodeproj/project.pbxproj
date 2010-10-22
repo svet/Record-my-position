@@ -23,6 +23,8 @@
 		D5BEDA99126F8C6A0056DB78 /* EGODatabaseRow.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7E126F8C6A0056DB78 /* EGODatabaseRow.m */; };
 		D5BEDAA2126F8D130056DB78 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */; };
 		D5BEDACB126F942C0056DB78 /* VTPG_Common.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDACA126F942C0056DB78 /* VTPG_Common.m */; };
+		D5C47782127177D500CB008F /* GPS.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C47781127177D500CB008F /* GPS.m */; };
+		D5C477B212717BEA00CB008F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C477B112717BEA00CB008F /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +59,9 @@
 		D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		D5BEDAC9126F942C0056DB78 /* VTPG_Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTPG_Common.h; sourceTree = "<group>"; };
 		D5BEDACA126F942C0056DB78 /* VTPG_Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTPG_Common.m; sourceTree = "<group>"; };
+		D5C47780127177D500CB008F /* GPS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPS.h; sourceTree = "<group>"; };
+		D5C47781127177D500CB008F /* GPS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPS.m; sourceTree = "<group>"; };
+		D5C477B112717BEA00CB008F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +73,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				D5BEDAA2126F8D130056DB78 /* libsqlite3.dylib in Frameworks */,
+				D5C477B212717BEA00CB008F /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +125,7 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */,
+				D5C477B112717BEA00CB008F /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -132,6 +139,8 @@
 				D5506E03127019AF00F637AC /* Capture_tab.m */,
 				D5BEDA3B126F8C100056DB78 /* DB.h */,
 				D5BEDA3C126F8C100056DB78 /* DB.m */,
+				D5C47780127177D500CB008F /* GPS.h */,
+				D5C47781127177D500CB008F /* GPS.m */,
 				D5506E33127020DF00F637AC /* Log_tab.h */,
 				D5506E34127020DF00F637AC /* Log_tab.m */,
 				D5BEDA3D126F8C100056DB78 /* macro.h */,
@@ -239,6 +248,7 @@
 				D5506E04127019AF00F637AC /* Capture_tab.m in Sources */,
 				D5506E35127020DF00F637AC /* Log_tab.m in Sources */,
 				D5506E38127020EA00F637AC /* Share_tab.m in Sources */,
+				D5C47782127177D500CB008F /* GPS.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

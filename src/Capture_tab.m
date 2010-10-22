@@ -2,11 +2,13 @@
 
 #import "Capture_tab.h"
 
+#import "GPS.h"
 #import "macro.h"
 
 
 @interface Capture_tab ()
 - (void)switch_changed;
+- (void)update_gui;
 @end
 
 
@@ -19,6 +21,15 @@
 
 	self.title = @"Capture";
 	return self;
+}
+
+- (void)dealloc
+{
+	[switch_ removeTarget:self action:@selector(switch_changed)
+		forControlEvents:UIControlEventValueChanged];
+	[switch_ release];
+	[start_title_ release];
+	[super dealloc];
 }
 
 - (void)loadView
@@ -40,18 +51,46 @@
 	[self.view addSubview:switch_];
 }
 
-- (void)dealloc
+/** The view is going to be shown. Update it.
+ */
+- (void)viewWillAppear:(BOOL)animated
 {
-	[switch_ removeTarget:self action:@selector(switch_changed)
-		forControlEvents:UIControlEventValueChanged];
-	[switch_ release];
-	[start_title_ release];
-	[super dealloc];
+	[super viewWillAppear:animated];
+
+	[self update_gui];
 }
 
+/** User toggled on/off GUI switch.
+ */
 - (void)switch_changed
 {
-	DLOG(@"Hey! %d", [switch_ isOn]);
+	GPS *gps = [GPS get];
+
+	if ([switch_ isOn]) {
+		if (![gps start]) {
+			switch_.on = false;
+
+			UIAlertView *alert = [[UIAlertView alloc]
+				initWithTitle:@"GPS" message:@"Couldn't start GPS"
+				delegate:nil cancelButtonTitle:@"Oh!" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		}
+	} else {
+		[gps stop];
+	}
+
+	[self update_gui];
+}
+
+/** Handles updating the gui labels and other state.
+ */
+- (void)update_gui
+{
+	if (switch_.on)
+		start_title_.text = @"Reading GPS...";
+	else
+		start_title_.text = @"GPS off";
 }
 
 
