@@ -28,9 +28,11 @@
 
 - (void)dealloc
 {
+	[timer_ invalidate];
 	[[GPS get] removeObserver:self forKeyPath:_KEY_PATH];
 	[switch_ removeTarget:self action:@selector(switch_changed)
 		forControlEvents:UIControlEventValueChanged];
+	[clock_ release];
 	[switch_ release];
 	[altitude_ release];
 	[precission_ release];
@@ -88,6 +90,16 @@
 	altitude_.backgroundColor = [UIColor clearColor];
 	altitude_.textColor = [UIColor blackColor];
 	[self.view addSubview:altitude_];
+
+	clock_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 300, 300, 100)];
+	clock_.text = @"00:00:00";
+	clock_.numberOfLines = 1;
+	clock_.backgroundColor = [UIColor clearColor];
+	clock_.textColor = [UIColor blackColor];
+	clock_.textAlignment = UITextAlignmentCenter;
+	clock_.adjustsFontSizeToFitWidth = YES;
+	clock_.font = [UIFont systemFontOfSize:80];
+	[self.view addSubview:clock_];
 }
 
 /** The view is going to be shown. Update it.
@@ -97,6 +109,20 @@
 	[super viewWillAppear:animated];
 
 	[self update_gui];
+
+	if (!timer_)
+		timer_ = [NSTimer scheduledTimerWithTimeInterval:1 target:self
+			selector:@selector(update_gui) userInfo:nil repeats:YES];
+}
+
+/** The view is going to dissappear.
+ */
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+
+	[timer_ invalidate];
+	timer_ = 0;
 }
 
 /** User toggled on/off GUI switch.
@@ -130,11 +156,20 @@
  */
 - (void)update_gui
 {
+	// Clock time.
+	NSDate *now = [NSDate date];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setTimeStyle:NSDateFormatterMediumStyle];
+	clock_.text = [formatter stringFromDate:now];
+	[formatter release];
+
+	// State of capture.
 	if (switch_.on)
 		start_title_.text = @"Reading GPS...";
 	else
 		start_title_.text = @"GPS off";
 
+	// Last location.
 	CLLocation *location = [GPS get].last_pos;
 	if (!location) {
 		longitude_.text = @"No last position";

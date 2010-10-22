@@ -11,6 +11,9 @@
 	UILabel *latitude_;
 	UILabel *precission_;
 	UILabel *altitude_;
+
+	UILabel *clock_;
+	NSTimer *timer_;
 }
 
 - (id)init;
