@@ -6,6 +6,9 @@
 #import "macro.h"
 
 
+#define _KEY_PATH			@"last_pos"
+
+
 @interface Capture_tab ()
 - (void)switch_changed;
 - (void)update_gui;
@@ -25,9 +28,14 @@
 
 - (void)dealloc
 {
+	[[GPS get] removeObserver:self forKeyPath:_KEY_PATH];
 	[switch_ removeTarget:self action:@selector(switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[switch_ release];
+	[altitude_ release];
+	[precission_ release];
+	[latitude_ release];
+	[longitude_ release];
 	[start_title_ release];
 	[super dealloc];
 }
@@ -37,7 +45,7 @@
 	[super loadView];
 
 	start_title_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 210, 20)];
-	start_title_.text = @"Hello1";
+	start_title_.text = @"1";
 	start_title_.numberOfLines = 0;
 	start_title_.lineBreakMode = UILineBreakModeTailTruncation;
 	start_title_.backgroundColor = [UIColor clearColor];
@@ -47,8 +55,39 @@
 	switch_ = [[UISwitch alloc] initWithFrame:CGRectMake(220, 20, 100, 20)];
 	[switch_ addTarget:self action:@selector(switch_changed)
 		forControlEvents:UIControlEventValueChanged];
-
 	[self.view addSubview:switch_];
+
+	longitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 50, 300, 20)];
+	longitude_.text = @"2";
+	longitude_.numberOfLines = 0;
+	longitude_.lineBreakMode = UILineBreakModeTailTruncation;
+	longitude_.backgroundColor = [UIColor clearColor];
+	longitude_.textColor = [UIColor blackColor];
+	[self.view addSubview:longitude_];
+
+	latitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 70, 300, 20)];
+	latitude_.text = @"3";
+	latitude_.numberOfLines = 0;
+	latitude_.lineBreakMode = UILineBreakModeTailTruncation;
+	latitude_.backgroundColor = [UIColor clearColor];
+	latitude_.textColor = [UIColor blackColor];
+	[self.view addSubview:latitude_];
+
+	precission_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 90, 300, 20)];
+	precission_.text = @"4";
+	precission_.numberOfLines = 0;
+	precission_.lineBreakMode = UILineBreakModeTailTruncation;
+	precission_.backgroundColor = [UIColor clearColor];
+	precission_.textColor = [UIColor blackColor];
+	[self.view addSubview:precission_];
+
+	altitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, 300, 20)];
+	altitude_.text = @"5";
+	altitude_.numberOfLines = 0;
+	altitude_.lineBreakMode = UILineBreakModeTailTruncation;
+	altitude_.backgroundColor = [UIColor clearColor];
+	altitude_.textColor = [UIColor blackColor];
+	[self.view addSubview:altitude_];
 }
 
 /** The view is going to be shown. Update it.
@@ -75,8 +114,12 @@
 				delegate:nil cancelButtonTitle:@"Oh!" otherButtonTitles:nil];
 			[alert show];
 			[alert release];
+		} else {
+			[gps addObserver:self forKeyPath:_KEY_PATH
+				options:NSKeyValueObservingOptionNew context:nil];
 		}
 	} else {
+		[gps removeObserver:self forKeyPath:_KEY_PATH];
 		[gps stop];
 	}
 
@@ -91,7 +134,41 @@
 		start_title_.text = @"Reading GPS...";
 	else
 		start_title_.text = @"GPS off";
+
+	CLLocation *location = [GPS get].last_pos;
+	if (!location) {
+		longitude_.text = @"No last position";
+		latitude_.text = @"";
+		precission_.text = @"";
+		altitude_.text = @"";
+		return;
+	}
+
+	longitude_.text = [NSString stringWithFormat:@"Longitude: %0.5f",
+		location.coordinate.longitude];
+
+	latitude_.text = [NSString stringWithFormat:@"Latitude: %0.5f",
+		location.coordinate.latitude];
+
+	const CLLocationAccuracy v = (location.horizontalAccuracy +
+		location.horizontalAccuracy) / 2.0;
+	precission_.text = [NSString stringWithFormat:@"Precission: %0.0fm", v];
+
+	altitude_.text = (location.verticalAccuracy < 0) ? @"Altitude: ?" :
+		[NSString stringWithFormat:@"Altitude: %0.0fm +/- %0.1fm",
+			location.altitude, location.verticalAccuracy];
 }
 
+/** Watches GPS changes.
+ */
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+	change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:_KEY_PATH])
+		[self update_gui];
+	else
+		[super observeValueForKeyPath:keyPath ofObject:object change:change
+			context:context];
+}
 
 @end

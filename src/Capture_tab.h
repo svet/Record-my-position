@@ -6,6 +6,11 @@
 {
 	UILabel *start_title_;
 	UISwitch *switch_;
+
+	UILabel *longitude_;
+	UILabel *latitude_;
+	UILabel *precission_;
+	UILabel *altitude_;
 }
 
 - (id)init;

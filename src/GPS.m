@@ -80,9 +80,11 @@ static GPS *g_;
 	}
 
 	// Keep the new location for map showing.
+	[self willChangeValueForKey:@"last_pos"];
 	[last_pos_ release];
 	[new_location retain];
 	last_pos_ = new_location;
+	[self didChangeValueForKey:@"last_pos"];
 }
 
 @end
