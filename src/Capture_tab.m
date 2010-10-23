@@ -17,6 +17,8 @@
 
 @implementation Capture_tab
 
+@synthesize old_location = old_location_;
+
 - (id)init
 {
 	if (!(self = [super init]))
@@ -33,12 +35,15 @@
 	[switch_ removeTarget:self action:@selector(switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[clock_ release];
+	[ago_ release];
+	[movement_ release];
 	[switch_ release];
 	[altitude_ release];
 	[precission_ release];
 	[latitude_ release];
 	[longitude_ release];
 	[start_title_ release];
+	[old_location_ release];
 	[super dealloc];
 }
 
@@ -86,6 +91,12 @@
 	ago_.backgroundColor = [UIColor clearColor];
 	ago_.textColor = [UIColor blackColor];
 	[self.view addSubview:ago_];
+
+	movement_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 190, 300, 20)];
+	movement_.text = @"7";
+	movement_.backgroundColor = [UIColor clearColor];
+	movement_.textColor = [UIColor blackColor];
+	[self.view addSubview:movement_];
 
 	clock_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 300, 300, 100)];
 	clock_.text = @"00:00:00";
@@ -173,6 +184,7 @@
 		precission_.text = @"";
 		altitude_.text = @"";
 		ago_.text = @"";
+		movement_.text = @"";
 		return;
 	}
 
@@ -194,6 +206,17 @@
 	ago_.text = [NSString stringWithFormat:@"%@ ago", (diff > 60 ? 
 		[NSString stringWithFormat:@"%d minute(s)", (int)diff / 60] :
 		[NSString stringWithFormat:@"%d second(s)", (int)diff])];
+
+	if (self.old_location) {
+		movement_.text = [NSString
+			stringWithFormat:@"New pos changed %0.0f meters",
+			[self.old_location distanceFromLocation:location]];
+		if (![self.old_location.timestamp isEqualToDate:location.timestamp])
+			self.old_location = location;
+	} else {
+		movement_.text = @"First position!";
+		self.old_location = location;
+	}
 }
 
 /** Watches GPS changes.
