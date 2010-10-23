@@ -24,6 +24,39 @@ static GPS *g_;
 	return g_;
 }
 
+/** Converts a coordinate from degrees to decimal minute second format.
+ * Specify with the latitude bool if you are converting the latitude
+ * part of the coordinates, which has a different letter.
+ *
+ * \return Returns the string with the formated value as Dº M' S"
+ * X, where X is a letter and D M S are numbers.
+ */
++ (NSString*)degrees_to_dms:(CLLocationDegrees)value latitude:(BOOL)latitude
+{
+	const int degrees = fabsl(value);
+	const double min_rest = (fabs(value) - degrees) * 60.0;
+	const int minutes = min_rest;
+	const double seconds = (min_rest - minutes) * 60.0;
+	char letter = 0;
+	if (latitude) {
+		if (value > 0)
+			letter = 'N';
+		else if (value < 0)
+			letter = 'S';
+	} else {
+		if (value > 0)
+			letter = 'E';
+		else if (value < 0)
+			letter = 'W';
+	}
+	if (letter)
+		return [NSString stringWithFormat:@"%dº %d' %0.2f\" %c",
+			degrees, minutes, seconds, letter];
+	else
+		return [NSString stringWithFormat:@"%dº %d' %0.2f\"",
+			degrees, minutes, seconds];
+}
+
 /** Initialises the GPS class.
  */
 - (id)init

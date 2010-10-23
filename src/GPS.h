@@ -19,8 +19,11 @@
 @property (nonatomic, retain, readonly) CLLocation *last_pos;
 
 + (GPS*)get;
++ (NSString*)degrees_to_dms:(CLLocationDegrees)value latitude:(BOOL)latitude;
 - (id)init;
 - (bool)start;
 - (void)stop;
+
+
 
 @end

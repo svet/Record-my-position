@@ -176,11 +176,11 @@
 		return;
 	}
 
-	longitude_.text = [NSString stringWithFormat:@"Longitude: %0.5f",
-		location.coordinate.longitude];
+	longitude_.text = [NSString stringWithFormat:@"Longitude: %@",
+		[GPS degrees_to_dms:location.coordinate.longitude latitude:NO]];
 
-	latitude_.text = [NSString stringWithFormat:@"Latitude: %0.5f",
-		location.coordinate.latitude];
+	latitude_.text = [NSString stringWithFormat:@"Latitude: %@",
+		[GPS degrees_to_dms:location.coordinate.latitude latitude:YES]];
 
 	const CLLocationAccuracy v = (location.horizontalAccuracy +
 		location.horizontalAccuracy) / 2.0;
