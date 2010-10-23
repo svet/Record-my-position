@@ -32,7 +32,7 @@
 		1D6058910D05DD3D006BFB54 /* Record_my_position.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Record_my_position.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Record_my_position_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Record_my_position_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Record_my_position-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Record_my_position-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D5506E02127019AF00F637AC /* Capture_tab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Capture_tab.h; sourceTree = "<group>"; };
@@ -88,34 +88,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		28EEBF621118D79A00187D67 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				8D1107310486CEB800E47090 /* Record_my_position-Info.plist */,
-			);
-			name = Shared;
-			sourceTree = "<group>";
-		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				D5BEDA51126F8C6A0056DB78 /* external */,
 				D506B265126D974B00902BDD /* src */,
-				28EEBF621118D79A00187D67 /* Shared */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97315FDCFA39411CA2CEA /* Other */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
 		};
-		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+		29B97315FDCFA39411CA2CEA /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				8D1107310486CEB800E47090 /* Record_my_position-Info.plist */,
 				32CA4F630368D1EE00C91783 /* Record_my_position_Prefix.pch */,
-				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
-			name = "Other Sources";
+			name = Other;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
@@ -144,6 +135,7 @@
 				D5506E33127020DF00F637AC /* Log_tab.h */,
 				D5506E34127020DF00F637AC /* Log_tab.m */,
 				D5BEDA3D126F8C100056DB78 /* macro.h */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
 				D5506E36127020EA00F637AC /* Share_tab.h */,
 				D5506E37127020EA00F637AC /* Share_tab.m */,
 				D56AD42F126ED2FF003E9903 /* Tab_controller.h */,
