@@ -4,6 +4,7 @@
 
 @interface Log_tab : UIViewController
 {
+	UILabel *todo_;
 }
 
 - (id)init;
