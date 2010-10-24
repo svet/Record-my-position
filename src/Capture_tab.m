@@ -29,7 +29,8 @@
 - (void)dealloc
 {
 	[timer_ invalidate];
-	[[GPS get] remove_watcher:self];
+	if (watching_)
+		[[GPS get] remove_watcher:self];
 	[switch_ removeTarget:self action:@selector(switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[clock_ release];
@@ -147,9 +148,12 @@
 			[alert release];
 		} else {
 			[gps add_watcher:self];
+			watching_ = YES;
 		}
 	} else {
-		[gps remove_watcher:self];
+		if (watching_)
+			[gps remove_watcher:self];
+		watching_ = NO;
 		[gps stop];
 	}
 

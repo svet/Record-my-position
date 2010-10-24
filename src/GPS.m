@@ -116,8 +116,8 @@ static GPS *g_;
 
 	// Keep the new location for map showing.
 	[self willChangeValueForKey:_KEY_PATH];
-	[last_pos_ release];
 	[new_location retain];
+	[last_pos_ release];
 	last_pos_ = new_location;
 	[self didChangeValueForKey:_KEY_PATH];
 }

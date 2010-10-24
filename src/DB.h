@@ -11,12 +11,14 @@
  */
 @interface DB : EGODatabase
 {
+	/// Stores pointers to the logs not yet flushed to disk.
+	NSMutableArray *buffer_;
 }
 
 + (NSString*)path;
 + (DB*)open_database;
 + (DB*)get_db;
-- (bool)log_text:(NSString*)text;
-- (bool)log_gps:(CLLocation*)location;
+- (void)log:(id)text_or_location;
+- (void)flush;
 
 @end

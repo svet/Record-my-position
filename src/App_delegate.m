@@ -38,6 +38,7 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+	[db_ flush];
 	/*
 	 Sent when the application is about to move from active to
 	 inactive state. This can occur for certain types of temporary
@@ -50,9 +51,9 @@
 	 this method to pause the game.
 	 */
 }
-#if 0
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+	[db_ flush];
 	/*
 	 Use this method to release shared resources, save user
 	 data, invalidate timers, and store enough application state
@@ -63,6 +64,7 @@
 	 instead of applicationWillTerminate: when the user quits.
 	 */
 }
+#if 0
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
@@ -93,11 +95,8 @@
  **/
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-	/*
-	 Called when the application is about to terminate.
-	 See also applicationDidEnterBackground:.
-	 */
-	[[DB get_db] close];
+	[db_ flush];
+	[db_ close];
 }
 
 #pragma mark -
@@ -105,6 +104,7 @@
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
+	[db_ flush];
 	/*
 	 Free up as much memory as possible by purging cached data
 	 objects that can be recreated (or reloaded from disk)
