@@ -16,8 +16,9 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application
-	didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+	didFinishLaunchingWithOptions:(NSDictionary *)launch_options
 {
+	DLOG(@"Lunching application with %@", launch_options);
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	window_.backgroundColor = [UIColor whiteColor];
 
