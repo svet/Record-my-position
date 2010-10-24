@@ -26,7 +26,7 @@ changes and they may help to define why the log may have less entries
 Log table
 ---------
 
-**id** INTEGER PRIMARY KEY:
+**id** INTEGER PRIMARY KEY AUTOINCREMENT:
 	Identifier of the log entry in the database. This identifier
 	is unique and always autoincrementing.
 **type** INTEGER:

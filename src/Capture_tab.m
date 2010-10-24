@@ -6,8 +6,6 @@
 #import "macro.h"
 
 
-#define _KEY_PATH			@"last_pos"
-
 
 @interface Capture_tab ()
 - (void)switch_changed;
@@ -31,7 +29,7 @@
 - (void)dealloc
 {
 	[timer_ invalidate];
-	[[GPS get] removeObserver:self forKeyPath:_KEY_PATH];
+	[[GPS get] remove_watcher:self];
 	[switch_ removeTarget:self action:@selector(switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[clock_ release];
@@ -148,11 +146,10 @@
 			[alert show];
 			[alert release];
 		} else {
-			[gps addObserver:self forKeyPath:_KEY_PATH
-				options:NSKeyValueObservingOptionNew context:nil];
+			[gps add_watcher:self];
 		}
 	} else {
-		[gps removeObserver:self forKeyPath:_KEY_PATH];
+		[gps remove_watcher:self];
 		[gps stop];
 	}
 
@@ -219,12 +216,14 @@
 	}
 }
 
+#pragma mark KVO
+
 /** Watches GPS changes.
  */
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
 	change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:_KEY_PATH])
+	if ([keyPath isEqual:[GPS key_path]])
 		[self update_gui];
 	else
 		[super observeValueForKeyPath:keyPath ofObject:object change:change

@@ -4,6 +4,8 @@
 
 #import "macro.h"
 
+#define _KEY_PATH			@"last_pos"
+
 @interface GPS ()
 @end
 
@@ -113,11 +115,34 @@ static GPS *g_;
 	}
 
 	// Keep the new location for map showing.
-	[self willChangeValueForKey:@"last_pos"];
+	[self willChangeValueForKey:_KEY_PATH];
 	[last_pos_ release];
 	[new_location retain];
 	last_pos_ = new_location;
-	[self didChangeValueForKey:@"last_pos"];
+	[self didChangeValueForKey:_KEY_PATH];
+}
+
+/** Returns the string used by add_watcher: and removeObserver:.
+ */
++ (NSString*)key_path
+{
+	return _KEY_PATH;
+}
+
+/** Registers an observer for changes to last_pos.
+ * Observers will monitor the key_path value.
+ */
+- (void)add_watcher:(id)watcher
+{
+	[self addObserver:watcher forKeyPath:_KEY_PATH
+		options:NSKeyValueObservingOptionNew context:nil];
+}
+
+/** Removes an observer for changes to last_pos.
+ */
+- (void)remove_watcher:(id)watcher
+{
+	[self removeObserver:watcher forKeyPath:_KEY_PATH];
 }
 
 @end

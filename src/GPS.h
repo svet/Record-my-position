@@ -20,9 +20,12 @@
 
 + (GPS*)get;
 + (NSString*)degrees_to_dms:(CLLocationDegrees)value latitude:(BOOL)latitude;
++ (NSString*)key_path;
 - (id)init;
 - (bool)start;
 - (void)stop;
+- (void)add_watcher:(id)watcher;
+- (void)remove_watcher:(id)watcher;
 
 
 

@@ -2,6 +2,8 @@
 
 #import "egodatabase/EGODatabase.h"
 
+@class CLLocation;
+
 /** Wrapper around EGODatabase
  *
  * Holds the pointer to the real sqlite object and provides additional
@@ -14,5 +16,7 @@
 + (NSString*)path;
 + (DB*)open_database;
 + (DB*)get_db;
+- (bool)log_text:(NSString*)text;
+- (bool)log_gps:(CLLocation*)location;
 
 @end

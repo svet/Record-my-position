@@ -3,8 +3,10 @@
 #import "DB.h"
 
 #import "App_delegate.h"
+#import "GPS.h"
 #import "macro.h"
 
+#import <CoreLocation/CoreLocation.h>
 #import <time.h>
 
 #ifdef DEBUG
@@ -50,10 +52,16 @@
 
 	NSArray *tables = [NSArray arrayWithObjects:
 		@"CREATE TABLE IF NOT EXISTS Positions ("
-			@"id INTEGER PRIMARY KEY,"
-			@"name VARCHAR(255),"
-			@"last_updated INTEGER,"
-			@"CONSTRAINT Owners_unique UNIQUE (id, name))",
+			@"id INTEGER PRIMARY KEY AUTOINCREMENT,"
+			@"type INTEGER,"
+			@"text TEXT,"
+			@"longitude REAL,"
+			@"latitude REAL,"
+			@"h_accuracy REAL,"
+			@"v_accuracy REAL,"
+			@"altitude REAL,"
+			@"timestamp INTEGER,"
+			@"CONSTRAINT Positions_unique UNIQUE (id))",
 		nil];
 
 	EGODatabaseResult *result;
@@ -67,6 +75,7 @@
 	}
 
 	DLOG(@"Disk db open at %@", path);
+	[[GPS get] add_watcher:db];
 	return db;
 }
 
@@ -77,6 +86,64 @@
 {
 	App_delegate *app = (id)[[UIApplication sharedApplication] delegate];
 	return [app db];
+}
+
+/** Logs a text message into the database.
+ * Returns YES if the operation succeeded.
+ */
+- (bool)log_text:(NSString*)text
+{
+	DLOG(@"log_text %@", text);
+	NSAssert(text, @"Need a text");
+	EGODatabaseResult *result = [self executeQueryWithParameters:@"INSERT "
+		@"into Positions (id, type, text, longitude, latitude, h_accuracy,"
+		@"v_accuracy, altitude, timestamp) VALUES (NULL, 0, ?, 0, 0, -1, -1,"
+		@"-1, time(\"now\"))", text, nil];
+	if (result.errorCode) {
+		LOG(@"Couldn't insert text %@:\n\t%@", text, result.errorMessage);
+		return NO;
+	}
+	return YES;
+}
+
+/** Logs a position into the database.
+ * Returns YES if the operation succeeded.
+ */
+- (bool)log_gps:(CLLocation*)location
+{
+	DLOG(@"log_gps %@", location);
+	NSAssert(location, @"Need a location");
+	EGODatabaseResult *result = [self executeQueryWithParameters:@"INSERT "
+		@"into Positions (id, type, text, longitude, latitude, h_accuracy,"
+		@"v_accuracy, altitude, timestamp) VALUES (NULL, 1, NULL, ?, ?, ?,"
+		@"?, ?, ?)", [NSNumber numberWithDouble:location.coordinate.longitude],
+		[NSNumber numberWithDouble:location.coordinate.latitude],
+		[NSNumber numberWithDouble:location.horizontalAccuracy],
+		[NSNumber numberWithDouble:location.verticalAccuracy],
+		[NSNumber numberWithDouble:location.altitude],
+		[NSNumber numberWithInt:[location.timestamp timeIntervalSince1970]],
+		nil];
+
+	if (result.errorCode) {
+		LOG(@"Couldn't insert location %@:\n\t%@", [location description],
+			result.errorMessage);
+		return NO;
+	}
+	return YES;
+}
+
+#pragma mark KVO
+
+/** Watches GPS changes.
+ */
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+	change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqual:[GPS key_path]])
+		[self log_gps:[GPS get].last_pos];
+	else
+		[super observeValueForKeyPath:keyPath ofObject:object change:change
+			context:context];
 }
 
 @end
