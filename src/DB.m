@@ -153,6 +153,21 @@
 	[data release];
 }
 
+/** Returns the number of entries collected so far.
+ */
+- (int)get_num_entries
+{
+	NSString *query = @"SELECT COUNT(id) FROM Positions";
+	EGODatabaseResult *result = [self executeQuery:query];
+	LOG_ERROR(result, query, NO);
+	int total = 0;
+	if (result.count > 0) {
+		EGODatabaseRow *row = [result rowAtIndex:0];
+		total += [row intForColumnIndex:0];
+	}
+	return total + buffer_.count;
+}
+
 #pragma mark KVO
 
 /** Watches GPS changes.

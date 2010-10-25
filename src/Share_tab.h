@@ -4,7 +4,12 @@
 
 @interface Share_tab : UIViewController
 {
+	UILabel *counter_;
+
+	int num_entries_;
 }
+
+@property (nonatomic, assign) int num_entries;
 
 - (id)init;
 

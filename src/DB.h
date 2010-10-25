@@ -20,5 +20,6 @@
 + (DB*)get_db;
 - (void)log:(id)text_or_location;
 - (void)flush;
+- (int)get_num_entries;
 
 @end
