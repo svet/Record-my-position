@@ -1,8 +1,9 @@
 // vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
-@interface Share_tab : UIViewController
+@interface Share_tab : UIViewController <MFMailComposeViewControllerDelegate>
 {
 	/// Label used to display the number of entries.
 	UILabel *counter_;

@@ -15,6 +15,7 @@
 - (void)increment_count:(NSNotification*)notification;
 - (void)switch_changed;
 - (void)purge_database;
+- (void)share_by_email;
 @end
 
 
@@ -40,17 +41,22 @@
 {
 	[super loadView];
 
+	// Counter label.
 	counter_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 300, 40)];
 	counter_.text = @"0 entries available";
 	counter_.backgroundColor = [UIColor clearColor];
 	counter_.textColor = [UIColor blackColor];
 	[self.view addSubview:counter_];
 
+	// Button to share data through email.
 	share_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	share_.frame = CGRectMake(20, 300, 280, 40);
 	[share_ setTitle:@"Send log by email" forState:UIControlStateNormal];
+	[share_ addTarget:self action:@selector(share_by_email)
+		forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:share_];
 
+	// Button to purge disk database.
 	purge_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	purge_.frame = CGRectMake(20, 200, 280, 40);
 	[purge_ setTitle:@"Purge database" forState:UIControlStateNormal];
@@ -58,6 +64,7 @@
 		forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:purge_];
 
+	// Temporary label for switch.
 	UILabel *delete_label = [[UILabel alloc]
 		initWithFrame:CGRectMake(10, 70, 210, 40)];
 	delete_label.text = @"Remove entries sent by email";
@@ -67,6 +74,7 @@
 	[self.view addSubview:delete_label];
 	[delete_label release];
 
+	// The actual switch.
 	switch_ = [[UISwitch alloc]
 		initWithFrame:CGRectMake(220, 70, 100, 40)];
 	[switch_ addTarget:self action:@selector(switch_changed)
@@ -144,6 +152,28 @@
 	[alert release];
 }
 
+/** User clicked the share by email button. Prepare mail.
+ */
+- (void)share_by_email
+{
+	if (![MFMailComposeViewController canSendMail]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No email?"
+			message:@"Uh oh, this thing can't send mail!" delegate:self
+			cancelButtonTitle:@"Hmmm..." otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		return;
+	}
+
+	MFMailComposeViewController *mail =
+		[[MFMailComposeViewController alloc] init];
+	mail.mailComposeDelegate = self;
+	[mail setSubject:@"Sending some GPS readings"];
+	[mail setMessageBody:@"Here, parse this.\n\n" isHTML:NO];
+	[self presentModalViewController:mail animated:YES];
+	[mail release];
+}
+
 #pragma mark UIAlertViewDelegate protocol
 
 /** Handles the alert view for purging the database.
@@ -159,5 +189,23 @@
 	[app purge_database];
 	self.num_entries = 0;
 }
+
+#pragma mark MFMailComposeViewControllerDelegate
+
+/** Forces dismissing of the view.
+ * If there was no error and the user didn't cancel the thing, we
+ * will remove the database entries.
+ */
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+	didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+	[self dismissModalViewControllerAnimated:YES];
+
+	if (MFMailComposeResultCancelled == result ||
+			MFMailComposeResultFailed == result) {
+		return;
+	}
+}
+
 
 @end

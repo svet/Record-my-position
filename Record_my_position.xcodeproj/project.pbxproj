@@ -25,6 +25,7 @@
 		D5BEDACB126F942C0056DB78 /* VTPG_Common.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDACA126F942C0056DB78 /* VTPG_Common.m */; };
 		D5C47782127177D500CB008F /* GPS.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C47781127177D500CB008F /* GPS.m */; };
 		D5C477B212717BEA00CB008F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C477B112717BEA00CB008F /* CoreLocation.framework */; };
+		D5DF0B7E127636C300A9BC0D /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5DF0B7D127636C300A9BC0D /* MessageUI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		D5C47780127177D500CB008F /* GPS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPS.h; sourceTree = "<group>"; };
 		D5C47781127177D500CB008F /* GPS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPS.m; sourceTree = "<group>"; };
 		D5C477B112717BEA00CB008F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		D5DF0B7D127636C300A9BC0D /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				D5BEDAA2126F8D130056DB78 /* libsqlite3.dylib in Frameworks */,
 				D5C477B212717BEA00CB008F /* CoreLocation.framework in Frameworks */,
+				D5DF0B7E127636C300A9BC0D /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +120,7 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */,
 				D5C477B112717BEA00CB008F /* CoreLocation.framework */,
+				D5DF0B7D127636C300A9BC0D /* MessageUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
