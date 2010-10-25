@@ -11,7 +11,7 @@
 	int num_entries_;
 
 	/// Switches and labels.
-	UISwitch *delete_switch_;
+	UISwitch *switch_;
 
 	/// Action buttons.
 	UIButton *share_;

@@ -5,6 +5,8 @@
 #import "DB.h"
 #import "macro.h"
 
+#define _SWITCH_KEY_NEGATED		@"remove_entries_negated"
+
 
 @interface Share_tab ()
 - (void)update_gui;
@@ -59,12 +61,13 @@
 	[self.view addSubview:delete_label];
 	[delete_label release];
 
-	delete_switch_ = [[UISwitch alloc]
+	switch_ = [[UISwitch alloc]
 		initWithFrame:CGRectMake(220, 70, 100, 40)];
-	//[delete_switch_ addTarget:self action:@selector(switch_changed)
-		//forControlEvents:UIControlEventValueChanged];
-	[self.view addSubview:delete_switch_];
-
+	[switch_ addTarget:self action:@selector(switch_changed)
+		forControlEvents:UIControlEventValueChanged];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	switch_.on = ![defaults boolForKey:_SWITCH_KEY_NEGATED];
+	[self.view addSubview:switch_];
 }
 
 - (void)dealloc
@@ -112,6 +115,16 @@
 - (void)increment_count:(NSNotification*)notification
 {
 	self.num_entries += 1;
+}
+
+/** User toggled on/off the GUI switch.
+ * Record the new setting in the user's preferences.
+ */
+- (void)switch_changed
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setBool:!switch_.on forKey:_SWITCH_KEY_NEGATED];
+	[defaults synchronize];
 }
 
 @end
