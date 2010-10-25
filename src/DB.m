@@ -93,6 +93,15 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	return [app db];
 }
 
+/** Closes the database.
+ * Unlinks the observer before doing so.
+ */
+- (void)close
+{
+	[[GPS get] remove_watcher:self];
+	[super close];
+}
+
 /** Logs a text or location object.
  * The object is added to the memory buffer, which is flushed as needed. 
  * Returns YES if the operation succeeded.

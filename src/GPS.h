@@ -14,9 +14,12 @@
 
 	/// Last received position.
 	CLLocation *last_pos_;
+
+	BOOL gps_is_on_;
 }
 
 @property (nonatomic, retain, readonly) CLLocation *last_pos;
+@property (nonatomic, readonly, assign) BOOL gps_is_on;
 
 + (GPS*)get;
 + (NSString*)degrees_to_dms:(CLLocationDegrees)value latitude:(BOOL)latitude;
@@ -26,7 +29,6 @@
 - (void)stop;
 - (void)add_watcher:(id)watcher;
 - (void)remove_watcher:(id)watcher;
-
 
 
 @end

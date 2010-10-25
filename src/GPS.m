@@ -14,6 +14,7 @@
 static GPS *g_;
 
 @synthesize last_pos = last_pos_;
+@synthesize gps_is_on = gps_is_on_;
 
 /** Returns the pointer to the singleton GPS class.
  * The class will be constructed if necessary.
@@ -89,8 +90,10 @@ static GPS *g_;
 {
 	if (manager_.locationServicesEnabled) {
 		[manager_ startUpdatingLocation];
+		gps_is_on_ = YES;
 		return true;
 	} else {
+		gps_is_on_ = NO;
 		return false;
 	}
 }
@@ -100,6 +103,7 @@ static GPS *g_;
  */
 - (void)stop
 {
+	gps_is_on_ = NO;
 	[manager_ stopUpdatingLocation];
 }
 

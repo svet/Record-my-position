@@ -3,6 +3,7 @@
 #import "App_delegate.h"
 
 #import "DB.h"
+#import "GPS.h"
 #import "Tab_controller.h"
 #import "macro.h"
 
@@ -134,6 +135,32 @@
 	[alert show];
 	[alert release];
 	DLOG(@"Error: %@", message);
+}
+
+/** Forces a deletion of the database.
+ * The database will be recreated automatically. GPS detection will
+ * be disabled for a moment to avoid race conditions.
+ */
+- (void)purge_database
+{
+	DLOG(@"Purging database.");
+	[db_ flush];
+	[db_ close];
+	GPS *gps = [GPS get];
+	const BOOL activate = gps.gps_is_on;
+	[gps stop];
+
+	NSError *error = nil;
+	NSString *path = [DB path];
+	NSFileManager *manager = [NSFileManager defaultManager];
+	if ([manager removeItemAtPath:path error:&error])
+		DLOG(@"Deleted %@", path);
+	else
+		DLOG(@"Couldn't unlink %@: %@", path, error);
+
+	db_ = [DB open_database];
+	if (activate)
+		[gps start];
 }
 
 #pragma mark UIAlertViewDelegate protocol

@@ -25,6 +25,7 @@
 
 
 - (void)handle_error:(NSString*)message abort:(BOOL)abort;
+- (void)purge_database;
 
 @end
 

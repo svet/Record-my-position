@@ -2,8 +2,10 @@
 
 #import "Share_tab.h"
 
+#import "App_delegate.h"
 #import "DB.h"
 #import "macro.h"
+
 
 #define _SWITCH_KEY_NEGATED		@"remove_entries_negated"
 
@@ -11,6 +13,8 @@
 @interface Share_tab ()
 - (void)update_gui;
 - (void)increment_count:(NSNotification*)notification;
+- (void)switch_changed;
+- (void)purge_database;
 @end
 
 
@@ -50,11 +54,13 @@
 	purge_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	purge_.frame = CGRectMake(20, 200, 280, 40);
 	[purge_ setTitle:@"Purge database" forState:UIControlStateNormal];
+	[purge_ addTarget:self action:@selector(purge_database)
+		forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:purge_];
 
 	UILabel *delete_label = [[UILabel alloc]
 		initWithFrame:CGRectMake(10, 70, 210, 40)];
-	delete_label.text = @"Remove entries sent in email";
+	delete_label.text = @"Remove entries sent by email";
 	delete_label.numberOfLines = 2;
 	delete_label.backgroundColor = [UIColor clearColor];
 	delete_label.textColor = [UIColor blackColor];
@@ -125,6 +131,33 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setBool:!switch_.on forKey:_SWITCH_KEY_NEGATED];
 	[defaults synchronize];
+}
+
+/** User clicked the purge button. Ask him if he's really serious.
+ */
+- (void)purge_database
+{
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Purge database?"
+		message:@"Are you sure you want to purge the database?" delegate:self
+		cancelButtonTitle:@"Wait, no" otherButtonTitles:@"Yeah", nil];
+	[alert show];
+	[alert release];
+}
+
+#pragma mark UIAlertViewDelegate protocol
+
+/** Handles the alert view for purging the database.
+ * If the button is not the cancel one, we purge the database now.
+ */
+- (void)alertView:(UIAlertView *)alertView
+	clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if (buttonIndex < 1)
+		return;
+
+	App_delegate *app = [[UIApplication sharedApplication] delegate];
+	[app purge_database];
+	self.num_entries = 0;
 }
 
 @end
