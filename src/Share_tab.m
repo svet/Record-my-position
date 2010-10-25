@@ -8,6 +8,7 @@
 
 @interface Share_tab ()
 - (void)update_gui;
+- (void)increment_count:(NSNotification*)notification;
 @end
 
 
@@ -21,6 +22,11 @@
 		return nil;
 
 	self.title = @"Share";
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+		selector:@selector(increment_count:) name:DB_bump_notification
+		object:nil];
+
 	return self;
 }
 
@@ -37,6 +43,7 @@
 
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[counter_ release];
 	[super dealloc];
 }
@@ -70,6 +77,15 @@
 {
 	counter_.text = [NSString stringWithFormat:@"%d entries collected",
 		self.num_entries];	
+}
+
+/** Handles receiving notifications.
+ * This is used while the tab is open instead of querying the
+ * database for new entries. Avoids a disk roundtrip.
+ */
+- (void)increment_count:(NSNotification*)notification
+{
+	self.num_entries += 1;
 }
 
 @end

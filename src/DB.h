@@ -23,3 +23,5 @@
 - (int)get_num_entries;
 
 @end
+
+extern NSString *DB_bump_notification;

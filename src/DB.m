@@ -26,6 +26,8 @@
 
 #define _BUFFER			50
 
+NSString *DB_bump_notification = @"DB_bump_notification";
+
 @interface DB ()
 @end
 
@@ -105,6 +107,9 @@
 
 	if (buffer_.count >= _BUFFER)
 		[self flush];
+
+	[[NSNotificationCenter defaultCenter]
+		postNotificationName:DB_bump_notification object:self];
 }
 
 /** Stores the circular buffer to disk, freing the current buffer_.
