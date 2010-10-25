@@ -34,11 +34,37 @@
 {
 	[super loadView];
 
-	counter_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 300, 20)];
+	counter_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 300, 40)];
 	counter_.text = @"0 entries available";
 	counter_.backgroundColor = [UIColor clearColor];
 	counter_.textColor = [UIColor blackColor];
 	[self.view addSubview:counter_];
+
+	share_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	share_.frame = CGRectMake(20, 300, 280, 40);
+	[share_ setTitle:@"Send log by email" forState:UIControlStateNormal];
+	[self.view addSubview:share_];
+
+	purge_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	purge_.frame = CGRectMake(20, 200, 280, 40);
+	[purge_ setTitle:@"Purge database" forState:UIControlStateNormal];
+	[self.view addSubview:purge_];
+
+	UILabel *delete_label = [[UILabel alloc]
+		initWithFrame:CGRectMake(10, 70, 210, 40)];
+	delete_label.text = @"Remove entries sent in email";
+	delete_label.numberOfLines = 2;
+	delete_label.backgroundColor = [UIColor clearColor];
+	delete_label.textColor = [UIColor blackColor];
+	[self.view addSubview:delete_label];
+	[delete_label release];
+
+	delete_switch_ = [[UISwitch alloc]
+		initWithFrame:CGRectMake(220, 70, 100, 40)];
+	//[delete_switch_ addTarget:self action:@selector(switch_changed)
+		//forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview:delete_switch_];
+
 }
 
 - (void)dealloc
