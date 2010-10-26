@@ -114,6 +114,7 @@
 {
 	[super viewWillAppear:animated];
 
+	switch_.on = [GPS get].gps_is_on;
 	[self update_gui];
 
 	if (!timer_)

@@ -141,7 +141,7 @@
 - (void)update_gui
 {
 	counter_.text = [NSString stringWithFormat:@"%d entries collected",
-		self.num_entries];	
+		self.num_entries];
 }
 
 /** Handles receiving notifications.
@@ -195,6 +195,15 @@
 	mail.mailComposeDelegate = self;
 	[mail setSubject:@"Sending some GPS readings"];
 	[mail setMessageBody:@"Here, parse this.\n\n" isHTML:NO];
+
+	rows_to_attach_ = [[DB get_db] prepare_to_attach];
+	NSData *attachment = [rows_to_attach_ get_attachment];
+	if (attachment) {
+		[mail addAttachmentData:attachment mimeType:@"text/csv"
+			fileName:[NSString stringWithFormat:@"%d record_my_position.csv",
+			time(0), nil]];
+	}
+
 	[self presentModalViewController:mail animated:YES];
 	[mail release];
 }
@@ -225,14 +234,29 @@
 	didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
 	[self dismissModalViewControllerAnimated:YES];
-	
-	shield_.hidden = YES;
-	[activity_ stopAnimating];
 
 	if (MFMailComposeResultCancelled == result ||
-			MFMailComposeResultFailed == result) {
-		return;
+			MFMailComposeResultFailed == result)
+		goto end;
+
+	if ([rows_to_attach_ remaining]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Give me more!"
+			message:@"Only a portion of data was sent. Send more emails."
+			delegate:self cancelButtonTitle:@"Will do" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
 	}
+
+	if (switch_.on) {
+		[rows_to_attach_ delete_rows];
+		DB *db = [DB get_db];
+		self.num_entries = [db get_num_entries];
+	}
+
+end:
+	[rows_to_attach_ release];
+	shield_.hidden = YES;
+	[activity_ stopAnimating];
 }
 
 

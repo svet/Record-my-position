@@ -3,6 +3,8 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
+@class Rows_to_attachment;
+
 @interface Share_tab : UIViewController <MFMailComposeViewControllerDelegate>
 {
 	/// Label used to display the number of entries.
@@ -21,6 +23,9 @@
 	/// Shows a wait dialog along with a non touchable interface.
 	UIView *shield_;
 	UIActivityIndicatorView *activity_;
+
+	/// Pointer to the object holding the rows to send by email.
+	Rows_to_attachment *rows_to_attach_;
 }
 
 @property (nonatomic, assign) int num_entries;

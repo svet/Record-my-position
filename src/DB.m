@@ -24,9 +24,14 @@
 #endif
 
 
-#define _BUFFER			50
+#define _BUFFER					50
+#define _MAX_EXPORT_ROWS		10000
+
+#define _ROW_TYPE_LOG			0
+#define _ROW_TYPE_COORD			1
 
 NSString *DB_bump_notification = @"DB_bump_notification";
+
 
 @interface DB ()
 @end
@@ -140,8 +145,9 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 			CLLocation *location = log;
 			result = [self executeQueryWithParameters:@"INSERT into Positions "
 				@"(id, type, text, longitude, latitude, h_accuracy,"
-				@"v_accuracy, altitude, timestamp) VALUES (NULL, 1, NULL, "
+				@"v_accuracy, altitude, timestamp) VALUES (NULL, ?, NULL, "
 				@"?, ?, ?, ?, ?, ?)",
+				[NSNumber numberWithInt:_ROW_TYPE_COORD],
 				[NSNumber numberWithDouble:location.coordinate.longitude],
 				[NSNumber numberWithDouble:location.coordinate.latitude],
 				[NSNumber numberWithDouble:location.horizontalAccuracy],
@@ -155,8 +161,9 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 			result = [self
 				executeQueryWithParameters:@"INSERT into Positions (id, type,"
 				@"text, longitude, latitude, h_accuracy, v_accuracy,"
-				@"altitude, timestamp) VALUES (NULL, 0, ?, 0, 0, -1, -1,"
-				@"-1, time(\"now\"))", log, nil];
+				@"altitude, timestamp) VALUES (NULL, ?, ?, 0, 0, -1, -1,"
+				@"-1, time(\"now\"))",
+				[NSNumber numberWithInt:_ROW_TYPE_LOG], log, nil];
 		}
 
 		if (result.errorCode)
@@ -182,6 +189,29 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	return total + buffer_.count;
 }
 
+/** Queries the database for rows to make an attachment from.
+ * This will return a pointer to a Rows_to_attachment structure
+ * which remembers the correct state of how many rows were prepared
+ * to read, and other interesting stuff, so the GPS readings can
+ * continue working in the background.
+ */
+- (Rows_to_attachment*)prepare_to_attach
+{
+	[self flush];
+
+	int max_row = -1;
+	NSString *query = @"SELECT MAX(id) FROM Positions";
+	EGODatabaseResult *result = [self executeQuery:query];
+	LOG_ERROR(result, query, NO);
+	if (result.count > 0) {
+		EGODatabaseRow *row = [result rowAtIndex:0];
+		max_row = [row intForColumnIndex:0];
+	}
+
+	return [[Rows_to_attachment alloc] initWithDB:self
+		max_row:max_row];
+}
+
 #pragma mark KVO
 
 /** Watches GPS changes.
@@ -194,6 +224,99 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	else
 		[super observeValueForKeyPath:keyPath ofObject:object change:change
 			context:context];
+}
+
+@end
+
+/****************************************************************************/
+
+@implementation Rows_to_attachment
+
+/** Constructs the object to handle attachments.
+ * Pass the database pointer and the maximum row to export.
+ */
+- (id)initWithDB:(DB*)db max_row:(int)max_row
+{
+	if (!(self = [super init]))
+		return nil;
+
+	max_row_ = max_row;
+	db_ = db;
+
+	return self;
+}
+
+/** Returns the attachment to send as csv file.
+ * Returns nil if there is no attachment or there was a problem (more likely)
+ */
+- (NSData*)get_attachment
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	EGODatabaseResult *result = [db_ executeQueryWithParameters:@"SELECT "
+		@"id, type, text, longitude, latitude, h_accuracy, v_accuracy,"
+		@"altitude, timestamp FROM Positions WHERE id <= ? LIMIT ?",
+		[NSNumber numberWithInt:max_row_],
+		[NSNumber numberWithInt:_MAX_EXPORT_ROWS], nil];
+	LOG_ERROR(result, nil, YES);
+
+	NSMutableArray *strings = [NSMutableArray
+		arrayWithCapacity:_MAX_EXPORT_ROWS / 4];
+
+	int last_id = -2;
+	for (EGODatabaseRow* row in result) {
+		last_id = [row intForColumnIndex:0];
+		const int type = [row intForColumnIndex:1];
+		const int timestamp = [row intForColumnIndex:8];
+		if (_ROW_TYPE_LOG == type) {
+			[strings addObject:
+				[NSString stringWithFormat:@"%d,%@,0,0,-1,-1,-1,%d",
+				_ROW_TYPE_LOG, [row stringForColumnIndex:2], timestamp]];
+		} else if (_ROW_TYPE_COORD == type) {
+			[strings addObject:[NSString stringWithFormat:@"%d,,"
+				@"%0.4f,%0.4f,%0.1f,%0.1f,%0.1f,%d", _ROW_TYPE_COORD,
+				[row doubleForColumnIndex:3], [row doubleForColumnIndex:4],
+				[row doubleForColumnIndex:5], [row doubleForColumnIndex:6],
+				[row doubleForColumnIndex:7], timestamp]];
+		} else {
+			NSAssert(0, @"Unknown database row type?!");
+		}
+	}
+
+	NSString *string = [[strings componentsJoinedByString:@"\n"] retain];
+
+	[pool drain];
+
+	NSData *ret = [string dataUsingEncoding:NSISOLatin1StringEncoding];
+	[string release];
+
+	/* Signal remaining rows? */
+	if (last_id >= 0 && last_id != max_row_) {
+		max_row_ = last_id;
+		remaining_ = YES;
+	}
+
+	return ret;
+}
+
+/** Deletes the rows returned by get_attachment.
+ * Note that if you call this before get_attachment: the whole
+ * database will be wiped out, since get_attachment might have limited
+ * the maximum row to _MAX_EXPORT_ROWS.
+ */
+- (void)delete_rows
+{
+	EGODatabaseResult *result = [db_ executeQueryWithParameters:@"DELETE "
+		@"FROM Positions WHERE id <= ?",
+		[NSNumber numberWithInt:max_row_], nil];
+	LOG_ERROR(result, nil, NO);
+}
+
+/** Returns YES if there were remaining rows not returned by get_attachment.
+ */
+- (bool)remaining
+{
+	return remaining_;
 }
 
 @end
