@@ -162,7 +162,7 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 				executeQueryWithParameters:@"INSERT into Positions (id, type,"
 				@"text, longitude, latitude, h_accuracy, v_accuracy,"
 				@"altitude, timestamp) VALUES (NULL, ?, ?, 0, 0, -1, -1,"
-				@"-1, time(\"now\"))",
+				@"-1, strftime(\"%s\", \"now\"))",
 				[NSNumber numberWithInt:_ROW_TYPE_LOG], log, nil];
 		}
 
@@ -270,7 +270,7 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 		const int timestamp = [row intForColumnIndex:8];
 		if (_ROW_TYPE_LOG == type) {
 			[strings addObject:
-				[NSString stringWithFormat:@"%d,%@,0,0,0,0-1,-1,-1,%d",
+				[NSString stringWithFormat:@"%d,%@,0,0,0,0,-1,-1,-1,%d",
 				_ROW_TYPE_LOG, [row stringForColumnIndex:2], timestamp]];
 		} else if (_ROW_TYPE_COORD == type) {
 			const double longitude = [row doubleForColumnIndex:3];

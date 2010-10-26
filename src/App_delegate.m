@@ -29,6 +29,11 @@
 		return NO;
 	}
 
+	// For the moment we don't know what to do with this...
+	if (launch_options)
+		[db_ log:[NSString stringWithFormat:@"Launch options? %@",
+			launch_options]];
+
 	tab_controller_ = [Tab_controller new];
 	[window_ addSubview:tab_controller_.view];
 
@@ -54,6 +59,7 @@
 }
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+	[db_ log:@"Entering background mode"];
 	[db_ flush];
 	/*
 	 Use this method to release shared resources, save user
@@ -96,6 +102,9 @@
  **/
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+	if ([GPS get].gps_is_on)
+		[db_ log:@"Terminating app while GPS was reading..."];
+
 	[db_ flush];
 	[db_ close];
 }

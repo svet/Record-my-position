@@ -90,6 +90,9 @@ static GPS *g_;
 - (bool)start
 {
 	if (manager_.locationServicesEnabled) {
+		if (!self.gps_is_on)
+			[[DB get] log:@"Starting to update location"];
+
 		[manager_ startUpdatingLocation];
 		gps_is_on_ = YES;
 		return true;
@@ -104,6 +107,8 @@ static GPS *g_;
  */
 - (void)stop
 {
+	if (self.gps_is_on)
+		[[DB get] log:@"Stopping to update location"];
 	gps_is_on_ = NO;
 	[manager_ stopUpdatingLocation];
 }
