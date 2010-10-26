@@ -209,14 +209,15 @@
 		[NSString stringWithFormat:@"%d minute(s)", (int)diff / 60] :
 		[NSString stringWithFormat:@"%d second(s)", (int)diff])];
 
-	if (self.old_location) {
+	if ([self.old_location
+			respondsToSelector:@selector(distanceFromLocation:)]) {
 		movement_.text = [NSString
 			stringWithFormat:@"New pos changed %0.0f meters",
 			[self.old_location distanceFromLocation:location]];
 		if (![self.old_location.timestamp isEqualToDate:location.timestamp])
 			self.old_location = location;
 	} else {
-		movement_.text = @"First position!";
+		movement_.text = self.old_location ? @"" : @"First position!";
 		self.old_location = location;
 	}
 }
