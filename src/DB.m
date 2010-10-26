@@ -270,12 +270,15 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 		const int timestamp = [row intForColumnIndex:8];
 		if (_ROW_TYPE_LOG == type) {
 			[strings addObject:
-				[NSString stringWithFormat:@"%d,%@,0,0,-1,-1,-1,%d",
+				[NSString stringWithFormat:@"%d,%@,0,0,0,0-1,-1,-1,%d",
 				_ROW_TYPE_LOG, [row stringForColumnIndex:2], timestamp]];
 		} else if (_ROW_TYPE_COORD == type) {
+			const double longitude = [row doubleForColumnIndex:3];
+			const double latitude = [row doubleForColumnIndex:4];
 			[strings addObject:[NSString stringWithFormat:@"%d,,"
-				@"%0.4f,%0.4f,%0.1f,%0.1f,%0.1f,%d", _ROW_TYPE_COORD,
-				[row doubleForColumnIndex:3], [row doubleForColumnIndex:4],
+				@"%0.8f,%0.8f,%@,%@,%0.1f,%0.1f,%0.1f,%d", _ROW_TYPE_COORD,
+				longitude, latitude, [GPS degrees_to_dms:longitude latitude:NO],
+				[GPS degrees_to_dms:latitude latitude:YES],
 				[row doubleForColumnIndex:5], [row doubleForColumnIndex:6],
 				[row doubleForColumnIndex:7], timestamp]];
 		} else {

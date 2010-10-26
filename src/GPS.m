@@ -31,8 +31,8 @@ static GPS *g_;
  * Specify with the latitude bool if you are converting the latitude
  * part of the coordinates, which has a different letter.
  *
- * \return Returns the string with the formated value as Dº M' S"
- * X, where X is a letter and D M S are numbers.
+ * \return Returns the string with the formated value as
+ * Ddeg Mmin Ssec X, where X is a letter.
  */
 + (NSString*)degrees_to_dms:(CLLocationDegrees)value latitude:(BOOL)latitude
 {
@@ -53,10 +53,10 @@ static GPS *g_;
 			letter = 'W';
 	}
 	if (letter)
-		return [NSString stringWithFormat:@"%dº %d' %0.2f\" %c",
+		return [NSString stringWithFormat:@"%ddeg %dmin %0.2fsec %c",
 			degrees, minutes, seconds, letter];
 	else
-		return [NSString stringWithFormat:@"%dº %d' %0.2f\"",
+		return [NSString stringWithFormat:@"%ddeg %dmin %0.2fsec",
 			degrees, minutes, seconds];
 }
 
