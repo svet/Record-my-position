@@ -119,7 +119,7 @@
 {
 	[super viewWillAppear:animated];
 
-	DB *db = [DB get_db];
+	DB *db = [DB get];
 	self.num_entries = [db get_num_entries];
 }
 
@@ -196,7 +196,7 @@
 	[mail setSubject:@"Sending some GPS readings"];
 	[mail setMessageBody:@"Here, parse this.\n\n" isHTML:NO];
 
-	rows_to_attach_ = [[DB get_db] prepare_to_attach];
+	rows_to_attach_ = [[DB get] prepare_to_attach];
 	NSData *attachment = [rows_to_attach_ get_attachment];
 	if (attachment) {
 		[mail addAttachmentData:attachment mimeType:@"text/csv"
@@ -249,7 +249,7 @@
 
 	if (switch_.on) {
 		[rows_to_attach_ delete_rows];
-		DB *db = [DB get_db];
+		DB *db = [DB get];
 		self.num_entries = [db get_num_entries];
 	}
 

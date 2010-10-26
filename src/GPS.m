@@ -2,6 +2,7 @@
 
 #import "GPS.h"
 
+#import "DB.h"
 #import "macro.h"
 
 #define _KEY_PATH			@"last_pos"

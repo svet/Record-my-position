@@ -92,7 +92,7 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 /** Returns the application's pointer to the open database.
  * Nil if where were problems.
  */
-+ (DB*)get_db
++ (DB*)get
 {
 	App_delegate *app = (id)[[UIApplication sharedApplication] delegate];
 	return [app db];
