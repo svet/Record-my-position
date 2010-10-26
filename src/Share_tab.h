@@ -17,6 +17,10 @@
 	/// Action buttons.
 	UIButton *share_;
 	UIButton *purge_;
+
+	/// Shows a wait dialog along with a non touchable interface.
+	UIView *shield_;
+	UIActivityIndicatorView *activity_;
 }
 
 @property (nonatomic, assign) int num_entries;

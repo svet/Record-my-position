@@ -82,11 +82,33 @@
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	switch_.on = ![defaults boolForKey:_SWITCH_KEY_NEGATED];
 	[self.view addSubview:switch_];
+
+	/// The shield view with a spinning element.
+	shield_ = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
+	shield_.autoresizingMask = UIViewAutoresizingFlexibleWidth |
+		UIViewAutoresizingFlexibleHeight;
+	shield_.backgroundColor = [UIColor blackColor];
+	shield_.alpha = 0.5;
+	shield_.hidden = YES;
+	[self.view addSubview:shield_];
+
+	activity_ = [[UIActivityIndicatorView alloc]
+		initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+	activity_.contentMode = UIViewContentModeCenter;
+	activity_.frame = self.view.frame;
+	activity_.autoresizingMask = UIViewAutoresizingFlexibleWidth |
+		UIViewAutoresizingFlexibleHeight;
+	[shield_ addSubview:activity_];
 }
 
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[activity_ release];
+	[shield_ release];
+	[switch_ release];
+	[purge_ release];
+	[share_ release];
 	[counter_ release];
 	[super dealloc];
 }
@@ -165,6 +187,9 @@
 		return;
 	}
 
+	shield_.hidden = NO;
+	[activity_ startAnimating];
+
 	MFMailComposeViewController *mail =
 		[[MFMailComposeViewController alloc] init];
 	mail.mailComposeDelegate = self;
@@ -200,6 +225,9 @@
 	didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
 {
 	[self dismissModalViewControllerAnimated:YES];
+	
+	shield_.hidden = YES;
+	[activity_ stopAnimating];
 
 	if (MFMailComposeResultCancelled == result ||
 			MFMailComposeResultFailed == result) {
