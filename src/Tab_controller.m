@@ -44,12 +44,12 @@
 	[super loadView];
 }
 
+/** Support only the portrait orientation.
+ */
 - (BOOL)shouldAutorotateToInterfaceOrientation:
-	(UIInterfaceOrientation)interfaceOrientation
+	(UIInterfaceOrientation)orientation
 {
-	return NO;
+	return (UIInterfaceOrientationPortrait == orientation);
 }
-
-
 
 @end
