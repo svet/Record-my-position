@@ -127,27 +127,6 @@ static GPS *g_;
 	[manager_ stopUpdatingLocation];
 }
 
-- (void)locationManager:(CLLocationManager*)manager
-		didUpdateToLocation:(CLLocation*)new_location
-		fromLocation:(CLLocation*)old_location
-{
-	DLOG(@"Updating to %@", [new_location description]);
-
-	if (new_location.horizontalAccuracy < 0) {
-		DLOG(@"Bad returned accuracy, ignoring update.");
-		return;
-	}
-
-	// Keep the new location for map showing.
-	[self willChangeValueForKey:_KEY_PATH];
-	[new_location retain];
-	[last_pos_ release];
-	last_pos_ = new_location;
-	[self didChangeValueForKey:_KEY_PATH];
-
-	[self ping_watchdog];
-}
-
 /** Returns the string used by add_watcher: and removeObserver:.
  */
 + (NSString*)key_path
@@ -169,6 +148,45 @@ static GPS *g_;
 - (void)remove_watcher:(id)watcher
 {
 	[self removeObserver:watcher forKeyPath:_KEY_PATH];
+}
+
+#pragma mark CLLocationManagerDelegate
+
+/** Something bad happened retrieving the location. What?
+ * We ignore location errors only. Rest are logged.
+ */
+- (void)locationManager:(CLLocationManager *)manager
+	didFailWithError:(NSError *)error
+{
+	if (kCLErrorLocationUnknown == error)
+		return;
+
+	[[DB get] log:[NSString stringWithFormat:@"location error: %@", error]];
+}
+
+/** Receives a location update.
+ * This generates the correct KVO messages to notify observers.
+ * Also resets the watchdog.
+ */
+- (void)locationManager:(CLLocationManager*)manager
+		didUpdateToLocation:(CLLocation*)new_location
+		fromLocation:(CLLocation*)old_location
+{
+	DLOG(@"Updating to %@", [new_location description]);
+
+	if (new_location.horizontalAccuracy < 0) {
+		DLOG(@"Bad returned accuracy, ignoring update.");
+		return;
+	}
+
+	// Keep the new location for map showing.
+	[self willChangeValueForKey:_KEY_PATH];
+	[new_location retain];
+	[last_pos_ release];
+	last_pos_ = new_location;
+	[self didChangeValueForKey:_KEY_PATH];
+
+	[self ping_watchdog];
 }
 
 #pragma mark Watchdog
