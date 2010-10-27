@@ -10,6 +10,7 @@
 @interface Capture_tab ()
 - (void)switch_changed;
 - (void)update_gui;
+- (void)start_timer;
 @end
 
 
@@ -23,11 +24,22 @@
 		return nil;
 
 	self.title = @"Capture";
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+		selector:@selector(did_enter_background)
+		name:@"UIApplicationDidEnterBackgroundNotification" object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+		selector:@selector(did_become_active)
+		name:@"UIApplicationWillEnterForegroundNotification" object:nil];
+
 	return self;
 }
 
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
 	[timer_ invalidate];
 	if (watching_)
 		[[GPS get] remove_watcher:self];
@@ -117,9 +129,7 @@
 	switch_.on = [GPS get].gps_is_on;
 	[self update_gui];
 
-	if (!timer_)
-		timer_ = [NSTimer scheduledTimerWithTimeInterval:1 target:self
-			selector:@selector(update_gui) userInfo:nil repeats:YES];
+	[self start_timer];
 }
 
 /** The view is going to dissappear.
@@ -131,6 +141,8 @@
 	[timer_ invalidate];
 	timer_ = 0;
 }
+
+#pragma mark Custom methods
 
 /** User toggled on/off GUI switch.
  */
@@ -219,6 +231,35 @@
 	} else {
 		movement_.text = self.old_location ? @"" : @"First position!";
 		self.old_location = location;
+	}
+}
+
+/** Starts the GUI update timer every second.
+ * Only if there is no previous timer attached to the class variable...
+ */
+- (void)start_timer
+{
+	if (!timer_)
+		timer_ = [NSTimer scheduledTimerWithTimeInterval:1 target:self
+			selector:@selector(update_gui) userInfo:nil repeats:YES];
+}
+
+- (void)did_become_active
+{
+	if (reenable_timers_) {
+		DLOG(@"Did become active, re-enabling GUI timer.");
+		[self start_timer];
+		reenable_timers_ = NO;
+	}
+}
+
+- (void)did_enter_background
+{
+	if (timer_) {
+		DLOG(@"Entering background, disabling GUI timer.");
+		[timer_ invalidate];
+		timer_ = nil;
+		reenable_timers_ = YES;
 	}
 }
 

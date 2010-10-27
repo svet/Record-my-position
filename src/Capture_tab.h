@@ -20,8 +20,11 @@
 	NSTimer *timer_;
 
 	CLLocation *old_location_;
-	// Keeps track of whether we are watching or not.
+	/// Keeps track of whether we are watching or not.
 	BOOL watching_;
+
+	/// Save in memory if we have to reestablish timers.
+	BOOL reenable_timers_;
 }
 
 @property (nonatomic, retain) CLLocation *old_location;

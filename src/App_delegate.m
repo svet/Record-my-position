@@ -42,56 +42,41 @@
 	return YES;
 }
 
+/** Something interrputed the application.
+ * Not so important, since we are background, but just in case flush data.
+ */
 - (void)applicationWillResignActive:(UIApplication *)application
 {
 	[db_ flush];
-	/*
-	 Sent when the application is about to move from active to
-	 inactive state. This can occur for certain types of temporary
-	 interruptions (such as an incoming phone call or SMS
-	 message) or when the user quits the application and it
-	 begins the transition to the background state.
-
-	 Use this method to pause ongoing tasks, disable timers,
-	 and throttle down OpenGL ES frame rates. Games should use
-	 this method to pause the game.
-	 */
 }
+
+/** The application regained focus.
+ * This is the pair to applicationWillResignActive.
+ */
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+}
+
+/** The user quit the app, and we are supporting background operation.
+ * Suspend GUI dependant timers and log status change.
+ *
+ * This method is only called if the app is running on a device
+ * supporting background operation. Otherwise applicationWillTerminate
+ * will be called instead.
+ */
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
 	[db_ log:@"Entering background mode"];
 	[db_ flush];
-	/*
-	 Use this method to release shared resources, save user
-	 data, invalidate timers, and store enough application state
-	 information to restore your application to its current
-	 state in case it is terminated later.
-
-	 If your application supports background execution, called
-	 instead of applicationWillTerminate: when the user quits.
-	 */
-}
-#if 0
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-	/*
-	 Called as part of      transition from the background to
-	 the inactive state: here you can undo many of the changes
-	 made on entering the background.
-	 */
 }
 
+/** We were raised from the dead.
+ * Revert bad stuff done in applicationDidEnterBackground to be nice.
+ */
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	/*
-	 Restart any tasks that were paused (or not yet started)
-	 while the application was inactive. If the application was
-	 previously in the background, optionally refresh the user
-	 interface.
-	 */
+	[db_ log:@"Raising from background"];
 }
-#endif
 
 /** Application shutdown. Save cache and stuff...
  * Note that the method could be called even during initialisation,
@@ -99,11 +84,11 @@
  *
  * If background running is supported, applicationDidEnterBackground
  * is used instead.
- **/
+ */
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	if ([GPS get].gps_is_on)
-		[db_ log:@"Terminating app while GPS was reading..."];
+		[db_ log:@"Terminating app while GPS was on..."];
 
 	[db_ flush];
 	[db_ close];
@@ -112,14 +97,11 @@
 #pragma mark -
 #pragma mark Memory management
 
+/** Low on memory. Try to free as much as we can.
+ */
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
 	[db_ flush];
-	/*
-	 Free up as much memory as possible by purging cached data
-	 objects that can be recreated (or reloaded from disk)
-	 later.
-	 */
 }
 
 - (void)dealloc
@@ -128,6 +110,8 @@
 	[window_ release];
 	[super dealloc];
 }
+
+#pragma mark Normal methods
 
 /** Handle reporting of errors to the user.
  * Pass the message for the error and a boolean telling to force
