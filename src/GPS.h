@@ -16,6 +16,9 @@
 	CLLocation *last_pos_;
 
 	BOOL gps_is_on_;
+
+	/// Watchdog timer to detect GPS entering into zombie state.
+	NSTimer *zasca_;
 }
 
 @property (nonatomic, retain, readonly) CLLocation *last_pos;
