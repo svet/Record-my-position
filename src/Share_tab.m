@@ -175,6 +175,9 @@
 }
 
 /** User clicked the share by email button. Prepare mail.
+ * This function is split into share_by_email_prepare so that the
+ * shield is refreshed immediately and the user sees it. Otherwise
+ * the long processing might not allow the shield to come up immediately.
  */
 - (void)share_by_email
 {
@@ -189,7 +192,17 @@
 
 	shield_.hidden = NO;
 	[activity_ startAnimating];
+	[self performSelector:@selector(share_by_email_prepare) withObject:nil
+		afterDelay:0];
+}
 
+/** Second part of share_by_email.
+ * This does the long work of setting up the attachments to the
+ * email, hopefully after the UI has been updated to show a
+ * shield/processing screen.
+ */
+- (void)share_by_email_prepare
+{
 	MFMailComposeViewController *mail =
 		[[MFMailComposeViewController alloc] init];
 	mail.mailComposeDelegate = self;
