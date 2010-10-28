@@ -212,9 +212,15 @@
 	rows_to_attach_ = [[DB get] prepare_to_attach];
 	NSData *attachment = [rows_to_attach_ get_attachment];
 	if (attachment) {
+		NSDateComponents *now = [[NSCalendar currentCalendar]
+			components:NSDayCalendarUnit | NSMonthCalendarUnit |
+			NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit |
+			NSSecondCalendarUnit fromDate:[NSDate date]];
+
 		[mail addAttachmentData:attachment mimeType:@"text/csv"
-			fileName:[NSString stringWithFormat:@"%d record_my_position.csv",
-			time(0), nil]];
+			fileName:[NSString stringWithFormat:@"positions %04d-%02d-%02d "
+			@"%02d:%02d:%02d.csv", [now year], [now month], [now day],
+			[now hour], [now minute], [now second], nil]];
 	}
 
 	[self presentModalViewController:mail animated:YES];
