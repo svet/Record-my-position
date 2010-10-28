@@ -217,18 +217,25 @@ static GPS *g_;
 
 /** Receives a location update.
  * This generates the correct KVO messages to notify observers.
- * Also resets the watchdog.
+ * Also resets the watchdog. Repeated locations based on timestamp
+ * will be discarded.
  */
 - (void)locationManager:(CLLocationManager*)manager
 		didUpdateToLocation:(CLLocation*)new_location
 		fromLocation:(CLLocation*)old_location
 {
-	DLOG(@"Updating to %@", [new_location description]);
-
 	if (new_location.horizontalAccuracy < 0) {
 		DLOG(@"Bad returned accuracy, ignoring update.");
 		return;
 	}
+
+	if (self.last_pos &&
+			[self.last_pos.timestamp isEqualToDate:new_location.timestamp]) {
+		DLOG(@"Discarding repeated location %@", [new_location description]);
+		return;
+	}
+
+	DLOG(@"Updating to %@", [new_location description]);
 
 	// Keep the new location for map showing.
 	[self willChangeValueForKey:_KEY_PATH];
