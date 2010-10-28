@@ -79,6 +79,7 @@ static GPS *g_;
 	}
 
 	// Set no filter and try to get the best accuracy possible.
+	accuracy_ = HIGH_ACCURACY;
 	manager_.distanceFilter = kCLDistanceFilterNone;
 	manager_.desiredAccuracy = kCLLocationAccuracyBest;
 	manager_.delegate = self;
@@ -145,6 +146,59 @@ static GPS *g_;
 - (void)remove_watcher:(id)watcher
 {
 	[self removeObserver:watcher forKeyPath:_KEY_PATH];
+}
+
+/** Changes the desired accuracy of the GPS readings.
+ * If the GPS is on, it will be reset just in case. Provide a reason
+ * for the change or nil if you don't want to log the change.
+ */
+- (void)set_accuracy:(ACCURACY)accuracy reason:(NSString*)reason
+{
+	if (accuracy_ == accuracy)
+		return;
+
+	accuracy_ = accuracy;
+	NSString *message = nil;
+#define _MSG(X) \
+	message = @"Setting accuracy to " # X ".";
+
+	switch (accuracy) {
+		case HIGH_ACCURACY:
+			_MSG(HIGH_ACCURACY);
+			manager_.distanceFilter = kCLDistanceFilterNone;
+			manager_.desiredAccuracy = kCLLocationAccuracyBest;
+			break;
+
+		case MEDIUM_ACCURACY:
+			_MSG(MEDIUM_ACCURACY);
+			manager_.distanceFilter = 50;
+			manager_.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+			break;
+
+		case LOW_ACCURACY:
+			_MSG(LOW_ACCURACY);
+			manager_.distanceFilter = 150;
+			manager_.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+			break;
+
+		default:
+			NSAssert(0, @"Unexpected accuracy value");
+			return;
+	}
+#undef _MSG
+
+	if (reason.length > 0)
+		[[DB get] log:[NSString stringWithFormat:@"%@ Reason: %@",
+			message, reason]];
+	else
+		[[DB get] log:message];
+
+	if (self.gps_is_on) {
+		nolog_ = YES;
+		[self stop];
+		[self start];
+		nolog_ = NO;
+	}
 }
 
 #pragma mark CLLocationManagerDelegate

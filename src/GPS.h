@@ -2,6 +2,18 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+/// Possible values for the accuracy setting of the GPS.
+enum ACCURACY_ENUM
+{
+	HIGH_ACCURACY,			///< Best the device can provide. Default.
+	MEDIUM_ACCURACY,		///< About 50m.
+	LOW_ACCURACY,			///< 150m or more.
+};
+
+/// Required alias for enum.
+typedef enum ACCURACY_ENUM ACCURACY;
+
+
 /** Wraps and controlls the GPS collection of data.
  *
  * Holds the pointer to the real sqlite object and provides additional
@@ -22,6 +34,9 @@
 
 	/// Set this to YES if you want to avoid logging by the GPS class.
 	BOOL nolog_;
+
+	/// Current accuracy setting.
+	ACCURACY accuracy_;
 }
 
 @property (nonatomic, retain, readonly) CLLocation *last_pos;
@@ -35,6 +50,7 @@
 - (void)stop;
 - (void)add_watcher:(id)watcher;
 - (void)remove_watcher:(id)watcher;
+- (void)set_accuracy:(ACCURACY)accuracy reason:(NSString*)reason;
 
 
 @end

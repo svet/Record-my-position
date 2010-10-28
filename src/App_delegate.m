@@ -42,11 +42,12 @@
 	return YES;
 }
 
-/** Something interrputed the application.
- * Not so important, since we are background, but just in case flush data.
+/** Something stole the focus of the application.
+ * Or the user might have locked the screen. Change to medium gps tracking.
  */
 - (void)applicationWillResignActive:(UIApplication *)application
 {
+	[[GPS get] set_accuracy:MEDIUM_ACCURACY reason:@"Lost focus."];
 	[db_ flush];
 }
 
@@ -55,6 +56,7 @@
  */
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+	[[GPS get] set_accuracy:HIGH_ACCURACY reason:@"Gained focus."];
 }
 
 /** The user quit the app, and we are supporting background operation.
@@ -66,7 +68,7 @@
  */
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-	[db_ log:@"Entering background mode"];
+	[[GPS get] set_accuracy:LOW_ACCURACY reason:@"Entering background mode."];
 	[db_ flush];
 }
 
@@ -75,7 +77,7 @@
  */
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	[db_ log:@"Raising from background"];
+	[[GPS get] set_accuracy:HIGH_ACCURACY reason:@"Raising from background."];
 }
 
 /** Application shutdown. Save cache and stuff...
