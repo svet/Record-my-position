@@ -7,6 +7,8 @@
 *.swp
 .DS_Store
 build/
+csv_to_kml/*.csv
+csv_to_kml/*.kml
 dist/
 docs/cached_files.html
 docs/cached_files.txt.bak
