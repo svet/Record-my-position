@@ -5,6 +5,7 @@
 #import "App_delegate.h"
 #import "DB.h"
 #import "macro.h"
+#import "egf/hardware.h"
 
 
 #define _SWITCH_KEY_NEGATED		@"remove_entries_negated"
@@ -217,10 +218,15 @@
 			NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit |
 			NSSecondCalendarUnit fromDate:[NSDate date]];
 
+		Hardware_info *info = get_hardware_info();
+
 		[mail addAttachmentData:attachment mimeType:@"text/csv"
 			fileName:[NSString stringWithFormat:@"positions %04d-%02d-%02d "
-			@"%02d:%02d:%02d.csv", [now year], [now month], [now day],
-			[now hour], [now minute], [now second], nil]];
+			@"%02d:%02d:%02d %s.csv", [now year], [now month], [now day],
+			[now hour], [now minute], [now second],
+			(info && info->name) ? (info->name) : ("unknown"), nil]];
+
+		destroy_hardware_info(&info);
 	}
 
 	[self presentModalViewController:mail animated:YES];
