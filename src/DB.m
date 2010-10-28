@@ -108,7 +108,7 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 }
 
 /** Logs a text or location object.
- * The object is added to the memory buffer, which is flushed as needed. 
+ * The object is added to the memory buffer, which is flushed as needed.
  * Returns YES if the operation succeeded.
  */
 - (void)log:(id)text_or_location
@@ -290,7 +290,13 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 
 	[pool drain];
 
-	NSData *ret = [string dataUsingEncoding:NSISOLatin1StringEncoding];
+	if (string && string.length < 2) {
+		[string release];
+		return nil;
+	}
+
+	NSData *ret = [string dataUsingEncoding:NSUTF8StringEncoding];
+	NSAssert(ret.length >= string.length, @"Bad data conversion?");
 	[string release];
 
 	/* Signal remaining rows? */
