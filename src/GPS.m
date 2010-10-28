@@ -78,13 +78,10 @@ static GPS *g_;
 		return nil;
 	}
 
-	// Set a filter for 5m.
-	manager_.distanceFilter = 5;
-
-	// Try to get the best accuracy possible.
+	// Set no filter and try to get the best accuracy possible.
+	manager_.distanceFilter = kCLDistanceFilterNone;
 	manager_.desiredAccuracy = kCLLocationAccuracyBest;
 	manager_.delegate = self;
-
 	return self;
 }
 
@@ -101,7 +98,7 @@ static GPS *g_;
 - (bool)start
 {
 	if (manager_.locationServicesEnabled) {
-		if (!self.gps_is_on)
+		if (!self.gps_is_on && !nolog_)
 			[[DB get] log:@"Starting to update location"];
 
 		[self ping_watchdog];
@@ -120,7 +117,7 @@ static GPS *g_;
  */
 - (void)stop
 {
-	if (self.gps_is_on)
+	if (self.gps_is_on && !nolog_)
 		[[DB get] log:@"Stopping to update location"];
 	[self stop_watchdog];
 	gps_is_on_ = NO;
@@ -227,8 +224,10 @@ static GPS *g_;
 - (void)zasca
 {
 	[[DB get] log:@"Watchdog timer kicking in due to inactivity."];
+	nolog_ = YES;
 	[self stop];
 	[self start];
+	nolog_ = NO;
 }
 
 @end

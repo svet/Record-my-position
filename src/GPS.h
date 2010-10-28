@@ -19,6 +19,9 @@
 
 	/// Watchdog timer to detect GPS entering into zombie state.
 	NSTimer *zasca_;
+
+	/// Set this to YES if you want to avoid logging by the GPS class.
+	BOOL nolog_;
 }
 
 @property (nonatomic, retain, readonly) CLLocation *last_pos;
