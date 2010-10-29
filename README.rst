@@ -21,7 +21,7 @@ drains the battery quickly, even when running in the background.
 Don't run it for more than an hour if you want to use your iPhone
 as something other than a dead weight.
 
-The app works for the iPod touch, but the precission varies a lot,
+The app works for the iPod touch, but the precission varies a lot
 and you depend on wifi location, so you won't get very useful
 readings in open fields, only in crowded cities which may have been
 previously mapped by Skyhook (http://www.skyhookwireless.com/), the
@@ -44,10 +44,13 @@ Installation
 For the moment you have to compile and build yourself everything.
 Here are the steps:
 
- * git clone git://github.com/gradha/Record-my-position.git
- * cd Record-my-position
- * git submodule init
- * git submodule update
+ * Perform some terminal magic::
+
+    git clone git://github.com/gradha/Record-my-position.git
+    cd Record-my-position
+    git submodule init
+    git submodule update
+
  * Open Record_my_position.xcodeproj with XCode and build and run.
  * Turn on the GPS tracking and record some positions.
  * In the **Share** tab use the button that sends you the logs.
