@@ -19,6 +19,11 @@ ROW_LOG = 0
 ROW_POSITION = 1
 
 
+class Track:
+	"""Holds the information for a more or less related group of positions."""
+	pass
+
+
 def process_arguments():
 	"""f() -> [string, ...]
 
@@ -63,6 +68,16 @@ def load_csv(filename):
 	return rows
 
 
+def filter_csv_rows(rows):
+	"""f([(), ...]) -> [Track, ...]
+
+	Filters a loaded csv converting raw positions into individual track objects.
+	"""
+	t = Track()
+	t.positions = rows
+	return [t]
+
+
 def process_file(filename):
 	"""f(string) -> None
 
@@ -70,8 +85,8 @@ def process_file(filename):
 	"""
 	kml_filename = "%s.kml" % (os.path.splitext(filename)[0])
 	logging.info("%r -> %r", filename, kml_filename)
-	lines = load_csv(filename)
-	if len(lines) < 1:
+	tracks = filter_csv_rows(load_csv(filename))
+	if len(tracks) < 1:
 		logging.error("No data found in %r", filename)
 		return
 
@@ -82,26 +97,40 @@ def process_file(filename):
 <kml xmlns='http://earth.google.com/kml/2.2'>
 <Document><name>%s</name>
 	<open>1</open>
-    	<description>%s</description>
+		<description>Positions recorded with http://github.com/gradha/Record-my-position</description>
     	<Style id='red'><LineStyle><color>bb0000ff</color><width>5</width></LineStyle></Style>
 		<Style id='orange'><LineStyle><color>bb00b4ff</color><width>4</width></LineStyle></Style>
-    <Folder><name>Positions</name><open>0</open>
-""" % (short_name, short_name))
+""" % (short_name))
 
-		for (type, text, lon, lat, lon_text, lat_text, h, v, altitude,
-				timestamp) in lines:
-			if ROW_POSITION != type:
-				continue
+		for track in tracks:
+			generate_track(track, output)
 
-			output.write("""
-<Placemark><name>%d</name><description>%d</description>
-	<Point><coordinates>%0f,%f,0</coordinates></Point>
-</Placemark>""" % (timestamp, timestamp, lon, lat))
-
-		output.write("</Folder></Document></kml>")
+		output.write("</Document></kml>")
 
 	# Validate generated kml..
 	ET.parse(kml_filename);
+
+
+def generate_track(track, output):
+	"""f(Track, io-bbject) -> None
+
+	Outputs valid kml xml for the track.
+	"""
+	output.write("""<Folder><name>%s</name><open>0</open>
+	<Placemark><styleUrl>red</styleUrl><MultiGeometry><LineString>
+	<tessellate>1</tessellate><coordinates>
+""" % ("%d" % len(track.positions)))
+
+	for (type, text, lon, lat, lon_text, lat_text, h, v, altitude,
+			timestamp) in track.positions:
+		if ROW_POSITION != type:
+			continue
+
+		output.write("%0f,%f,0\n" % (lon, lat))
+
+	output.write("""</coordinates></LineString></MultiGeometry>
+</Placemark></Folder>
+""")
 
 
 def main():
