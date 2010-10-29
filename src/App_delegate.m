@@ -117,7 +117,7 @@
 
 /** Handle reporting of errors to the user.
  * Pass the message for the error and a boolean telling to force
- exit or let the user acknowledge the problem.
+ * exit or let the user acknowledge the problem.
  */
 - (void)handle_error:(NSString*)message abort:(BOOL)abort
 {

@@ -10,13 +10,7 @@ build/
 csv_to_kml/*.csv
 csv_to_kml/*.kml
 dist/
-docs/README.*
-docs/storage_schemas.html
+docs/README.html
 docs/doxygen
-docs/er_*.svg
-docs/preparing_new_versions.html
-docs/preparing_new_versions.txt.bak
-docs/server_protocol.html
-docs/server_protocol.txt.bak
-resources/external/*.base64
+docs/storage_schemas.html
 tags
