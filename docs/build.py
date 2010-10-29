@@ -15,8 +15,8 @@ import sys
 DOXY_DIR = "doxygen"
 
 # List of pairs source->target for HTML generated documentation.
-HTML_DOCS = [("%s.txt" % x, "%s.html" % x) for x in
-	[os.path.splitext(x)[0] for x in glob.glob("*.txt")]]
+HTML_DOCS = [("%s.rst" % x, "%s.html" % x) for x in
+	[os.path.splitext(x)[0] for x in glob.glob("*.rst")]]
 
 # List of neato diagrams to be processed.
 NEATO_SVG = glob.glob("*.neato")

@@ -1,0 +1,117 @@
+==================
+Record my position
+==================
+
+:author: Grzegorz Adam Hankiewicz <gradha@titanium.sabren.com>
+
+.. contents::
+
+.. section-numbering::
+
+.. raw:: pdf
+
+   PageBreak oneColumn
+
+General
+=======
+
+This is a simple iPhone client to record and save GPS information.
+Note that for the moment the program only uses active GPS, which
+drains the battery quickly, even when running in the background.
+Don't run it for more than an hour if you want to use your iPhone
+as something other than a dead weight.
+
+The app works for the iPod touch, but the precission varies a lot,
+and you depend on wifi location, so you won't get very useful
+readings in open fields, only in crowded cities which may have been
+previously mapped by Skyhook (http://www.skyhookwireless.com/), the
+people doing wifi core location for Apple. On the plus side I had
+my iPod touch on with the program running in the background for a
+whole day and didn't consume more than a quarter of the battery,
+so it seems the wifi location doesn't require as much power.
+
+
+Requirements
+============
+
+The source code uses SDK 4.1 and deploys on 3.x. Patches are welcome
+to make it compile out of the box with previous SDK versions.
+
+
+Installation
+============
+
+For the moment you have to compile and build yourself everything.
+Here are the steps:
+
+ * git clone git://github.com/gradha/Record-my-position.git
+ * cd Record-my-position
+ * git submodule init
+ * git submodule update
+ * Open Record_my_position.xcodeproj with XCode and build and run.
+ * Turn on the GPS tracking and record some positions.
+ * In the **Share** tab use the button that sends you the logs.
+ * Process the csv logs with ``csv_to_kml/csv_to_kml.py``, a Python
+   script. It generates kml files.
+ * Open the converted kml files with Google Earth (http://earth.google.com/).
+
+
+App store
+=========
+
+This is an early source code release. In the future I will upload
+the program to the App Store under my Electric Hands Software brand
+(http://itunes.apple.com/artist/electric-hands-software/id325946567)
+which you can also find at http://elhaso.com/. I'm waiting to at
+least have working the log tab.
+
+
+License
+=======
+
+Unless otherwise stated, this source code is available under the
+BSD license (http://www.opensource.org/licenses/bsd-license.php).
+This license doesn't apply to the source code found in the *external*
+subdirectory, which has its own license as it wasn't written by me
+(external source code should contain its license attached or embedded
+somewhere, if not, contact me to fix that).  Here's the license
+template applied to this project:
+
+Copyright (c) 2010, Grzegorz Adam Hankiewicz.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+ * Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   otice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of Electric Hands Software nor the names of its
+   contributors may be used to endorse or promote products derived
+   from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+
+TODO
+====
+
+ * Icon!
+ * Background monitoring.
+ * Log tab.
+ * Show last position using makpik.
+ * Allow landscape modes?

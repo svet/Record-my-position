@@ -10,8 +10,8 @@ build/
 csv_to_kml/*.csv
 csv_to_kml/*.kml
 dist/
-docs/cached_files.html
-docs/cached_files.txt.bak
+docs/README.*
+docs/storage_schemas.html
 docs/doxygen
 docs/er_*.svg
 docs/preparing_new_versions.html
