@@ -113,8 +113,8 @@ POSSIBILITY OF SUCH DAMAGE.
 TODO
 ====
 
- * Icon!
- * Background monitoring.
+ * Background monitoring through regions.
  * Log tab.
+ * Proper graphics.
  * Show last position using makpik.
  * Allow landscape modes?
