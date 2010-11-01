@@ -1,34 +1,18 @@
 // vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 
-#import "DB.h"
+#import "db/DB.h"
 
 #import "App_delegate.h"
 #import "GPS.h"
+#import "db/DB_log.h"
+#import "db/Rows_to_attachment.h"
+#import "db/internal.h"
 #import "macro.h"
 
 #import <CoreLocation/CoreLocation.h>
-#import <time.h>
-
-#ifdef DEBUG
-#define LOG_ERROR(RES,QUERY,DO_ASSERT) do {									\
-	if (RES.errorCode) {													\
-		if (QUERY)															\
-			DLOG(@"DB error running %@.\n%@", QUERY, RES.errorMessage);		\
-		else																\
-			DLOG(@"DB error code %d.\n%@", RES.errorCode, RES.errorMessage);\
-		NSAssert(!(DO_ASSERT), @"Database query error");					\
-	}																		\
-} while(0)
-#else
-#define LOG_ERROR(RES,QUERY,DO_ASSERT) do { RES = nil; } while(0)
-#endif
 
 
 #define _BUFFER					50
-#define _MAX_EXPORT_ROWS		10000
-
-#define _ROW_TYPE_LOG			0
-#define _ROW_TYPE_COORD			1
 
 #define _DB_MODEL_KEY			@"last_db_model"
 #define _DB_MODEL_VERSION		2
@@ -201,13 +185,13 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 
 	for (DB_log *log in data) {
 		BOOL ret = NO;
-		if (_ROW_TYPE_COORD == log->row_type_) {
+		if (DB_ROW_TYPE_COORD == log->row_type_) {
 			ret = [self executeUpdateWithParameters:@"INSERT into Positions "
 				@"(id, type, text, longitude, latitude, h_accuracy,"
 				@"v_accuracy, altitude, timestamp, in_background,"
 				@"requested_accuracy, speed, direction, battery_level) "
 				@"VALUES (NULL, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-				[NSNumber numberWithInt:_ROW_TYPE_COORD],
+				[NSNumber numberWithInt:DB_ROW_TYPE_COORD],
 				[NSNumber numberWithDouble:log.location.coordinate.longitude],
 				[NSNumber numberWithDouble:log.location.coordinate.latitude],
 				[NSNumber numberWithDouble:log.location.horizontalAccuracy],
@@ -222,14 +206,14 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 				[NSNumber numberWithFloat:log->battery_level_],
 				nil];
 		} else {
-			NSAssert(_ROW_TYPE_LOG == log->row_type_, @"Bad log type?");
+			NSAssert(DB_ROW_TYPE_LOG == log->row_type_, @"Bad log type?");
 			ret = [self
 				executeUpdateWithParameters:@"INSERT into Positions (id, type,"
 				@"text, longitude, latitude, h_accuracy, v_accuracy,"
 				@"altitude, timestamp, in_background,"
 				@"requested_accuracy, speed, direction, battery_level) "
 				@"VALUES (NULL, ?, ?, 0, 0, -1, -1,-1, ?, ?, ?, ?, ?, ?)",
-				[NSNumber numberWithInt:_ROW_TYPE_LOG], log.text,
+				[NSNumber numberWithInt:DB_ROW_TYPE_LOG], log.text,
 				[NSNumber numberWithInt:log->timestamp_],
 				[NSNumber numberWithBool:log->in_background_],
 				[NSNumber numberWithInt:log->accuracy_],
@@ -299,189 +283,6 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	else
 		[super observeValueForKeyPath:keyPath ofObject:object change:change
 			context:context];
-}
-
-@end
-
-/****************************************************************************/
-
-@implementation Rows_to_attachment
-
-/** Constructs the object to handle attachments.
- * Pass the database pointer and the maximum row to export.
- */
-- (id)initWithDB:(DB*)db max_row:(int)max_row
-{
-	if (!(self = [super init]))
-		return nil;
-
-	max_row_ = max_row;
-	db_ = db;
-
-	return self;
-}
-
-/** Returns the attachment to send as csv file.
- * Returns nil if there is no attachment or there was a problem (more likely)
- */
-- (NSData*)get_attachment
-{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-	EGODatabaseResult *result = [db_ executeQueryWithParameters:@"SELECT "
-		@"id, type, text, longitude, latitude, h_accuracy, v_accuracy,"
-		@"altitude, timestamp, in_background, requested_accuracy,"
-		@"speed, direction, battery_level "
-		@"FROM Positions WHERE id <= ? LIMIT ?",
-		[NSNumber numberWithInt:max_row_],
-		[NSNumber numberWithInt:_MAX_EXPORT_ROWS], nil];
-	LOG_ERROR(result, nil, YES);
-
-	NSMutableArray *strings = [NSMutableArray
-		arrayWithCapacity:_MAX_EXPORT_ROWS / 4];
-
-	BOOL add_header = YES;
-	int last_id = -2;
-	for (EGODatabaseRow* row in result) {
-		// Should we preppend a text header with the column names?
-		if (add_header) {
-			[strings addObject:@"type,text,longitude,latitude,longitude,"
-				@"latitude,h_accuracy,v_accuracy,altitude,timestamp,"
-				@"in_background,requested_accuracy,speed,direction,"
-				@"battery_level"];
-			add_header = NO;
-		}
-
-		last_id = [row intForColumnIndex:0];
-		const int type = [row intForColumnIndex:1];
-		const int timestamp = [row intForColumnIndex:8];
-		const int in_background = [row intForColumnIndex:9];
-		const int requested_accuracy = [row intForColumnIndex:10];
-		const double speed = [row doubleForColumnIndex:11];
-		const double direction = [row doubleForColumnIndex:12];
-		const double battery_level = [row doubleForColumnIndex:13];
-
-		if (_ROW_TYPE_LOG == type) {
-			[strings addObject:
-				[NSString stringWithFormat:@"%d,%@,0,0,0,0,-1,-1,-1,%d,"
-				@"%d,%d,-1.0,-1.0,%0.2f",
-				_ROW_TYPE_LOG, [row stringForColumnIndex:2], timestamp,
-				in_background, requested_accuracy, battery_level]];
-		} else if (_ROW_TYPE_COORD == type) {
-			const double longitude = [row doubleForColumnIndex:3];
-			const double latitude = [row doubleForColumnIndex:4];
-			[strings addObject:[NSString stringWithFormat:@"%d,,"
-				@"%0.8f,%0.8f,%@,%@,%0.1f,%0.1f,%0.1f,%d,"
-				@"%d,%d,%0.2f,%0.2f,%0.2f", _ROW_TYPE_COORD,
-				longitude, latitude, [GPS degrees_to_dms:longitude latitude:NO],
-				[GPS degrees_to_dms:latitude latitude:YES],
-				[row doubleForColumnIndex:5], [row doubleForColumnIndex:6],
-				[row doubleForColumnIndex:7], timestamp,
-				in_background, requested_accuracy, speed, direction,
-				battery_level]];
-		} else {
-			NSAssert(0, @"Unknown database row type?!");
-		}
-	}
-
-	NSString *string = [[strings componentsJoinedByString:@"\n"] retain];
-
-	[pool drain];
-
-	if (string && string.length < 2) {
-		[string release];
-		return nil;
-	}
-
-	NSData *ret = [string dataUsingEncoding:NSUTF8StringEncoding];
-	NSAssert(ret.length >= string.length, @"Bad data conversion?");
-	[string release];
-
-	/* Signal remaining rows? */
-	if (last_id >= 0 && last_id != max_row_) {
-		max_row_ = last_id;
-		remaining_ = YES;
-	}
-
-	return ret;
-}
-
-/** Deletes the rows returned by get_attachment.
- * Note that if you call this before get_attachment: the whole
- * database will be wiped out, since get_attachment might have limited
- * the maximum row to _MAX_EXPORT_ROWS.
- */
-- (void)delete_rows
-{
-	EGODatabaseResult *result = [db_ executeQueryWithParameters:@"DELETE "
-		@"FROM Positions WHERE id <= ?",
-		[NSNumber numberWithInt:max_row_], nil];
-	LOG_ERROR(result, nil, NO);
-}
-
-/** Returns YES if there were remaining rows not returned by get_attachment.
- */
-- (bool)remaining
-{
-	return remaining_;
-}
-
-@end
-
-
-/****************************************************************************/
-
-@implementation DB_log
-
-@synthesize text = text_;
-@synthesize location = location_;
-
-/** Constructs a text oriented log entry.
- */
-- (id)init_with_string:(NSString*)text in_background:(BOOL)in_background
-	accuracy:(ACCURACY)accuracy
-{
-	if (!(self = [super init]))
-		return nil;
-
-	self.text = text;
-	row_type_ = _ROW_TYPE_LOG;
-	accuracy_ = accuracy;
-	timestamp_ = time(0);
-	in_background_ = in_background;
-	battery_level_ = [[UIDevice currentDevice] batteryLevel];
-
-	return self;
-}
-
-/** Constructs a location oriented log entry.
- */
-- (id)init_with_location:(CLLocation*)location
-	in_background:(BOOL)in_background accuracy:(ACCURACY)accuracy
-{
-	if (!(self = [super init]))
-		return nil;
-
-	self.location = location;
-	row_type_ = _ROW_TYPE_COORD;
-	accuracy_ = accuracy;
-	timestamp_ = time(0);
-	in_background_ = in_background;
-	battery_level_ = [[UIDevice currentDevice] batteryLevel];
-
-	return self;
-}
-
-/** Debugging helper message.
- * Returns a string with a textual description of the object.
- */
-- (NSString*)description
-{
-	if (_ROW_TYPE_COORD == row_type_)
-		return [NSString stringWithFormat:@"DB_log(%@)",
-			[self.location description]];
-	else
-		return [NSString stringWithFormat:@"DB_log(%@)", self.text];
 }
 
 @end

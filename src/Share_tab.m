@@ -3,9 +3,10 @@
 #import "Share_tab.h"
 
 #import "App_delegate.h"
-#import "DB.h"
-#import "macro.h"
+#import "db/DB.h"
+#import "db/Rows_to_attachment.h"
 #import "egf/hardware.h"
+#import "macro.h"
 
 
 #define _SWITCH_KEY_NEGATED		@"remove_entries_negated"
