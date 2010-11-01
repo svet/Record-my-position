@@ -187,13 +187,13 @@ static GPS *g_;
 	}
 #undef _MSG
 
-	if (reason.length > 0)
-		[[DB get] log:[NSString stringWithFormat:@"%@ Reason: %@",
-			message, reason]];
-	else
-		[[DB get] log:message];
-
 	if (self.gps_is_on) {
+		if (reason.length > 0)
+			[[DB get] log:[NSString stringWithFormat:@"%@ Reason: %@",
+				message, reason]];
+		else
+			[[DB get] log:message];
+
 		nolog_ = YES;
 		[self stop];
 		[self start];
