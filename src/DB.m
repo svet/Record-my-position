@@ -340,8 +340,18 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	NSMutableArray *strings = [NSMutableArray
 		arrayWithCapacity:_MAX_EXPORT_ROWS / 4];
 
+	BOOL add_header = YES;
 	int last_id = -2;
 	for (EGODatabaseRow* row in result) {
+		// Should we preppend a text header with the column names?
+		if (add_header) {
+			[strings addObject:@"type,text,longitude,latitude,longitude,"
+				@"latitude,h_accuracy,v_accuracy,altitude,timestamp,"
+				@"in_background,requested_accuracy,speed,direction,"
+				@"battery_level"];
+			add_header = NO;
+		}
+
 		last_id = [row intForColumnIndex:0];
 		const int type = [row intForColumnIndex:1];
 		const int timestamp = [row intForColumnIndex:8];
