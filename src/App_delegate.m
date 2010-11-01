@@ -20,6 +20,9 @@
 	didFinishLaunchingWithOptions:(NSDictionary *)launch_options
 {
 	DLOG(@"Lunching application with %@", launch_options);
+
+	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
+
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	window_.backgroundColor = [UIColor whiteColor];
 
@@ -68,6 +71,7 @@
  */
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+	db_.in_background = YES;
 	[[GPS get] set_accuracy:LOW_ACCURACY reason:@"Entering background mode."];
 	[db_ flush];
 }
@@ -77,6 +81,7 @@
  */
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+	db_.in_background = NO;
 	[[GPS get] set_accuracy:HIGH_ACCURACY reason:@"Raising from background."];
 }
 

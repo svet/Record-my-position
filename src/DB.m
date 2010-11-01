@@ -42,6 +42,8 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 
 @implementation DB
 
+@synthesize in_background = in_background_;
+
 /** Returns the path to the database filename.
  */
 + (NSString*)path
@@ -117,7 +119,7 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	NSFileManager *manager = [NSFileManager defaultManager];
 
 	if (![manager fileExistsAtPath:path])
-		return;
+		return NO;
 
 	NSError *error = nil;
 	if ([manager removeItemAtPath:path error:&error]) {
@@ -157,13 +159,25 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	if (!buffer_)
 		buffer_ = [[NSMutableArray alloc] initWithCapacity:_BUFFER];
 
-	[buffer_ addObject:text_or_location];
+	DB_log *log = nil;
+	if ([text_or_location respondsToSelector:@selector(coordinate)])
+		log = [[DB_log alloc] init_with_location:text_or_location
+			in_background:in_background_];
+	else
+		log = [[DB_log alloc] init_with_string:text_or_location
+			in_background:in_background_];
+
+	if (log)
+		[buffer_ addObject:log];
+	else
+		DLOG(@"Couldn't add to buffer %@", text_or_location);
 
 	if (buffer_.count >= _BUFFER)
 		[self flush];
 
-	[[NSNotificationCenter defaultCenter]
-		postNotificationName:DB_bump_notification object:self];
+	if (log)
+		[[NSNotificationCenter defaultCenter]
+			postNotificationName:DB_bump_notification object:self];
 }
 
 /** Stores the circular buffer to disk, freing the current buffer_.
@@ -180,34 +194,36 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	EGODatabaseResult *result;
 
-	for (id log in data) {
-		if ([log respondsToSelector:@selector(coordinate)]) {
-			CLLocation *location = log;
+	for (DB_log *log in data) {
+		if (_ROW_TYPE_COORD == log->row_type_) {
 			result = [self executeQueryWithParameters:@"INSERT into Positions "
 				@"(id, type, text, longitude, latitude, h_accuracy,"
 				@"v_accuracy, altitude, timestamp) VALUES (NULL, ?, NULL, "
 				@"?, ?, ?, ?, ?, ?)",
 				[NSNumber numberWithInt:_ROW_TYPE_COORD],
-				[NSNumber numberWithDouble:location.coordinate.longitude],
-				[NSNumber numberWithDouble:location.coordinate.latitude],
-				[NSNumber numberWithDouble:location.horizontalAccuracy],
-				[NSNumber numberWithDouble:location.verticalAccuracy],
-				[NSNumber numberWithDouble:location.altitude],
+				[NSNumber numberWithDouble:log.location.coordinate.longitude],
+				[NSNumber numberWithDouble:log.location.coordinate.latitude],
+				[NSNumber numberWithDouble:log.location.horizontalAccuracy],
+				[NSNumber numberWithDouble:log.location.verticalAccuracy],
+				[NSNumber numberWithDouble:log.location.altitude],
 				[NSNumber numberWithInt:
-					[location.timestamp timeIntervalSince1970]],
+					[log.location.timestamp timeIntervalSince1970]],
 				nil];
 		} else {
-			NSAssert([log isKindOfClass:[NSString class]], @"Bad log type?");
+			NSAssert(_ROW_TYPE_LOG == log->row_type_, @"Bad log type?");
 			result = [self
 				executeQueryWithParameters:@"INSERT into Positions (id, type,"
 				@"text, longitude, latitude, h_accuracy, v_accuracy,"
 				@"altitude, timestamp) VALUES (NULL, ?, ?, 0, 0, -1, -1,"
-				@"-1, strftime(\"%s\", \"now\"))",
-				[NSNumber numberWithInt:_ROW_TYPE_LOG], log, nil];
+				@"-1, ?)",
+				[NSNumber numberWithInt:_ROW_TYPE_LOG], log.text,
+				[NSNumber numberWithInt:log->timestamp_], nil];
 		}
 
 		if (result.errorCode)
 			LOG(@"Couldn't insert %@:\n\t%@", log, result.errorMessage);
+
+		[log release];
 	}
 
 	[pool drain];
@@ -366,6 +382,51 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 - (bool)remaining
 {
 	return remaining_;
+}
+
+@end
+
+
+/****************************************************************************/
+
+@implementation DB_log
+
+@synthesize text = text_;
+@synthesize location = location_;
+
+/** Constructs a text oriented log entry.
+ */
+- (id)init_with_string:(NSString*)text in_background:(BOOL)in_background
+{
+	if (!(self = [super init]))
+		return nil;
+
+	self.text = text;
+	row_type_ = _ROW_TYPE_LOG;
+	timestamp_ = time(0);
+	in_background_ = in_background;
+
+	battery_level_ = [[UIDevice currentDevice] batteryLevel];
+
+	return self;
+}
+
+/** Constructs a location oriented log entry.
+ */
+- (id)init_with_location:(CLLocation*)location
+	in_background:(BOOL)in_background
+{
+	if (!(self = [super init]))
+		return nil;
+
+	self.location = location;
+	row_type_ = _ROW_TYPE_COORD;
+	timestamp_ = time(0);
+	in_background_ = in_background;
+
+	battery_level_ = [[UIDevice currentDevice] batteryLevel];
+
+	return self;
 }
 
 @end
