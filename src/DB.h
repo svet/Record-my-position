@@ -2,6 +2,8 @@
 
 #import "egodatabase/EGODatabase.h"
 
+#import "GPS.h"
+
 @class CLLocation;
 @class Rows_to_attachment;
 
@@ -78,21 +80,26 @@ extern NSString *DB_bump_notification;
 	/// Battery level at the time of logging.
 	float battery_level_;
 
+	/// Accuracy setting at the time of logging.
+	ACCURACY accuracy_;
+
 @protected
 	/// Stores the pointer to the text object. May be nil.
 	NSString *text_;
 
 	/// Stores the pointer to the location object. May be nil.
 	CLLocation *location_;
-
 }
 
 @property (nonatomic, retain) NSString *text;
 @property (nonatomic, retain) CLLocation *location;
 
-- (id)init_with_string:(NSString*)text in_background:(BOOL)in_background;
+- (id)init_with_string:(NSString*)text in_background:(BOOL)in_background
+	accuracy:(ACCURACY)accuracy;
 
 - (id)init_with_location:(CLLocation*)location
-	in_background:(BOOL)in_background;
+	in_background:(BOOL)in_background accuracy:(ACCURACY)accuracy;
+
+- (NSString*)description;
 
 @end

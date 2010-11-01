@@ -31,7 +31,7 @@
 #define _ROW_TYPE_COORD			1
 
 #define _DB_MODEL_KEY			@"last_db_model"
-#define _DB_MODEL_VERSION		1
+#define _DB_MODEL_VERSION		2
 
 
 NSString *DB_bump_notification = @"DB_bump_notification";
@@ -81,14 +81,19 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	NSArray *tables = [NSArray arrayWithObjects:
 		@"CREATE TABLE IF NOT EXISTS Positions ("
 			@"id INTEGER PRIMARY KEY AUTOINCREMENT,"
-			@"type INTEGER,"
+			@"type INTEGER NOT NULL,"
 			@"text TEXT,"
-			@"longitude REAL,"
-			@"latitude REAL,"
-			@"h_accuracy REAL,"
-			@"v_accuracy REAL,"
-			@"altitude REAL,"
-			@"timestamp INTEGER,"
+			@"longitude REAL NOT NULL,"
+			@"latitude REAL NOT NULL,"
+			@"h_accuracy REAL NOT NULL,"
+			@"v_accuracy REAL NOT NULL,"
+			@"altitude REAL NOT NULL,"
+			@"timestamp INTEGER NOT NULL,"
+			@"in_background BOOL NOT NULL,"
+			@"requested_accuracy INTEGER NOT NULL,"
+			@"speed REAL NOT NULL,"
+			@"direction REAL NOT NULL,"
+			@"battery_level REAL NOT NULL,"
 			@"CONSTRAINT Positions_unique UNIQUE (id))",
 		nil];
 
@@ -159,13 +164,14 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	if (!buffer_)
 		buffer_ = [[NSMutableArray alloc] initWithCapacity:_BUFFER];
 
+	const ACCURACY accuracy = [[GPS get] accuracy];
 	DB_log *log = nil;
 	if ([text_or_location respondsToSelector:@selector(coordinate)])
 		log = [[DB_log alloc] init_with_location:text_or_location
-			in_background:in_background_];
+			in_background:in_background_ accuracy:accuracy];
 	else
 		log = [[DB_log alloc] init_with_string:text_or_location
-			in_background:in_background_];
+			in_background:in_background_ accuracy:accuracy];
 
 	if (log)
 		[buffer_ addObject:log];
@@ -192,14 +198,15 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 
 	DLOG(@"Flushing %d entries to disk.", data.count);
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	EGODatabaseResult *result;
 
 	for (DB_log *log in data) {
+		BOOL ret = NO;
 		if (_ROW_TYPE_COORD == log->row_type_) {
-			result = [self executeQueryWithParameters:@"INSERT into Positions "
+			ret = [self executeUpdateWithParameters:@"INSERT into Positions "
 				@"(id, type, text, longitude, latitude, h_accuracy,"
-				@"v_accuracy, altitude, timestamp) VALUES (NULL, ?, NULL, "
-				@"?, ?, ?, ?, ?, ?)",
+				@"v_accuracy, altitude, timestamp, in_background,"
+				@"requested_accuracy, speed, direction, battery_level) "
+				@"VALUES (NULL, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				[NSNumber numberWithInt:_ROW_TYPE_COORD],
 				[NSNumber numberWithDouble:log.location.coordinate.longitude],
 				[NSNumber numberWithDouble:log.location.coordinate.latitude],
@@ -208,20 +215,32 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 				[NSNumber numberWithDouble:log.location.altitude],
 				[NSNumber numberWithInt:
 					[log.location.timestamp timeIntervalSince1970]],
+				[NSNumber numberWithBool:log->in_background_],
+				[NSNumber numberWithInt:log->accuracy_],
+				[NSNumber numberWithDouble:log.location.speed],
+				[NSNumber numberWithDouble:log.location.course],
+				[NSNumber numberWithFloat:log->battery_level_],
 				nil];
 		} else {
 			NSAssert(_ROW_TYPE_LOG == log->row_type_, @"Bad log type?");
-			result = [self
-				executeQueryWithParameters:@"INSERT into Positions (id, type,"
+			ret = [self
+				executeUpdateWithParameters:@"INSERT into Positions (id, type,"
 				@"text, longitude, latitude, h_accuracy, v_accuracy,"
-				@"altitude, timestamp) VALUES (NULL, ?, ?, 0, 0, -1, -1,"
-				@"-1, ?)",
+				@"altitude, timestamp, in_background,"
+				@"requested_accuracy, speed, direction, battery_level) "
+				@"VALUES (NULL, ?, ?, 0, 0, -1, -1,-1, ?, ?, ?, ?, ?, ?)",
 				[NSNumber numberWithInt:_ROW_TYPE_LOG], log.text,
-				[NSNumber numberWithInt:log->timestamp_], nil];
+				[NSNumber numberWithInt:log->timestamp_],
+				[NSNumber numberWithBool:log->in_background_],
+				[NSNumber numberWithInt:log->accuracy_],
+				[NSNumber numberWithDouble:log.location.speed],
+				[NSNumber numberWithDouble:log.location.course],
+				[NSNumber numberWithFloat:log->battery_level_],
+				nil];
 		}
 
-		if (result.errorCode)
-			LOG(@"Couldn't insert %@:\n\t%@", log, result.errorMessage);
+		if (!ret)
+			LOG(@"Couldn't insert %@:\n\t%@", log, [self lastErrorMessage]);
 
 		[log release];
 	}
@@ -311,7 +330,9 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 
 	EGODatabaseResult *result = [db_ executeQueryWithParameters:@"SELECT "
 		@"id, type, text, longitude, latitude, h_accuracy, v_accuracy,"
-		@"altitude, timestamp FROM Positions WHERE id <= ? LIMIT ?",
+		@"altitude, timestamp, in_background, requested_accuracy,"
+		@"speed, direction, battery_level "
+		@"FROM Positions WHERE id <= ? LIMIT ?",
 		[NSNumber numberWithInt:max_row_],
 		[NSNumber numberWithInt:_MAX_EXPORT_ROWS], nil];
 	LOG_ERROR(result, nil, YES);
@@ -324,19 +345,30 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 		last_id = [row intForColumnIndex:0];
 		const int type = [row intForColumnIndex:1];
 		const int timestamp = [row intForColumnIndex:8];
+		const int in_background = [row intForColumnIndex:9];
+		const int requested_accuracy = [row intForColumnIndex:10];
+		const double speed = [row doubleForColumnIndex:11];
+		const double direction = [row doubleForColumnIndex:12];
+		const double battery_level = [row doubleForColumnIndex:13];
+
 		if (_ROW_TYPE_LOG == type) {
 			[strings addObject:
-				[NSString stringWithFormat:@"%d,%@,0,0,0,0,-1,-1,-1,%d",
-				_ROW_TYPE_LOG, [row stringForColumnIndex:2], timestamp]];
+				[NSString stringWithFormat:@"%d,%@,0,0,0,0,-1,-1,-1,%d,"
+				@"%d,%d,-1.0,-1.0,%0.2f",
+				_ROW_TYPE_LOG, [row stringForColumnIndex:2], timestamp,
+				in_background, requested_accuracy, battery_level]];
 		} else if (_ROW_TYPE_COORD == type) {
 			const double longitude = [row doubleForColumnIndex:3];
 			const double latitude = [row doubleForColumnIndex:4];
 			[strings addObject:[NSString stringWithFormat:@"%d,,"
-				@"%0.8f,%0.8f,%@,%@,%0.1f,%0.1f,%0.1f,%d", _ROW_TYPE_COORD,
+				@"%0.8f,%0.8f,%@,%@,%0.1f,%0.1f,%0.1f,%d,"
+				@"%d,%d,%0.2f,%0.2f,%0.2f", _ROW_TYPE_COORD,
 				longitude, latitude, [GPS degrees_to_dms:longitude latitude:NO],
 				[GPS degrees_to_dms:latitude latitude:YES],
 				[row doubleForColumnIndex:5], [row doubleForColumnIndex:6],
-				[row doubleForColumnIndex:7], timestamp]];
+				[row doubleForColumnIndex:7], timestamp,
+				in_background, requested_accuracy, speed, direction,
+				battery_level]];
 		} else {
 			NSAssert(0, @"Unknown database row type?!");
 		}
@@ -397,15 +429,16 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 /** Constructs a text oriented log entry.
  */
 - (id)init_with_string:(NSString*)text in_background:(BOOL)in_background
+	accuracy:(ACCURACY)accuracy
 {
 	if (!(self = [super init]))
 		return nil;
 
 	self.text = text;
 	row_type_ = _ROW_TYPE_LOG;
+	accuracy_ = accuracy;
 	timestamp_ = time(0);
 	in_background_ = in_background;
-
 	battery_level_ = [[UIDevice currentDevice] batteryLevel];
 
 	return self;
@@ -414,19 +447,31 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 /** Constructs a location oriented log entry.
  */
 - (id)init_with_location:(CLLocation*)location
-	in_background:(BOOL)in_background
+	in_background:(BOOL)in_background accuracy:(ACCURACY)accuracy
 {
 	if (!(self = [super init]))
 		return nil;
 
 	self.location = location;
 	row_type_ = _ROW_TYPE_COORD;
+	accuracy_ = accuracy;
 	timestamp_ = time(0);
 	in_background_ = in_background;
-
 	battery_level_ = [[UIDevice currentDevice] batteryLevel];
 
 	return self;
+}
+
+/** Debugging helper message.
+ * Returns a string with a textual description of the object.
+ */
+- (NSString*)description
+{
+	if (_ROW_TYPE_COORD == row_type_)
+		return [NSString stringWithFormat:@"DB_log(%@)",
+			[self.location description]];
+	else
+		return [NSString stringWithFormat:@"DB_log(%@)", self.text];
 }
 
 @end

@@ -41,6 +41,7 @@ typedef enum ACCURACY_ENUM ACCURACY;
 
 @property (nonatomic, retain, readonly) CLLocation *last_pos;
 @property (nonatomic, readonly, assign) BOOL gps_is_on;
+@property (nonatomic, readonly, assign) ACCURACY accuracy;
 
 + (GPS*)get;
 + (NSString*)degrees_to_dms:(CLLocationDegrees)value latitude:(BOOL)latitude;

@@ -20,6 +20,7 @@ static GPS *g_;
 
 @synthesize last_pos = last_pos_;
 @synthesize gps_is_on = gps_is_on_;
+@synthesize accuracy = accuracy_;
 
 /** Returns the pointer to the singleton GPS class.
  * The class will be constructed if necessary.

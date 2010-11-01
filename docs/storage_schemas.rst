@@ -2,6 +2,8 @@
 Record my position: Internal db schema
 ======================================
 
+.. vim:tabstop=4 shiftwidth=4 encoding=utf-8 noexpandtab
+
 :author: Grzegorz Adam Hankiewicz <gradha@titanium.sabren.com>
 
 .. contents::
@@ -31,9 +33,9 @@ Log table
 	is unique and always autoincrementing.
 **type** INTEGER:
 	Identifier of the event type. Available events are:
-	 * 0: Log entry
-	 * 1: Hardware GPS event in foreground app.
-	 * 2: Hardware GPS event in background app.
+
+	 * 0: Text log entry.
+	 * 1: Hardware GPS event.
 **text** TEXT NULL:
 	Optional text field entry. Usually not null when the type
 	of event is a log entry. Otherwise not used.
@@ -49,6 +51,32 @@ Log table
 	Stores the altitude of the reading in meters. Usually
 	negative if not available.
 **timestamp** INTEGER:
-	Timestamp of the reading.
+	Timestamp of the reading, stored in UTC time.
+**in_background** BOOL:
+	Set to true if the log entry was generated while the
+	application was in background. Pre 4.x firmware devices
+	didn't support background running, so they will always have
+	this column set to false.
+**requested_accuracy** INTEGER:
+	Identifier of the requested accuracy setting when the event
+	was generated. Available values are:
 
-
+	 * 0: High accuracy, application in foreground.
+	 * 1: Medium accuracy, applicaiton in foreground but lost focus.
+	 * 2: Low accuracy, application in background.
+**speed** REAL:
+	This value reflects the instantaneous speed of the device
+	in the direction of its current heading. A negative value
+	indicates an invalid speed. Because the actual speed can
+	change many times between the delivery of subsequent location
+	events, you should use this property for informational
+	purposes only.
+**direction** REAL:
+	Course values are measured in degrees starting at due north
+	and continuing clockwise around the compass. Thus, north
+	is 0 degrees, east is 90 degrees, south is 180 degrees, and
+	so on. Course values may not be available on all devices.
+	A negative value indicates that the direction is invalid.
+**battery_level** REAL:
+	Current battery level with precission of 5% over whole
+	battery level.
