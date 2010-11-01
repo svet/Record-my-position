@@ -55,15 +55,32 @@ def load_csv(filename):
 	rows = []
 	with open(filename, "rb") as input:
 		reader = csv.reader(input)
+		count = 0
 		for row in reader:
-			type, text = int(row[0]), row[1], 
-			longitude, latitude = float(row[2]), float(row[3])
-			longitude_text, latitude_text = row[4], row[5]
-			h_accuracy, v_accuracy = float(row[6]), float(row[7])
-			altitude = float(row[8])
-			timestamp = int(row[9])
-			rows.append((type, text, longitude, latitude, longitude_text,
-				latitude_text, h_accuracy, v_accuracy, altitude, timestamp))
+			count += 1
+			try:
+				type, text = int(row[0]), row[1], 
+				longitude, latitude = float(row[2]), float(row[3])
+				longitude_text, latitude_text = row[4], row[5]
+				h_accuracy, v_accuracy = float(row[6]), float(row[7])
+				altitude = float(row[8])
+				timestamp = int(row[9])
+
+				try:
+					in_background = int(row[10])
+					requested_accuracy = int(row[11])
+					speed, direction = float(row[12]), float(row[13])
+					battery_level = float(row[14])
+				except IndexError:
+					in_background = requested_accuracy = speed = direction = 0
+					battery_level = 0
+
+				rows.append((type, text, longitude, latitude, longitude_text,
+					latitude_text, h_accuracy, v_accuracy, altitude, timestamp,
+					in_background, requested_accuracy, speed, direction,
+					battery_level))
+			except ValueError:
+				logging.warn("Ignoring line %d", count)
 
 	return rows
 
@@ -122,7 +139,8 @@ def generate_track(track, output):
 """ % ("%d" % len(track.positions)))
 
 	for (type, text, lon, lat, lon_text, lat_text, h, v, altitude,
-			timestamp) in track.positions:
+			timestamp, in_background, requested_accuracy, speed, direction,
+			battery_level) in track.positions:
 		if ROW_POSITION != type:
 			continue
 
