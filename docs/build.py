@@ -120,10 +120,10 @@ def main():
 	Main entry point of the application.
 	"""
 	notify_doxy_rebuild = False
-	#if not os.path.isdir(DOXY_DIR):
-	#	rebuild_doxy()
-	#else:
-	#	notify_doxy_rebuild = True
+	if not os.path.isdir(DOXY_DIR):
+		rebuild_doxy()
+	else:
+		notify_doxy_rebuild = True
 
 	#for svg in NEATO_SVG:
 	#	rebuild_svg_if_needed(svg)
@@ -131,9 +131,9 @@ def main():
 	for src, dest in HTML_DOCS:
 		rebuild_html_if_needed(src, dest)
 
-	#if notify_doxy_rebuild:
-	#	print ("If you want to rebuild the doxygen documentation, "
-	#		"delete the %r directory" % (DOXY_DIR))
+	if notify_doxy_rebuild:
+		print ("If you want to rebuild the doxygen documentation, "
+			"delete the %r directory" % (DOXY_DIR))
 	#else:
 	#	print "If you want to build and install Xcode docs from doxygen, run:"
 	#	print "cd %s/html && make install" % (DOXY_DIR)

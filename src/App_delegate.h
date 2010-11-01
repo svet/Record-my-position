@@ -5,6 +5,11 @@
 @class DB;
 @class Tab_controller;
 
+/** Application delegate
+ *
+ * Used to instantiate the main window view, create the tabs and
+ * handle going back and forth between foreground/background modes.
+ */
 @interface App_delegate : NSObject <UIApplicationDelegate>
 {
 	/// Main window of the application.
