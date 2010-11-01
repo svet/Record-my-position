@@ -30,6 +30,10 @@
 #define _ROW_TYPE_LOG			0
 #define _ROW_TYPE_COORD			1
 
+#define _DB_MODEL_KEY			@"last_db_model"
+#define _DB_MODEL_VERSION		1
+
+
 NSString *DB_bump_notification = @"DB_bump_notification";
 
 
@@ -49,9 +53,21 @@ NSString *DB_bump_notification = @"DB_bump_notification";
  * This function will generate the database tables if they weren't present.
  * Returns the DB pointer with a retain count of one or nil if there were
  * problems and the application should abort.
+ *
+ * The function will check the user's default settings and verify
+ * that the database model for the user is the same as the one we are
+ * expecting. Otherwise it removes the file to force a purge.
  */
 + (DB*)open_database
 {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	const int db_version = [defaults integerForKey:_DB_MODEL_KEY];
+	if (_DB_MODEL_VERSION != db_version) {
+		DLOG(@"Preious DB model %d, I was expecting %d. Purging!", db_version,
+			_DB_MODEL_VERSION);
+		[DB purge];
+	}
+
 	NSString *path = [DB path];
 	DB *db = [[DB databaseWithPath:path] retain];
 	if (![db open]) {
@@ -84,9 +100,33 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 		}
 	}
 
+	[defaults setInteger:_DB_MODEL_VERSION forKey:_DB_MODEL_KEY];
 	DLOG(@"Disk db open at %@", path);
 	[[GPS get] add_watcher:db];
 	return db;
+}
+
+/** Tries to remove the database file.
+ * You should close the database before trying to remove it.
+ *
+ * Returns YES if the file was deleted.
+ */
++ (BOOL)purge
+{
+	NSString *path = [DB path];
+	NSFileManager *manager = [NSFileManager defaultManager];
+
+	if (![manager fileExistsAtPath:path])
+		return;
+
+	NSError *error = nil;
+	if ([manager removeItemAtPath:path error:&error]) {
+		DLOG(@"Deleted %@", path);
+		return YES;
+	} else {
+		DLOG(@"Couldn't unlink %@: %@", path, error);
+		return NO;
+	}
 }
 
 /** Returns the application's pointer to the open database.

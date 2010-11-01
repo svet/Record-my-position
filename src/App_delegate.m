@@ -145,13 +145,7 @@
 	const BOOL activate = gps.gps_is_on;
 	[gps stop];
 
-	NSError *error = nil;
-	NSString *path = [DB path];
-	NSFileManager *manager = [NSFileManager defaultManager];
-	if ([manager removeItemAtPath:path error:&error])
-		DLOG(@"Deleted %@", path);
-	else
-		DLOG(@"Couldn't unlink %@: %@", path, error);
+	[DB purge];
 
 	db_ = [DB open_database];
 	if (activate)

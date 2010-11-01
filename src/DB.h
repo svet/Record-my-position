@@ -20,6 +20,7 @@ extern NSString *DB_bump_notification;
 
 + (NSString*)path;
 + (DB*)open_database;
++ (BOOL)purge;
 + (DB*)get;
 - (void)close;
 - (void)log:(id)text_or_location;
