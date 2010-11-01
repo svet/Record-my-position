@@ -117,6 +117,10 @@
 
 	[db_ flush];
 	[db_ close];
+
+	// Save pending changes to user defaults.
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults synchronize];
 }
 
 #pragma mark -

@@ -161,7 +161,6 @@
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setBool:!switch_.on forKey:_SWITCH_KEY_NEGATED];
-	[defaults synchronize];
 }
 
 /** User clicked the purge button. Ask him if he's really serious.

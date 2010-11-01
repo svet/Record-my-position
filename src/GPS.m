@@ -5,8 +5,11 @@
 #import "DB.h"
 #import "macro.h"
 
+
 #define _KEY_PATH			@"last_pos"
 #define _WATCHDOG_SECONDS	(10 * 60)
+#define _GPS_IS_ON_KEY		@"gps_is_on"
+
 
 @interface GPS ()
 - (void)ping_watchdog;
@@ -27,8 +30,14 @@ static GPS *g_;
  */
 + (GPS*)get
 {
-	if (!g_)
+	if (!g_) {
 		g_ = [GPS new];
+
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		const BOOL gps_is_on = [defaults boolForKey:_GPS_IS_ON_KEY];
+		if (gps_is_on)
+			[g_ start];
+	}
 
 	return g_;
 }
@@ -84,6 +93,7 @@ static GPS *g_;
 	manager_.distanceFilter = kCLDistanceFilterNone;
 	manager_.desiredAccuracy = kCLLocationAccuracyBest;
 	manager_.delegate = self;
+
 	return self;
 }
 
@@ -92,6 +102,18 @@ static GPS *g_;
 	[self stop];
 	[manager_ release];
 	[super dealloc];
+}
+
+/** Write property to serialize value for later usage.
+ * Setting the variable also saves it to the user's defaults,
+ * allowing the value to be restored in case of crash or device without
+ * background tracking support.
+ */
+- (void)setGps_is_on:(BOOL)value
+{
+	gps_is_on_ = value;
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setBool:value forKey:_GPS_IS_ON_KEY];
 }
 
 /** Starts the GPS tracking.
@@ -106,10 +128,10 @@ static GPS *g_;
 		[self ping_watchdog];
 
 		[manager_ startUpdatingLocation];
-		gps_is_on_ = YES;
+		self.gps_is_on = YES;
 		return true;
 	} else {
-		gps_is_on_ = NO;
+		self.gps_is_on = NO;
 		return false;
 	}
 }
@@ -122,7 +144,7 @@ static GPS *g_;
 	if (self.gps_is_on && !nolog_)
 		[[DB get] log:@"Stopping to update location"];
 	[self stop_watchdog];
-	gps_is_on_ = NO;
+	self.gps_is_on = NO;
 	[manager_ stopUpdatingLocation];
 }
 
