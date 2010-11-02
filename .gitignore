@@ -11,6 +11,7 @@ csv_to_kml/*.csv
 csv_to_kml/*.kml
 dist/
 docs/README.html
+docs/background_tracking.html
 docs/doxygen
 docs/storage_schemas.html
 tags
