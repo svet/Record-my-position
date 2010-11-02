@@ -261,25 +261,26 @@
 {
 	[self dismissModalViewControllerAnimated:YES];
 
-	if (MFMailComposeResultCancelled == result ||
-			MFMailComposeResultFailed == result)
-		goto end;
+	if (MFMailComposeResultSaved == result ||
+			MFMailComposeResultSent == result) {
 
-	if ([rows_to_attach_ remaining]) {
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Give me more!"
-			message:@"Only a portion of data was sent. Send more emails."
-			delegate:self cancelButtonTitle:@"Will do" otherButtonTitles:nil];
-		[alert show];
-		[alert release];
+		if ([rows_to_attach_ remaining]) {
+			UIAlertView *alert = [[UIAlertView alloc]
+				initWithTitle:@"Give me more!"
+				message:@"Only a portion of data was sent. Send more emails."
+				delegate:self cancelButtonTitle:@"Will do"
+				otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		}
+
+		if (switch_.on) {
+			[rows_to_attach_ delete_rows];
+			DB *db = [DB get];
+			self.num_entries = [db get_num_entries];
+		}
 	}
 
-	if (switch_.on) {
-		[rows_to_attach_ delete_rows];
-		DB *db = [DB get];
-		self.num_entries = [db get_num_entries];
-	}
-
-end:
 	[rows_to_attach_ release];
 	shield_.hidden = YES;
 	[activity_ stopAnimating];
