@@ -1,0 +1,3 @@
+[submodule "external/egodatabase"]
+	path = external/egodatabase
+	url = git://github.com/gradha/egodatabase.git
