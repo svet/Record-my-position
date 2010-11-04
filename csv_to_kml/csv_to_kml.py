@@ -12,6 +12,7 @@ import csv
 import logging
 import os
 import os.path
+import time
 import xml.etree.ElementTree as ET
 
 
@@ -135,7 +136,14 @@ def generate_track(track, output):
 
 	Outputs valid kml xml for the track.
 	"""
-	output.write("<Folder><name>%s</name><open>0</open>" % len(track.positions))
+	times = [x[9] for x in track.positions]
+	min_time, max_time = min(times), max(times)
+	min_hour, min_min = time.localtime(min_time)[3:5]
+	max_hour, max_min = time.localtime(max_time)[3:5]
+
+	output.write("""<Folder><name>%02d:%02d-%02d:%02d, %s positions</name>
+<open>0</open>""" % (min_hour, min_min, max_hour, max_min,
+		len(track.positions)))
 	color = 1
 
 	for f in range(len(track.positions)):
@@ -157,12 +165,16 @@ def generate_track(track, output):
 		if None is next_lon:
 			continue
 
-		output.write("""<Placemark><styleUrl>r%d</styleUrl><MultiGeometry>
-<LineString><coordinates>%f,%f,0\n%f,%f,0</coordinates></LineString>""" % (
+		hour, minute, second = time.localtime(timestamp)[3:6]
+
+		output.write("""<Placemark><styleUrl>r%d</styleUrl>
+<MultiGeometry><LineString>
+<coordinates>%f,%f,0\n%f,%f,0</coordinates></LineString>""" % (
 			color, lon, lat, next_lon, next_lat))
 		output.write("<Point><coordinates>%f,%f,0</coordinates></Point>" % (
 			lon, lat))
-		output.write("""</MultiGeometry></Placemark>""")
+		output.write("""</MultiGeometry><name>%d %02d:%02d:%02d</name>
+</Placemark>""" % (f, hour, minute, second))
 		
 		# Rotate color
 		color = color + 1
