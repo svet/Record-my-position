@@ -112,11 +112,13 @@ def process_file(filename):
 	with open(kml_filename, "wb") as output:
 		output.write("""<?xml version='1.0' encoding='latin1'?>
 <kml xmlns='http://earth.google.com/kml/2.2'>
-<Document><name>%s</name>
-	<open>1</open>
-		<description>Positions recorded with http://github.com/gradha/Record-my-position</description>
-    	<Style id='red'><LineStyle><color>bb0000ff</color><width>5</width></LineStyle></Style>
-		<Style id='orange'><LineStyle><color>bb00b4ff</color><width>4</width></LineStyle></Style>
+<Document><name>%s</name><open>1</open>
+ <description>Positions recorded with http://github.com/gradha/Record-my-position</description>
+ <Style id='r1'><LineStyle><color>bb0000ff</color><width>5</width></LineStyle></Style>
+ <Style id='r2'><LineStyle><color>bb5a5aff</color><width>5</width></LineStyle></Style>
+ <Style id='r3'><LineStyle><color>bb688bff</color><width>5</width></LineStyle></Style>
+ <Style id='r4'><LineStyle><color>bb3262ff</color><width>5</width></LineStyle></Style>
+ <Style id='r5'><LineStyle><color>bb0076ff</color><width>5</width></LineStyle></Style>
 """ % (short_name))
 
 		for track in tracks:
@@ -133,22 +135,41 @@ def generate_track(track, output):
 
 	Outputs valid kml xml for the track.
 	"""
-	output.write("""<Folder><name>%s</name><open>0</open>
-	<Placemark><styleUrl>red</styleUrl><MultiGeometry><LineString>
-	<tessellate>1</tessellate><coordinates>
-""" % ("%d" % len(track.positions)))
+	output.write("<Folder><name>%s</name><open>0</open>" % len(track.positions))
+	color = 1
 
-	for (type, text, lon, lat, lon_text, lat_text, h, v, altitude,
+	for f in range(len(track.positions)):
+		(type, text, lon, lat, lon_text, lat_text, h, v, altitude,
 			timestamp, in_background, requested_accuracy, speed, direction,
-			battery_level) in track.positions:
+			battery_level) = track.positions[f]
 		if ROW_POSITION != type:
 			continue
+		# Find next coordinate.
+		next_lon, next_lat = None, None
+		g = f + 1
+		while g < len(track.positions):
+			next_type = track.positions[g][0]
+			if ROW_POSITION == next_type:
+				next_lon, next_lat = track.positions[g][2:4]
+				break
+			g += 1
 
-		output.write("%0f,%f,0\n" % (lon, lat))
+		if None is next_lon:
+			continue
 
-	output.write("""</coordinates></LineString></MultiGeometry>
-</Placemark></Folder>
-""")
+		output.write("""<Placemark><styleUrl>r%d</styleUrl><MultiGeometry>
+<LineString><coordinates>%f,%f,0\n%f,%f,0</coordinates></LineString>""" % (
+			color, lon, lat, next_lon, next_lat))
+		output.write("<Point><coordinates>%f,%f,0</coordinates></Point>" % (
+			lon, lat))
+		output.write("""</MultiGeometry></Placemark>""")
+		
+		# Rotate color
+		color = color + 1
+		if color > 5:
+			color = 1
+
+	output.write("""</Folder>""")
 
 
 def main():
