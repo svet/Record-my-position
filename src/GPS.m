@@ -7,7 +7,7 @@
 
 
 #define _KEY_PATH			@"last_pos"
-#define _WATCHDOG_SECONDS	(30 * 60)
+#define _WATCHDOG_SECONDS	(60 * 60)
 #define _GPS_IS_ON_KEY		@"gps_is_on"
 
 
