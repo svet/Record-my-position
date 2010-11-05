@@ -238,8 +238,8 @@ def generate_track(track, output):
 		output.write("""<Placemark><styleUrl>r%d</styleUrl>
 <name>%d %02d:%02d:%02d%s</name>\n""" % (color,
 			f, hour, minute, second, extra_name))
-		if len(text) > 1:
-			output.write("<description>%s</description>" % text)
+
+		write_kml_position_description(output, track.positions[f])
 
 		output.write("<MultiGeometry>\n")
 		# Draw the line segment only if there is a next endpoint.
@@ -258,6 +258,43 @@ def generate_track(track, output):
 			color = 1
 
 	output.write("""</Folder>""")
+
+
+def write_kml_position_description(output, position_data):
+	"""f(file, (...)) -> None
+
+	Pretty formats the position data into the file like object
+	creating a kml description tag.
+	"""
+	(type, text, lon, lat, lon_text, lat_text, h, v, altitude,
+		timestamp, in_background, requested_accuracy, speed, direction,
+		battery_level) = position_data
+
+	lines = []
+	if len(text) > 1:
+		lines.append(text.strip() + "\n")
+
+	if ROW_LOG == type:
+		lines.append("Type: log entry.")
+	elif ROW_POSITION == type:
+		lines.append("Type: coordinate.")
+	else:
+		lines.append("Type: unexpected?")
+
+	if h > 0:
+		lines.append("Horizontal accuracy: %0.0fm." % h)
+
+	if in_background:
+		lines.append("Captured during background operation.")
+	else:
+		lines.append("Captured during foreground operation.")
+
+	lines.append("Battery %0.0f%%." % (battery_level * 100))
+	lines.append("Timestamp %d" % (timestamp))
+	lines.append("\t%04d-%02d-%02d %02d:%02d:%02d." % (
+		time.localtime(timestamp)[0:6]))
+
+	output.write("<description>%s</description>" % "\n".join(lines))
 
 
 def main():
