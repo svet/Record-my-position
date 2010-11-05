@@ -60,7 +60,7 @@ def load_csv(filename):
 		for row in reader:
 			count += 1
 			try:
-				type, text = int(row[0]), row[1], 
+				type, text = int(row[0]), row[1],
 				longitude, latitude = float(row[2]), float(row[3])
 				longitude_text, latitude_text = row[4], row[5]
 				h_accuracy, v_accuracy = float(row[6]), float(row[7])
@@ -90,10 +90,81 @@ def filter_csv_rows(rows):
 	"""f([(), ...]) -> [Track, ...]
 
 	Filters a loaded csv converting raw positions into individual track objects.
+
+	Also performs other tasks, like generating coordinates for
+	log messages based on interpolation.
 	"""
 	t = Track()
-	t.positions = rows
+	t.positions = rows[:]
+
+	# Interpolate log positions based on time.
+	for pos in range(len(t.positions)):
+		type = t.positions[pos][0]
+		if ROW_LOG != type:
+			continue
+
+		# Find previous and next coordinates.
+		prev = pos - 1
+		while prev >= 0:
+			type = t.positions[prev][0]
+			if ROW_POSITION == type:
+				break
+			prev -= 1
+
+		next = pos + 1
+		while next < len(t.positions):
+			type = t.positions[next][0]
+			if ROW_POSITION == type:
+				break
+			next += 1
+
+		# Interpolate coordinate among found extremes, or copy from them.
+		timestamp = t.positions[pos][9]
+		if prev >= 0 and next < len(t.positions):
+			coord = interpolate_position(t.positions, prev, next, timestamp)
+		elif prev >= 0:
+			coord = interpolate_position(t.positions, prev, prev, timestamp)
+		elif next < len(t.positions):
+			coord = interpolate_position(t.positions, next, next, timestamp)
+		else:
+			continue
+
+		(type, text, lon, lat, lon_text, lat_text, h, v, altitude,
+			timestamp, in_background, requested_accuracy, speed, direction,
+			battery_level) = t.positions[pos]
+		t.positions[pos] = (type, text, coord[0], coord[1],
+			lon_text, lat_text, h, v, altitude, timestamp, in_background,
+			requested_accuracy, speed, direction, battery_level)
+
+	for (type, text, lon, lat, lon_text, lat_text, h, v, altitude,
+			timestamp, in_background, requested_accuracy, speed, direction,
+			battery_level) in t.positions:
+		assert lon != 0 and lat != 0, "Bad boy"
+
 	return [t]
+
+
+def interpolate_position(positions, pos1, pos2, timestamp):
+	"""f([], int, int, int) -> (float, float)
+
+	From a position set, and given two position indices, the
+	function will take these two positions and inteprolate a
+	new coordinate based on the timestamp that separates them.
+	If the timestamp goes out of range, the nearest position
+	is returned.
+	"""
+	x1, y1 = positions[pos1][2:4]
+	x2, y2 = positions[pos2][2:4]
+	t1, t2 = positions[pos1][9], positions[pos2][9]
+	assert t1 <= t2, "Two coordinates with inverted timestamps?"
+
+	if timestamp <= t1:
+		return x1, y1
+	if timestamp >= t2:
+		return x2, y2
+
+	factor = float(timestamp - t1) / float(t2 - t1)
+	return x1 + factor * (x2 - x1), y1 + factor * (y2 - y1)
 
 
 def process_file(filename):
@@ -150,32 +221,37 @@ def generate_track(track, output):
 		(type, text, lon, lat, lon_text, lat_text, h, v, altitude,
 			timestamp, in_background, requested_accuracy, speed, direction,
 			battery_level) = track.positions[f]
-		if ROW_POSITION != type:
-			continue
+		# Prepare extra names' title for points.
+		extra_name = ""
+		if len(text) < 1:
+			text = ""
+		else:
+			extra_name = " log"
+
 		# Find next coordinate.
 		next_lon, next_lat = None, None
-		g = f + 1
-		while g < len(track.positions):
-			next_type = track.positions[g][0]
-			if ROW_POSITION == next_type:
-				next_lon, next_lat = track.positions[g][2:4]
-				break
-			g += 1
-
-		if None is next_lon:
-			continue
+		if f + 1 < len(track.positions):
+			next_lon, next_lat = track.positions[f + 1][2:4]
 
 		hour, minute, second = time.localtime(timestamp)[3:6]
 
 		output.write("""<Placemark><styleUrl>r%d</styleUrl>
-<MultiGeometry><LineString>
-<coordinates>%f,%f,0\n%f,%f,0</coordinates></LineString>""" % (
-			color, lon, lat, next_lon, next_lat))
+<name>%d %02d:%02d:%02d%s</name>\n""" % (color,
+			f, hour, minute, second, extra_name))
+		if len(text) > 1:
+			output.write("<description>%s</description>" % text)
+
+		output.write("<MultiGeometry>\n")
+		# Draw the line segment only if there is a next endpoint.
+		if next_lon and next_lat:
+			output.write("<LineString><coordinates>%f,%f,0\n%f,%f,0"
+				"</coordinates></LineString>\n""" % (lon, lat,
+				next_lon, next_lat))
+
 		output.write("<Point><coordinates>%f,%f,0</coordinates></Point>" % (
 			lon, lat))
-		output.write("""</MultiGeometry><name>%d %02d:%02d:%02d</name>
-</Placemark>""" % (f, hour, minute, second))
-		
+		output.write("</MultiGeometry></Placemark>")
+
 		# Rotate color
 		color = color + 1
 		if color > 5:
