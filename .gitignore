@@ -9,6 +9,7 @@
 build/
 csv_to_kml/*.csv
 csv_to_kml/*.kml
+csv_to_kml/*.kmz
 dist/
 docs/README.html
 docs/background_tracking.html

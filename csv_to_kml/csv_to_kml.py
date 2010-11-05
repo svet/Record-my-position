@@ -8,12 +8,14 @@ from __future__ import with_statement
 from contextlib import closing
 from optparse import OptionParser
 
+import StringIO
 import csv
 import logging
 import os
 import os.path
 import time
 import xml.etree.ElementTree as ET
+import zipfile
 
 
 ROW_LOG = 0
@@ -32,12 +34,14 @@ class Track:
 
 
 def process_arguments():
-	"""f() -> [string, ...]
+	"""f() -> options, [string, ...]
 
 	Parses the commandline arguments. The user only needs to
 	specify csv files, which will be converted into kml ones.
 	"""
 	parser = OptionParser()
+	parser.add_option("-Z", "--no-zip", dest="no_zip", action="store_true",
+		help = "generate uncompressed kml files instead of kmz.")
 	options, args = parser.parse_args()
 	if len(args) < 1:
 		logging.error("No input. Please specify *.csv files.")
@@ -50,7 +54,7 @@ def process_arguments():
 			logging.error("Invalid input %r.", filename)
 			sys.exit(3)
 
-	return args
+	return options, args
 
 
 def load_csv(filename):
@@ -200,13 +204,18 @@ def interpolate_position(positions, pos1, pos2, timestamp):
 	return x1 + factor * (x2 - x1), y1 + factor * (y2 - y1)
 
 
-def process_file(filename):
-	"""f(string) -> None
+def process_file(filename, do_zip):
+	"""f(string, bool) -> None
 
 	Converts the input csv file into an kml file, replacing the extension.
+	If the do_zip flag is set, a compressed kmz file will be generated instead.
 	"""
-	kml_filename = "%s.kml" % (os.path.splitext(filename)[0])
-	logging.info("%r -> %r", filename, kml_filename)
+	if do_zip:
+		out_filename = "%s.kmz" % (os.path.splitext(filename)[0])
+	else:
+		out_filename = "%s.kml" % (os.path.splitext(filename)[0])
+
+	logging.info("%r -> %r", filename, out_filename)
 	tracks = filter_csv_rows(load_csv(filename))
 	if len(tracks) < 1:
 		logging.error("No data found in %r", filename)
@@ -214,8 +223,8 @@ def process_file(filename):
 
 	short_name = os.path.splitext(os.path.basename(filename))[0]
 
-	with open(kml_filename, "wb") as output:
-		output.write("""<?xml version='1.0' encoding='latin1'?>
+	output = StringIO.StringIO()
+	output.write("""<?xml version='1.0' encoding='latin1'?>
 <kml xmlns='http://earth.google.com/kml/2.2'>
 <Document><name>%s</name><open>1</open>
  <description>Positions recorded with http://github.com/gradha/Record-my-position</description>
@@ -226,13 +235,23 @@ def process_file(filename):
  <Style id='r5'><LineStyle><color>bb0076ff</color><width>5</width></LineStyle></Style>
 """ % (short_name))
 
-		for track in tracks:
-			generate_track(track, output)
+	for track in tracks:
+		generate_track(track, output)
 
-		output.write("</Document></kml>")
+	output.write("</Document></kml>")
+	buf = output.getvalue()
+	output.close()
+
+	if do_zip:
+		z = zipfile.ZipFile(out_filename, "w", zipfile.ZIP_DEFLATED)
+		z.writestr("doc.kml", buf)
+		z.close()
+	else:
+		with open(out_filename, "wb") as output:
+			output.write(buf)
 
 	# Validate generated kml..
-	ET.parse(kml_filename);
+	ET.fromstring(buf)
 
 
 def generate_track(track, output):
@@ -336,8 +355,9 @@ def main():
 	Main entry point for the program.
 	Process specified input files in sounds mode.
 	"""
-	for filename in process_arguments():
-		process_file(filename)
+	options, files = process_arguments()
+	for filename in files:
+		process_file(filename, not options.no_zip)
 
 
 if "__main__" == __name__:
