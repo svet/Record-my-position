@@ -18,11 +18,17 @@ import xml.etree.ElementTree as ET
 
 ROW_LOG = 0
 ROW_POSITION = 1
+TIME_THRESHOLD = int(1 * 60 * 60)
 
 
 class Track:
 	"""Holds the information for a more or less related group of positions."""
-	pass
+	def __init__(self, positions):
+		"""f([]) -> Track
+
+		Constructs a Track object with the parameter as the positions attribute.
+		"""
+		self.positions = positions
 
 
 def process_arguments():
@@ -94,62 +100,81 @@ def filter_csv_rows(rows):
 	Also performs other tasks, like generating coordinates for
 	log messages based on interpolation.
 	"""
-	t = Track()
-	t.positions = rows[:]
+	rows = rows[:]
 
 	# Interpolate log positions based on time.
-	for pos in range(len(t.positions)):
-		type = t.positions[pos][0]
+	for pos in range(len(rows)):
+		type = rows[pos][0]
 		if ROW_LOG != type:
 			continue
 
 		# Find previous and next coordinates.
 		prev = pos - 1
 		while prev >= 0:
-			type = t.positions[prev][0]
+			type = rows[prev][0]
 			if ROW_POSITION == type:
 				break
 			prev -= 1
 
 		next = pos + 1
-		while next < len(t.positions):
-			type = t.positions[next][0]
+		while next < len(rows):
+			type = rows[next][0]
 			if ROW_POSITION == type:
 				break
 			next += 1
 
 		# Interpolate coordinate among found extremes, or copy from them.
-		timestamp = t.positions[pos][9]
-		if prev >= 0 and next < len(t.positions):
-			coord = interpolate_position(t.positions, prev, next, timestamp)
+		timestamp = rows[pos][9]
+		if prev >= 0 and next < len(rows):
+			coord = interpolate_position(rows, prev, next, timestamp)
 		elif prev >= 0:
-			coord = interpolate_position(t.positions, prev, prev, timestamp)
-		elif next < len(t.positions):
-			coord = interpolate_position(t.positions, next, next, timestamp)
+			coord = interpolate_position(rows, prev, prev, timestamp)
+		elif next < len(rows):
+			coord = interpolate_position(rows, next, next, timestamp)
 		else:
 			continue
 
 		(type, text, lon, lat, lon_text, lat_text, h, v, altitude,
 			timestamp, in_background, requested_accuracy, speed, direction,
-			battery_level) = t.positions[pos]
-		t.positions[pos] = (type, text, coord[0], coord[1],
+			battery_level) = rows[pos]
+		rows[pos] = (type, text, coord[0], coord[1],
 			lon_text, lat_text, h, v, altitude, timestamp, in_background,
 			requested_accuracy, speed, direction, battery_level)
 
 	# Filter "backwards" positions according to the timestamps.
 	to_remove = []
-	for pos in range(1, len(t.positions)):
-		now = t.positions[pos][9]
-		prev = t.positions[pos - 1][9]
+	for pos in range(1, len(rows)):
+		now = rows[pos][9]
+		prev = rows[pos - 1][9]
 
 		if now < prev:
 			logging.info("Removing backwards position item %d", pos + 1)
 			to_remove.append(pos)
 
 	while to_remove:
-		del t.positions[to_remove.pop()]
+		del rows[to_remove.pop()]
 
-	return [t]
+	# Separate positions in tracks according to timestamps.
+	tracks = []
+	current = []
+	for position_data in rows:
+		# No entries? Add inconditionally.
+		if len(current) < 1:
+			current.append(position_data)
+			continue
+
+		now = position_data[9]
+		prev = current[-1][9]
+		if abs(now - prev) > TIME_THRESHOLD:
+			tracks.append(Track(current))
+			current = []
+
+		current.append(position_data)
+
+	if current:
+		tracks.append(Track(current))
+
+	return tracks
 
 
 def interpolate_position(positions, pos1, pos2, timestamp):
@@ -245,7 +270,7 @@ def generate_track(track, output):
 
 		output.write("""<Placemark><styleUrl>r%d</styleUrl>
 <name>%d %02d:%02d:%02d%s</name>\n""" % (color,
-			f, hour, minute, second, extra_name))
+			f + 1, hour, minute, second, extra_name))
 
 		write_kml_position_description(output, track.positions[f])
 
