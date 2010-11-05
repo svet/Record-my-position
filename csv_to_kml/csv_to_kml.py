@@ -136,10 +136,18 @@ def filter_csv_rows(rows):
 			lon_text, lat_text, h, v, altitude, timestamp, in_background,
 			requested_accuracy, speed, direction, battery_level)
 
-	for (type, text, lon, lat, lon_text, lat_text, h, v, altitude,
-			timestamp, in_background, requested_accuracy, speed, direction,
-			battery_level) in t.positions:
-		assert lon != 0 and lat != 0, "Bad boy"
+	# Filter "backwards" positions according to the timestamps.
+	to_remove = []
+	for pos in range(1, len(t.positions)):
+		now = t.positions[pos][9]
+		prev = t.positions[pos - 1][9]
+
+		if now < prev:
+			logging.info("Removing backwards position item %d", pos + 1)
+			to_remove.append(pos)
+
+	while to_remove:
+		del t.positions[to_remove.pop()]
 
 	return [t]
 
