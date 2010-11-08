@@ -113,8 +113,4 @@ POSSIBILITY OF SUCH DAMAGE.
 TODO
 ====
 
-* Background monitoring through regions.
-* Log tab.
-* Proper graphics.
-* Show last position using makpik.
-* Allow landscape modes?
+Now tracking at https://github.com/gradha/Record-my-position/issues
