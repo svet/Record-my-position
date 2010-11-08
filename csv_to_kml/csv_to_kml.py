@@ -106,6 +106,19 @@ def filter_csv_rows(rows):
 	"""
 	rows = rows[:]
 
+	# Filter "backwards" positions according to the timestamps.
+	to_remove = []
+	for pos in range(1, len(rows)):
+		now = rows[pos][9]
+		prev = rows[pos - 1][9]
+
+		if now < prev:
+			logging.info("Removing backwards position item %d", pos + 1)
+			to_remove.append(pos)
+
+	while to_remove:
+		del rows[to_remove.pop()]
+
 	# Interpolate log positions based on time.
 	for pos in range(len(rows)):
 		type = rows[pos][0]
@@ -145,19 +158,6 @@ def filter_csv_rows(rows):
 			lon_text, lat_text, h, v, altitude, timestamp, in_background,
 			requested_accuracy, speed, direction, battery_level)
 
-	# Filter "backwards" positions according to the timestamps.
-	to_remove = []
-	for pos in range(1, len(rows)):
-		now = rows[pos][9]
-		prev = rows[pos - 1][9]
-
-		if now < prev:
-			logging.info("Removing backwards position item %d", pos + 1)
-			to_remove.append(pos)
-
-	while to_remove:
-		del rows[to_remove.pop()]
-
 	# Separate positions in tracks according to timestamps.
 	tracks = []
 	current = []
@@ -193,7 +193,8 @@ def interpolate_position(positions, pos1, pos2, timestamp):
 	x1, y1 = positions[pos1][2:4]
 	x2, y2 = positions[pos2][2:4]
 	t1, t2 = positions[pos1][9], positions[pos2][9]
-	assert t1 <= t2, "Two coordinates with inverted timestamps?"
+	assert t1 <= t2, "Two coordinates with inverted timestamps? (%d, %d)" % (
+		pos1, pos2)
 
 	if timestamp <= t1:
 		return x1, y1
