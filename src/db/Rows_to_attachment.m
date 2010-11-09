@@ -37,7 +37,7 @@
 	EGODatabaseResult *result = [db_ executeQueryWithParameters:@"SELECT "
 		@"id, type, text, longitude, latitude, h_accuracy, v_accuracy,"
 		@"altitude, timestamp, in_background, requested_accuracy,"
-		@"speed, direction, battery_level "
+		@"speed, direction, battery_level, external_power, reachability "
 		@"FROM Positions WHERE id <= ? LIMIT ?",
 		[NSNumber numberWithInt:max_row_],
 		[NSNumber numberWithInt:_MAX_EXPORT_ROWS], nil];
@@ -54,7 +54,7 @@
 			[strings addObject:@"type,text,longitude,latitude,longitude,"
 				@"latitude,h_accuracy,v_accuracy,altitude,timestamp,"
 				@"in_background,requested_accuracy,speed,direction,"
-				@"battery_level"];
+				@"battery_level, external_power, reachability"];
 			add_header = NO;
 		}
 
@@ -66,25 +66,28 @@
 		const double speed = [row doubleForColumnIndex:11];
 		const double direction = [row doubleForColumnIndex:12];
 		const double battery_level = [row doubleForColumnIndex:13];
+		const int external_power = [row intForColumnIndex:14];
+		const int reachability = [row intForColumnIndex:15];
 
 		if (DB_ROW_TYPE_LOG == type) {
 			[strings addObject:
 				[NSString stringWithFormat:@"%d,%@,0,0,0,0,-1,-1,-1,%d,"
-				@"%d,%d,-1.0,-1.0,%0.2f",
+				@"%d,%d,-1.0,-1.0,%0.2f,%d,%d",
 				DB_ROW_TYPE_LOG, [row stringForColumnIndex:2], timestamp,
-				in_background, requested_accuracy, battery_level]];
+				in_background, requested_accuracy, battery_level,
+				external_power, reachability]];
 		} else if (DB_ROW_TYPE_COORD == type) {
 			const double longitude = [row doubleForColumnIndex:3];
 			const double latitude = [row doubleForColumnIndex:4];
 			[strings addObject:[NSString stringWithFormat:@"%d,,"
 				@"%0.8f,%0.8f,%@,%@,%0.1f,%0.1f,%0.1f,%d,"
-				@"%d,%d,%0.2f,%0.2f,%0.2f", DB_ROW_TYPE_COORD,
+				@"%d,%d,%0.2f,%0.2f,%0.2f,%d,%d", DB_ROW_TYPE_COORD,
 				longitude, latitude, [GPS degrees_to_dms:longitude latitude:NO],
 				[GPS degrees_to_dms:latitude latitude:YES],
 				[row doubleForColumnIndex:5], [row doubleForColumnIndex:6],
 				[row doubleForColumnIndex:7], timestamp,
 				in_background, requested_accuracy, speed, direction,
-				battery_level]];
+				battery_level, external_power, reachability]];
 		} else {
 			NSAssert(0, @"Unknown database row type?!");
 		}

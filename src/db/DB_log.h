@@ -32,6 +32,12 @@
 	/// Accuracy setting at the time of logging.
 	ACCURACY accuracy_;
 
+	/// Tells if the device is connected to an external power source.
+	BOOL external_power_;
+
+	/// Tells if online connection to an external site is possible.
+	BOOL reachability_;
+
 @protected
 	/// Stores the pointer to the text object. May be nil.
 	NSString *text_;

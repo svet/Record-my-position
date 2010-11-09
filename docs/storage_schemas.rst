@@ -79,4 +79,16 @@ Log table
 	A negative value indicates that the direction is invalid.
 **battery_level** REAL:
 	Current battery level with precission of 5% over whole
-	battery level.
+	battery level as a normalized value going from 0 to 1.
+**external_power** INTEGER:
+	If the value is zero, it means that the device is not plugged
+	in into external power sources or it doesn't really know.
+	If the value is positive, it means that the device is
+	charging or at full power and still connected to a power
+	source.
+**reachability** INTEGER:
+	If the value is negative, the reachability status is unknown
+	or not supported. If the value is zero, the external online
+	site is not available. If the value is positive, the
+	configured external online site is available through a
+	network connection.

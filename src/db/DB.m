@@ -15,7 +15,7 @@
 #define _BUFFER					50
 
 #define _DB_MODEL_KEY			@"last_db_model"
-#define _DB_MODEL_VERSION		2
+#define _DB_MODEL_VERSION		3
 
 
 NSString *DB_bump_notification = @"DB_bump_notification";
@@ -78,6 +78,8 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 			@"speed REAL NOT NULL,"
 			@"direction REAL NOT NULL,"
 			@"battery_level REAL NOT NULL,"
+			@"external_power INTEGER NOT NULL,"
+			@"reachability INTEGER NOT NULL,"
 			@"CONSTRAINT Positions_unique UNIQUE (id))",
 		nil];
 
@@ -189,8 +191,10 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 			ret = [self executeUpdateWithParameters:@"INSERT into Positions "
 				@"(id, type, text, longitude, latitude, h_accuracy,"
 				@"v_accuracy, altitude, timestamp, in_background,"
-				@"requested_accuracy, speed, direction, battery_level) "
-				@"VALUES (NULL, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				@"requested_accuracy, speed, direction, battery_level,"
+				@"external_power, reachability) "
+				@"VALUES (NULL, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+				@"?, ?)",
 				[NSNumber numberWithInt:DB_ROW_TYPE_COORD],
 				[NSNumber numberWithDouble:log.location.coordinate.longitude],
 				[NSNumber numberWithDouble:log.location.coordinate.latitude],
@@ -204,6 +208,8 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 				[NSNumber numberWithDouble:log.location.speed],
 				[NSNumber numberWithDouble:log.location.course],
 				[NSNumber numberWithFloat:log->battery_level_],
+				[NSNumber numberWithBool:log->external_power_],
+				[NSNumber numberWithBool:log->reachability_],
 				nil];
 		} else {
 			NSAssert(DB_ROW_TYPE_LOG == log->row_type_, @"Bad log type?");
@@ -211,8 +217,10 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 				executeUpdateWithParameters:@"INSERT into Positions (id, type,"
 				@"text, longitude, latitude, h_accuracy, v_accuracy,"
 				@"altitude, timestamp, in_background,"
-				@"requested_accuracy, speed, direction, battery_level) "
-				@"VALUES (NULL, ?, ?, 0, 0, -1, -1,-1, ?, ?, ?, ?, ?, ?)",
+				@"requested_accuracy, speed, direction, battery_level,"
+				@"external_power, reachability) "
+				@"VALUES (NULL, ?, ?, 0, 0, -1, -1,-1, ?, ?, ?, ?, ?, ?,"
+				@"?, ?)",
 				[NSNumber numberWithInt:DB_ROW_TYPE_LOG], log.text,
 				[NSNumber numberWithInt:log->timestamp_],
 				[NSNumber numberWithBool:log->in_background_],
@@ -220,6 +228,8 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 				[NSNumber numberWithDouble:log.location.speed],
 				[NSNumber numberWithDouble:log.location.course],
 				[NSNumber numberWithFloat:log->battery_level_],
+				[NSNumber numberWithBool:log->external_power_],
+				[NSNumber numberWithBool:log->reachability_],
 				nil];
 		}
 

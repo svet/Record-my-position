@@ -27,7 +27,11 @@
 	accuracy_ = accuracy;
 	timestamp_ = time(0);
 	in_background_ = in_background;
-	battery_level_ = [[UIDevice currentDevice] batteryLevel];
+	UIDevice *device = [UIDevice currentDevice];
+	battery_level_ = device.batteryLevel;
+	external_power_ = (UIDeviceBatteryStateCharging == device.batteryState ||
+		UIDeviceBatteryStateFull == device.batteryState);
+	reachability_ = NO;
 
 	return self;
 }
@@ -45,7 +49,11 @@
 	accuracy_ = accuracy;
 	timestamp_ = time(0);
 	in_background_ = in_background;
-	battery_level_ = [[UIDevice currentDevice] batteryLevel];
+	UIDevice *device = [UIDevice currentDevice];
+	battery_level_ = device.batteryLevel;
+	external_power_ = (UIDeviceBatteryStateCharging == device.batteryState ||
+		UIDeviceBatteryStateFull == device.batteryState);
+	reachability_ = NO;
 
 	return self;
 }
