@@ -232,7 +232,7 @@ static GPS *g_;
 - (void)locationManager:(CLLocationManager *)manager
 	didFailWithError:(NSError *)error
 {
-	if (kCLErrorLocationUnknown == error)
+	if ([error code] == kCLErrorLocationUnknown)
 		return;
 
 	[[DB get] log:[NSString stringWithFormat:@"location error: %@", error]];
