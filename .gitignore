@@ -10,6 +10,9 @@ build/
 csv_to_kml/*.csv
 csv_to_kml/*.kml
 csv_to_kml/*.kmz
+csv_to_kml/alessandra/
+csv_to_kml/esti/
+csv_to_kml/taeyeon/
 dist/
 docs/README*.html
 docs/background_tracking.html
