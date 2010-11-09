@@ -2,6 +2,7 @@
 
 #import "Capture_tab.h"
 
+#import "App_delegate.h"
 #import "GPS.h"
 #import "macro.h"
 
@@ -47,6 +48,7 @@
 		forControlEvents:UIControlEventValueChanged];
 	[clock_ release];
 	[ago_ release];
+	[capabilities_ release];
 	[movement_ release];
 	[switch_ release];
 	[altitude_ release];
@@ -108,6 +110,15 @@
 	movement_.backgroundColor = [UIColor clearColor];
 	movement_.textColor = [UIColor blackColor];
 	[self.view addSubview:movement_];
+
+	capabilities_ = [[UILabel alloc]
+		initWithFrame:CGRectMake(10, 220, 300, 79)];
+	capabilities_.text = @"";
+	capabilities_.numberOfLines = 0;
+	capabilities_.backgroundColor = [UIColor clearColor];
+	capabilities_.textColor = [UIColor blackColor];
+	capabilities_.font = [UIFont systemFontOfSize:15];
+	[self.view addSubview:capabilities_];
 
 	clock_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 300, 300, 100)];
 	clock_.text = @"00:00:00";
@@ -189,6 +200,20 @@
 		start_title_.text = @"Reading GPS...";
 	else
 		start_title_.text = @"GPS off";
+
+	// Device information. Update only if needed, it doesn't change at runtime.
+	if (capabilities_.text.length < 1) {
+		if (g_is_multitasking) {
+			capabilities_.text = [NSString stringWithFormat:@"Multitasking "
+				@"available. Location changes %@. Region monitoring %@.",
+				g_location_changes ? @"available" : @"not available",
+				g_region_monitoring ? @"available" : @"not available"];
+		} else {
+			capabilities_.text = @"Your device doesn't support multitasking. "
+				@"GPS positions will only be captured while you have this "
+				@"program on.";
+		}
+	}
 
 	// Last location.
 	CLLocation *location = [GPS get].last_pos;

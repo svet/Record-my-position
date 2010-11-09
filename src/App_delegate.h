@@ -44,4 +44,9 @@ enum DIR_TYPE_ENUM
 /// Required alias for enum.
 typedef enum DIR_TYPE_ENUM DIR_TYPE;
 
+/// Read these variables to know what is supported on the device.
+extern BOOL g_is_multitasking;
+extern BOOL g_location_changes;
+extern BOOL g_region_monitoring;
+
 NSString *get_path(NSString *filename, DIR_TYPE dir_type);

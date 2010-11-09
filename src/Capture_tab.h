@@ -15,6 +15,7 @@
 	UILabel *altitude_;
 	UILabel *ago_;
 	UILabel *movement_;
+	UILabel *capabilities_;
 
 	UILabel *clock_;
 	NSTimer *timer_;

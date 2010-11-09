@@ -26,6 +26,10 @@
 #import "macro.h"
 
 
+// Forward private declarations.
+static void _set_globals(void);
+
+
 @implementation App_delegate
 
 @synthesize db = db_;
@@ -40,6 +44,7 @@
 	DLOG(@"Lunching application with %@", launch_options);
 
 	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
+	_set_globals();
 
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	window_.backgroundColor = [UIColor whiteColor];
@@ -190,7 +195,13 @@
 	}
 }
 
+@end
+
 #pragma mark Global functions
+
+BOOL g_is_multitasking = NO;
+BOOL g_location_changes = NO;
+BOOL g_region_monitoring = NO;
 
 /** Builds up the path of a file in a specific directory.
  * Note that making a path inside a DIR_BUNDLE will always fail if the file
@@ -237,5 +248,30 @@ NSString *get_path(NSString *filename, DIR_TYPE dir_type)
 	}
 }
 
-@end
+/** Updates the state of some global variables.
+ * These are variables like g_is_multitasking, which can be read
+ * by any one any time. Call this function whenever you want,
+ * preferably during startup.
+ */
+static void _set_globals(void)
+{
+	UIDevice* device = [UIDevice currentDevice];
+
+	if ([device respondsToSelector:@selector(isMultitaskingSupported)])
+		g_is_multitasking = device.multitaskingSupported;
+	else
+		g_is_multitasking = NO;
+
+	g_location_changes = NO;
+	SEL getter = @selector(significantLocationChangeMonitoringAvailable);
+	if ([CLLocationManager respondsToSelector:getter])
+		if ([CLLocationManager performSelector:getter])
+			g_location_changes = YES;
+
+	getter = @selector(regionMonitoringAvailable);
+	if ([CLLocationManager respondsToSelector:getter])
+		if ([CLLocationManager performSelector:getter])
+			g_region_monitoring = YES;
+}
+
 // vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
