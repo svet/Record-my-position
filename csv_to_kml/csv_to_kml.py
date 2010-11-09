@@ -86,10 +86,15 @@ def load_csv(filename):
 					in_background = requested_accuracy = speed = direction = 0
 					battery_level = 0
 
+				try:
+					external_power, reachability = int(row[15]), int(row[16])
+				except IndexError:
+					external_power, reachability = 0, -1
+
 				rows.append((type, text, longitude, latitude, longitude_text,
 					latitude_text, h_accuracy, v_accuracy, altitude, timestamp,
 					in_background, requested_accuracy, speed, direction,
-					battery_level))
+					battery_level, external_power, reachability))
 			except ValueError:
 				logging.warn("Ignoring line %d", count)
 
@@ -153,10 +158,11 @@ def filter_csv_rows(rows):
 
 		(type, text, lon, lat, lon_text, lat_text, h, v, altitude,
 			timestamp, in_background, requested_accuracy, speed, direction,
-			battery_level) = rows[pos]
+			battery_level, external_power, reachability) = rows[pos]
 		rows[pos] = (type, text, coord[0], coord[1],
 			lon_text, lat_text, h, v, altitude, timestamp, in_background,
-			requested_accuracy, speed, direction, battery_level)
+			requested_accuracy, speed, direction, battery_level,
+			external_power, reachability)
 
 	# Separate positions in tracks according to timestamps.
 	tracks = []
@@ -273,7 +279,7 @@ def generate_track(track, output):
 	for f in range(len(track.positions)):
 		(type, text, lon, lat, lon_text, lat_text, h, v, altitude,
 			timestamp, in_background, requested_accuracy, speed, direction,
-			battery_level) = track.positions[f]
+			battery_level, external_power, reachability) = track.positions[f]
 		# Prepare extra names' title for points.
 		extra_name = ""
 		if len(text) < 1:
@@ -321,7 +327,7 @@ def write_kml_position_description(output, position_data):
 	"""
 	(type, text, lon, lat, lon_text, lat_text, h, v, altitude,
 		timestamp, in_background, requested_accuracy, speed, direction,
-		battery_level) = position_data
+		battery_level, external_power, reachability) = position_data
 
 	lines = []
 	if len(text) > 1:
@@ -343,6 +349,15 @@ def write_kml_position_description(output, position_data):
 		lines.append("Captured during foreground operation.")
 
 	lines.append("Battery %0.0f%%." % (battery_level * 100))
+	if external_power > 0:
+		lines.append("External power source present.")
+	else:
+		lines.append("Running on own batteries.")
+	if reachability > 0:
+		lines.append("Connected online.")
+	elif 0 == reachability:
+		lines.append("Online reachability not possible.")
+
 	lines.append("Timestamp %d" % (timestamp))
 	lines.append("\t%04d-%02d-%02d %02d:%02d:%02d." % (
 		time.localtime(timestamp)[0:6]))
