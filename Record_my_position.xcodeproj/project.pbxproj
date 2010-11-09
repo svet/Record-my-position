@@ -30,6 +30,8 @@
 		D5BEDACB126F942C0056DB78 /* VTPG_Common.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDACA126F942C0056DB78 /* VTPG_Common.m */; };
 		D5C47782127177D500CB008F /* GPS.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C47781127177D500CB008F /* GPS.m */; };
 		D5C477B212717BEA00CB008F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C477B112717BEA00CB008F /* CoreLocation.framework */; };
+		D5C4AFA8128978F1005BE697 /* RPReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C4AFA7128978F1005BE697 /* RPReachability.m */; };
+		D5C4AFCD12897956005BE697 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */; };
 		D5DF0B7E127636C300A9BC0D /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5DF0B7D127636C300A9BC0D /* MessageUI.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +79,9 @@
 		D5C47780127177D500CB008F /* GPS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPS.h; sourceTree = "<group>"; };
 		D5C47781127177D500CB008F /* GPS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPS.m; sourceTree = "<group>"; };
 		D5C477B112717BEA00CB008F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		D5C4AFA6128978F1005BE697 /* RPReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RPReachability.h; sourceTree = "<group>"; };
+		D5C4AFA7128978F1005BE697 /* RPReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RPReachability.m; sourceTree = "<group>"; };
+		D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D5DF0B7D127636C300A9BC0D /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -91,6 +96,7 @@
 				D5BEDAA2126F8D130056DB78 /* libsqlite3.dylib in Frameworks */,
 				D5C477B212717BEA00CB008F /* CoreLocation.framework in Frameworks */,
 				D5DF0B7E127636C300A9BC0D /* MessageUI.framework in Frameworks */,
+				D5C4AFCD12897956005BE697 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +142,7 @@
 				D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */,
 				D5C477B112717BEA00CB008F /* CoreLocation.framework */,
 				D5DF0B7D127636C300A9BC0D /* MessageUI.framework */,
+				D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -199,6 +206,8 @@
 			children = (
 				D51EB90A127A297C0016E191 /* egf */,
 				D5BEDA52126F8C6A0056DB78 /* egodatabase */,
+				D5C4AFA6128978F1005BE697 /* RPReachability.h */,
+				D5C4AFA7128978F1005BE697 /* RPReachability.m */,
 				D5BEDAC9126F942C0056DB78 /* VTPG_Common.h */,
 				D5BEDACA126F942C0056DB78 /* VTPG_Common.m */,
 			);
@@ -297,6 +306,7 @@
 				D544A08C127F5FAA00835938 /* DB.m in Sources */,
 				D544A08D127F5FAA00835938 /* DB_log.m in Sources */,
 				D544A08E127F5FAA00835938 /* Rows_to_attachment.m in Sources */,
+				D5C4AFA8128978F1005BE697 /* RPReachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

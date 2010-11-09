@@ -16,6 +16,17 @@
  * Hankiewicz from Electric Hands Software (http://elhaso.com/) have
  * made it to Floki for hardware UDID detection. See licensing
  * information under \c external/egf/readme.txt.
+ *
+ * To be aware of the state of the network and show informative
+ * messages to the user we use Apple's Reachability class
+ * (http://developer.apple.com/iphone/library/samplecode/Reachability/index.html).
+ * The class was renamed to RPReachability to avoid possible future
+ * clashes with third party libraries which linked into us might
+ * give problems due to including themselves a copy of the Reachability
+ * class. Unfortunately in objective c there are no namespaces and
+ * everybody has to suck it down and use ugly prefixes. Hah, just
+ * look at the mess Apple did with the internal Message class in
+ * their MessageUI framework. Madness.
  */
 
 #import "App_delegate.h"
@@ -25,8 +36,13 @@
 #import "db/DB.h"
 #import "macro.h"
 
+#import "RPReachability.h"
 
-// Forward private declarations.
+
+/// Pseudo constants.
+static NSString *REACH_HOST = @"github.com";
+
+// Private function forward declarations.
 static void _set_globals(void);
 
 
@@ -48,6 +64,9 @@ static void _set_globals(void);
 
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	window_.backgroundColor = [UIColor whiteColor];
+
+	/** Set up the reachability class. This works slowly, so let it be first. */
+	[RPReachability init_with_host:REACH_HOST];
 
 	db_ = [DB open_database];
 	if (!db_) {
