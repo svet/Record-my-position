@@ -1,6 +1,6 @@
 // vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 
-#import "Capture_tab.h"
+#import "controllers/Capture_tab.h"
 
 #import "App_delegate.h"
 #import "GPS.h"

@@ -1,6 +1,6 @@
 // vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 
-#import "Log_tab.h"
+#import "controllers/Log_tab.h"
 
 
 @implementation Log_tab

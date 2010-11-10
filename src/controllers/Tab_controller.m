@@ -1,10 +1,10 @@
 // vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 
-#import "Tab_controller.h"
+#import "controllers/Tab_controller.h"
 
-#import "Capture_tab.h"
-#import "Log_tab.h"
-#import "Share_tab.h"
+#import "controllers/Capture_tab.h"
+#import "controllers/Log_tab.h"
+#import "controllers/Share_tab.h"
 
 
 @implementation Tab_controller

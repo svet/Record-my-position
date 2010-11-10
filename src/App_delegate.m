@@ -32,7 +32,7 @@
 #import "App_delegate.h"
 
 #import "GPS.h"
-#import "Tab_controller.h"
+#import "controllers/Tab_controller.h"
 #import "db/DB.h"
 #import "macro.h"
 
