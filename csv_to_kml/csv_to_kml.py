@@ -240,6 +240,7 @@ def process_file(filename, do_zip):
  <Style id='r3'><LineStyle><color>bb688bff</color><width>5</width></LineStyle></Style>
  <Style id='r4'><LineStyle><color>bb3262ff</color><width>5</width></LineStyle></Style>
  <Style id='r5'><LineStyle><color>bb0076ff</color><width>5</width></LineStyle></Style>
+ <Style id='b1'><LineStyle><color>bbff0000</color><width>5</width></LineStyle></Style>
 """ % (short_name))
 
 	for track in tracks:
@@ -288,14 +289,20 @@ def generate_track(track, output):
 			extra_name = " log"
 
 		# Find next coordinate.
-		next_lon, next_lat = None, None
+		next_type, next_lon, next_lat = None, None, None
 		if f + 1 < len(track.positions):
+			next_type = track.positions[f + 1][0]
 			next_lon, next_lat = track.positions[f + 1][2:4]
 
 		hour, minute, second = time.localtime(timestamp)[3:6]
 
-		output.write("""<Placemark><styleUrl>r%d</styleUrl>
-<name>%d %02d:%02d:%02d%s</name>\n""" % (color,
+		# Use different color for log interpolated values.
+		color_text = "r%d" % color
+		if ROW_LOG == type and ROW_LOG == next_type:
+			color_text = "b1"
+
+		output.write("""<Placemark><styleUrl>%s</styleUrl>
+<name>%d %02d:%02d:%02d%s</name>\n""" % (color_text,
 			f + 1, hour, minute, second, extra_name))
 
 		write_kml_position_description(output, track.positions[f])
