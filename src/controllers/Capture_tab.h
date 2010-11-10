@@ -20,6 +20,8 @@
 	UILabel *clock_;
 	NSTimer *timer_;
 
+	UIButton *note_;
+
 	CLLocation *old_location_;
 	/// Keeps track of whether we are watching or not.
 	BOOL watching_;

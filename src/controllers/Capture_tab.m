@@ -4,6 +4,7 @@
 
 #import "App_delegate.h"
 #import "GPS.h"
+#import "controllers/Note_taking_controller.h"
 #import "macro.h"
 
 
@@ -12,6 +13,8 @@
 - (void)switch_changed;
 - (void)update_gui;
 - (void)start_timer;
+- (void)add_note;
+- (void)warn:(NSString*)text title:(NSString*)title;
 @end
 
 
@@ -48,6 +51,7 @@
 		forControlEvents:UIControlEventValueChanged];
 	[clock_ release];
 	[ago_ release];
+	[note_ release];
 	[capabilities_ release];
 	[movement_ release];
 	[switch_ release];
@@ -63,6 +67,13 @@
 - (void)loadView
 {
 	[super loadView];
+
+	note_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	note_.frame = CGRectMake(5, 85, 310, 135);
+	[note_ setTitle:@"" forState:UIControlStateNormal];
+	[note_ addTarget:self action:@selector(add_note)
+		forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview:note_];
 
 	start_title_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 210, 20)];
 	start_title_.text = @"1";
@@ -164,12 +175,7 @@
 	if ([switch_ isOn]) {
 		if (![gps start]) {
 			switch_.on = false;
-
-			UIAlertView *alert = [[UIAlertView alloc]
-				initWithTitle:@"GPS" message:@"Couldn't start GPS"
-				delegate:nil cancelButtonTitle:@"Oh!" otherButtonTitles:nil];
-			[alert show];
-			[alert release];
+			[self warn:@"Couldn't start GPS" title:@"GPS"];
 		} else {
 			[gps add_watcher:self];
 			watching_ = YES;
@@ -269,6 +275,8 @@
 			selector:@selector(update_gui) userInfo:nil repeats:YES];
 }
 
+/** The application did become active. See if we have to reenable the timers.
+ */
 - (void)did_become_active
 {
 	if (reenable_timers_) {
@@ -278,6 +286,9 @@
 	}
 }
 
+/** The application went into background.
+ * Disable the timers and make a note to reenable them when coming back.
+ */
 - (void)did_enter_background
 {
 	if (timer_) {
@@ -286,6 +297,42 @@
 		timer_ = nil;
 		reenable_timers_ = YES;
 	}
+}
+
+/** Captures the last position and offers the user to input a note.
+ * The note won't be added if the gps is off, or there was no last
+ * input available. The purpose is to have a valid note location.
+ */
+- (void)add_note
+{
+	if (![GPS get].gps_is_on) {
+		[self warn:@"Please turn GPS on to take a note with position."
+			title:@"GPS capture off"];
+		return;
+	}
+
+	CLLocation *location = [GPS get].last_pos;
+	if (!location) {
+		[self warn:@"Wait until the GPS receives at least one position."
+			title:@"No GPS data"];
+		return;
+	}
+
+	Note_taking_controller *controller = [Note_taking_controller new];
+	controller.location = location;
+	[self presentModalViewController:controller animated:YES];
+	[controller release];
+}
+
+/** Shows an OK popup alert to the user.
+ */
+- (void)warn:(NSString*)text title:(NSString*)title
+{
+	UIAlertView *alert = [[UIAlertView alloc]
+		initWithTitle:title message:text
+		delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[alert show];
+	[alert release];
 }
 
 #pragma mark KVO

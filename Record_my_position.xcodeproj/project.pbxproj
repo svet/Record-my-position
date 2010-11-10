@@ -32,6 +32,7 @@
 		D5D7CDD5128A9D1300B83104 /* Log_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDCF128A9D1300B83104 /* Log_tab.m */; };
 		D5D7CDD6128A9D1300B83104 /* Share_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDD1128A9D1300B83104 /* Share_tab.m */; };
 		D5D7CDD7128A9D1300B83104 /* Tab_controller.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDD3128A9D1300B83104 /* Tab_controller.m */; };
+		D5D7CDEE128AB14000B83104 /* Note_taking_controller.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDED128AB14000B83104 /* Note_taking_controller.m */; };
 		D5DF0B7E127636C300A9BC0D /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5DF0B7D127636C300A9BC0D /* MessageUI.framework */; };
 /* End PBXBuildFile section */
 
@@ -82,6 +83,8 @@
 		D5D7CDD1128A9D1300B83104 /* Share_tab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Share_tab.m; sourceTree = "<group>"; };
 		D5D7CDD2128A9D1300B83104 /* Tab_controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tab_controller.h; sourceTree = "<group>"; };
 		D5D7CDD3128A9D1300B83104 /* Tab_controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tab_controller.m; sourceTree = "<group>"; };
+		D5D7CDEC128AB14000B83104 /* Note_taking_controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Note_taking_controller.h; sourceTree = "<group>"; };
+		D5D7CDED128AB14000B83104 /* Note_taking_controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Note_taking_controller.m; sourceTree = "<group>"; };
 		D5DF0B7D127636C300A9BC0D /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -229,6 +232,8 @@
 				D5D7CDCD128A9D1300B83104 /* Capture_tab.m */,
 				D5D7CDCE128A9D1300B83104 /* Log_tab.h */,
 				D5D7CDCF128A9D1300B83104 /* Log_tab.m */,
+				D5D7CDEC128AB14000B83104 /* Note_taking_controller.h */,
+				D5D7CDED128AB14000B83104 /* Note_taking_controller.m */,
 				D5D7CDD0128A9D1300B83104 /* Share_tab.h */,
 				D5D7CDD1128A9D1300B83104 /* Share_tab.m */,
 				D5D7CDD2128A9D1300B83104 /* Tab_controller.h */,
@@ -315,6 +320,7 @@
 				D5D7CDD5128A9D1300B83104 /* Log_tab.m in Sources */,
 				D5D7CDD6128A9D1300B83104 /* Share_tab.m in Sources */,
 				D5D7CDD7128A9D1300B83104 /* Tab_controller.m in Sources */,
+				D5D7CDEE128AB14000B83104 /* Note_taking_controller.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
