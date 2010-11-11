@@ -108,7 +108,14 @@
 - (void)take_photo
 {
 	[text_ resignFirstResponder];
-	DLOG(@"Taking photos not implemented! %@", text_.text);
+
+	// TODO: Put here a shield to let the user know we are waiting. Run async.
+	UIImagePickerController *picker = [UIImagePickerController new];
+	picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+	picker.delegate = self;
+	[self presentModalViewController:picker animated:YES];
+
+	[picker release];
 }
 
 /** Handles the touching on any part of the interface not active.
@@ -127,6 +134,25 @@
 {
 	[text_ resignFirstResponder];
 	return YES;
+}
+
+#pragma UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+	didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+	UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+	if (!image)
+		image = [info objectForKey:UIImagePickerControllerOriginalImage];
+
+	if (image) {
+		DLOG(@"Saving image asynchronously, not checking errors, lalala");
+		UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+	} else {
+		DLOG(@"Errr... weren't we saving something here?");
+	}
+
+	[picker dismissModalViewControllerAnimated:YES];
 }
 
 @end

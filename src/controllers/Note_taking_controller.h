@@ -12,7 +12,9 @@
  */
 @class CLLocation;
 
-@interface Note_taking_controller : UIViewController <UITextFieldDelegate>
+@interface Note_taking_controller : UIViewController
+	<UITextFieldDelegate, UIImagePickerControllerDelegate,
+	UINavigationControllerDelegate>
 {
 	UIButton *cancel_;
 	UIButton *save_;
