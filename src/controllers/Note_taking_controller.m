@@ -2,6 +2,7 @@
 
 #import "controllers/Note_taking_controller.h"
 
+#import "db/DB.h"
 #import "macro.h"
 
 
@@ -14,6 +15,7 @@
 	if (!(self = [super init]))
 		return nil;
 
+	location_id_ = -1;
 	self.title = @"Take a note";
 	can_take_pictures_ = [UIImagePickerController
 		isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
@@ -89,10 +91,37 @@
 	[super dealloc];
 }
 
+/** Verify that the identifier is ok.
+ */
+- (void)viewDidAppear:(BOOL)animated
+{
+	if (location_id_ < 0)
+		[self warn:@"Couldn't get saved location id!" title:@"Error saving"];
+}
+
+/** Handles setting the location, which triggers lots of side effects.
+ * The location will be immediately saved into the database and a
+ * row identifier will be saved into location_id_. Later this identifier
+ * is used to update the text of the note should the user take any,
+ * or remove the entry if the user cancels the note.
+ */
+- (void)setLocation:(CLLocation*)location
+{
+	[location retain];
+	[location_ release];
+	location_ = location;
+
+	if (location)
+		location_id_ = [[DB get] log_note:location];
+	else
+		location_id_ = -1;
+}
+
 /** Dismisses the view, removing the previously entered log entry.
  */
 - (void)cancel_note
 {
+	[[DB get] delete_note:location_id_];
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -100,6 +129,7 @@
  */
 - (void)save_note
 {
+	[[DB get] update_note:location_id_ text:text_.text];
 	[self dismissModalViewControllerAnimated:YES];
 }
 

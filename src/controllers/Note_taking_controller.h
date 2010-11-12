@@ -1,6 +1,6 @@
 // vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 
-#import <UIKit/UIKit.h>
+#import "controllers/View_controller.h"
 
 /** Prompts the user to take a text or photo along with a position.
  * The location passed to the view through the property will be
@@ -12,7 +12,7 @@
  */
 @class CLLocation;
 
-@interface Note_taking_controller : UIViewController
+@interface Note_taking_controller : View_controller
 	<UITextFieldDelegate, UIImagePickerControllerDelegate,
 	UINavigationControllerDelegate>
 {

@@ -2,6 +2,7 @@
 
 #import "egodatabase/EGODatabase.h"
 
+@class CLLocation;
 @class Rows_to_attachment;
 
 extern NSString *DB_bump_notification;
@@ -31,5 +32,9 @@ extern NSString *DB_bump_notification;
 - (void)flush;
 - (int)get_num_entries;
 - (Rows_to_attachment*)prepare_to_attach;
+
+- (int)log_note:(CLLocation*)location;
+- (void)update_note:(int)num text:(NSString*)text;
+- (void)delete_note:(int)num;
 
 @end

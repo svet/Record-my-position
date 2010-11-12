@@ -281,6 +281,86 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 		max_row:max_row];
 }
 
+#pragma mark Handling of notes
+
+/** Logs a special note log with location.
+ * This function flushes the database to disk, then creates a special
+ * log entry whose identifier is returned back. With the returned
+ * identifier you can later call update_note: or delete_note:.
+ */
+- (int)log_note:(CLLocation*)location;
+{
+	[self flush];
+
+	DB_log *log = [[DB_log alloc] init_with_location:location
+		in_background:in_background_ accuracy:[[GPS get] accuracy]];
+	RASSERT(log, @"Couldn't create DB_log", return -1);
+
+	const BOOL ret = [self executeUpdateWithParameters:@"INSERT into Positions "
+		@"(id, type, text, longitude, latitude, h_accuracy,"
+		@"v_accuracy, altitude, timestamp, in_background,"
+		@"requested_accuracy, speed, direction, battery_level,"
+		@"external_power, reachability) "
+		@"VALUES (NULL, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+		@"?, ?)",
+		[NSNumber numberWithInt:DB_ROW_TYPE_NOTE],
+		[NSNumber numberWithDouble:log.location.coordinate.longitude],
+		[NSNumber numberWithDouble:log.location.coordinate.latitude],
+		[NSNumber numberWithDouble:log.location.horizontalAccuracy],
+		[NSNumber numberWithDouble:log.location.verticalAccuracy],
+		[NSNumber numberWithDouble:log.location.altitude],
+		[NSNumber numberWithInt:
+			[log.location.timestamp timeIntervalSince1970]],
+		[NSNumber numberWithBool:log->in_background_],
+		[NSNumber numberWithInt:log->accuracy_],
+		[NSNumber numberWithDouble:log.location.speed],
+		[NSNumber numberWithDouble:log.location.course],
+		[NSNumber numberWithFloat:log->battery_level_],
+		[NSNumber numberWithBool:log->external_power_],
+		[NSNumber numberWithBool:log->reachability_],
+		nil];
+
+	if (!ret) {
+		LOG(@"Couldn't insert %@:\n\t%@", log, [self lastErrorMessage]);
+		return -1;
+	}
+
+	[[NSNotificationCenter defaultCenter]
+		postNotificationName:DB_bump_notification object:self];
+
+	return [self last_insert_rowid];
+}
+
+/** Given a note identifier, updates the text.
+ * Note that passing nil or a zero length text won't do anything
+ * to the database.
+ */
+- (void)update_note:(int)num text:(NSString*)text
+{
+	if (!text || text.length < 1)
+		return;
+
+	const BOOL ret = [self executeUpdateWithParameters:@"UPDATE Positions "
+		@"SET text = ? WHERE id = ?",
+		text, [NSNumber numberWithInt:num], nil];
+
+	if (!ret)
+		LOG(@"Couldn't update %d with %@:\n\t%@", num, text,
+			[self lastErrorMessage]);
+}
+
+/** Removes a note from the database according to its identifier.
+ */
+- (void)delete_note:(int)num
+{
+	NSString *sql = [NSString stringWithFormat:@"DELETE FROM Positions "
+		@"WHERE id = %d", num];	
+	EGODatabaseResult *result = [self executeQuery:sql];
+	LOG_ERROR(result, sql, NO);
+
+	// TODO: Sent notification of decreased log.
+}
+
 #pragma mark KVO
 
 /** Watches GPS changes.

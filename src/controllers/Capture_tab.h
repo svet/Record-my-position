@@ -1,10 +1,10 @@
 // vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 
-#import <UIKit/UIKit.h>
+#import "controllers/View_controller.h"
 
 @class CLLocation;
 
-@interface Capture_tab : UIViewController
+@interface Capture_tab : View_controller
 {
 	UILabel *start_title_;
 	UISwitch *switch_;

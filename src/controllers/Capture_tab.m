@@ -14,7 +14,6 @@
 - (void)update_gui;
 - (void)start_timer;
 - (void)add_note;
-- (void)warn:(NSString*)text title:(NSString*)title;
 @end
 
 
@@ -322,17 +321,6 @@
 	controller.location = location;
 	[self presentModalViewController:controller animated:YES];
 	[controller release];
-}
-
-/** Shows an OK popup alert to the user.
- */
-- (void)warn:(NSString*)text title:(NSString*)title
-{
-	UIAlertView *alert = [[UIAlertView alloc]
-		initWithTitle:title message:text
-		delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[alert show];
-	[alert release];
 }
 
 #pragma mark KVO

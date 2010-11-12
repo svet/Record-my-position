@@ -2,6 +2,7 @@
 
 #define DB_ROW_TYPE_LOG			0
 #define DB_ROW_TYPE_COORD		1
+#define DB_ROW_TYPE_NOTE		2
 
 #ifdef DEBUG
 #define LOG_ERROR(RES,QUERY,DO_ASSERT) do {									\
