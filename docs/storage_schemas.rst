@@ -17,12 +17,15 @@ Record my position: Internal db schema
 General
 =======
 
-Information on the sqlite database file format. There is a single
-table to record events, but depending on the type of the row it may
-contain a coordinate event or a log event. Coordinate events are
-triggered by the hardware. Log events indicate important app status
-changes and they may help to define why the log may have less entries
-(eg. the application entered into the background).
+Information on the sqlite database file format for the Record-my-position
+app (https://github.com/gradha/Record-my-position).
+
+There is a single table to record events, but depending on the type
+of the row it may contain a coordinate event or a log event.
+Coordinate events are triggered by the hardware. Log events indicate
+important app status changes and they may help to define why the
+log may have less entries (eg. the application entered into the
+background and the GPS accuracy was reduced to save battery).
 
 
 Log table
@@ -36,6 +39,7 @@ Log table
 
 	 * 0: Text log entry.
 	 * 1: Hardware GPS event.
+	 * 2: Note (hybrid of log with location)
 **text** TEXT NULL:
 	Optional text field entry. Usually not null when the type
 	of event is a log entry. Otherwise not used.
