@@ -20,7 +20,15 @@ import zipfile
 
 ROW_LOG = 0
 ROW_POSITION = 1
+ROW_NOTE = 2
+UNEXPECTED_LOG_TYPE = "unexpected?"
 TIME_THRESHOLD = int(1 * 60 * 60)
+
+LOG_TYPES = {
+	ROW_LOG: "log entry",
+	ROW_POSITION: "coordinate",
+	ROW_NOTE: "note",
+	}
 
 
 class Track:
@@ -134,14 +142,14 @@ def filter_csv_rows(rows):
 		prev = pos - 1
 		while prev >= 0:
 			type = rows[prev][0]
-			if ROW_POSITION == type:
+			if ROW_POSITION == type or ROW_NOTE == type:
 				break
 			prev -= 1
 
 		next = pos + 1
 		while next < len(rows):
 			type = rows[next][0]
-			if ROW_POSITION == type:
+			if ROW_POSITION == type or ROW_NOTE == type:
 				break
 			next += 1
 
@@ -241,6 +249,7 @@ def process_file(filename, do_zip):
  <Style id='r4'><LineStyle><color>bb3262ff</color><width>5</width></LineStyle></Style>
  <Style id='r5'><LineStyle><color>bb0076ff</color><width>5</width></LineStyle></Style>
  <Style id='b1'><LineStyle><color>bbff0000</color><width>5</width></LineStyle></Style>
+ <Style id='g1'><LineStyle><color>bb00ff00</color><width>5</width></LineStyle></Style>
 """ % (short_name))
 
 	for track in tracks:
@@ -300,6 +309,8 @@ def generate_track(track, output):
 		color_text = "r%d" % color
 		if ROW_LOG == type and ROW_LOG == next_type:
 			color_text = "b1"
+		elif ROW_NOTE == type:
+			color_text = "g1"
 
 		output.write("""<Placemark><styleUrl>%s</styleUrl>
 <name>%d %02d:%02d:%02d%s</name>\n""" % (color_text,
@@ -340,12 +351,7 @@ def write_kml_position_description(output, position_data):
 	if len(text) > 1:
 		lines.append(text.strip() + "\n")
 
-	if ROW_LOG == type:
-		lines.append("Type: log entry.")
-	elif ROW_POSITION == type:
-		lines.append("Type: coordinate.")
-	else:
-		lines.append("Type: unexpected?")
+	lines.append("Type: %s" % LOG_TYPES.get(type, UNEXPECTED_LOG_TYPE))
 
 	if h > 0:
 		lines.append("Horizontal accuracy: %0.0fm." % h)
