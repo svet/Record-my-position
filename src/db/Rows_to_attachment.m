@@ -73,15 +73,16 @@
 			[strings addObject:
 				[NSString stringWithFormat:@"%d,%@,0,0,0,0,-1,-1,-1,%d,"
 				@"%d,%d,-1.0,-1.0,%0.2f,%d,%d",
-				DB_ROW_TYPE_LOG, [row stringForColumnIndex:2], timestamp,
+				type, [row stringForColumnIndex:2], timestamp,
 				in_background, requested_accuracy, battery_level,
 				external_power, reachability]];
-		} else if (DB_ROW_TYPE_COORD == type) {
+		} else if (DB_ROW_TYPE_COORD == type || DB_ROW_TYPE_NOTE == type) {
+			NSString *text = NON_NIL_STRING([row stringForColumnIndex:2]);
 			const double longitude = [row doubleForColumnIndex:3];
 			const double latitude = [row doubleForColumnIndex:4];
-			[strings addObject:[NSString stringWithFormat:@"%d,,"
+			[strings addObject:[NSString stringWithFormat:@"%d,%@,"
 				@"%0.8f,%0.8f,%@,%@,%0.1f,%0.1f,%0.1f,%d,"
-				@"%d,%d,%0.2f,%0.2f,%0.2f,%d,%d", DB_ROW_TYPE_COORD,
+				@"%d,%d,%0.2f,%0.2f,%0.2f,%d,%d", type, text,
 				longitude, latitude, [GPS degrees_to_dms:longitude latitude:NO],
 				[GPS degrees_to_dms:latitude latitude:YES],
 				[row doubleForColumnIndex:5], [row doubleForColumnIndex:6],
@@ -90,6 +91,7 @@
 				battery_level, external_power, reachability]];
 		} else {
 			NSAssert(0, @"Unknown database row type?!");
+			return nil;
 		}
 	}
 
