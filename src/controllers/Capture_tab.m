@@ -187,6 +187,10 @@
 	}
 
 	[self update_gui];
+
+	// Force saving preferences here, otherwise if we get killed they are lost.
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults synchronize];
 }
 
 /** Handles updating the gui labels and other state.
