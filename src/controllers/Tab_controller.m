@@ -18,14 +18,14 @@
 		return nil;
 
 	capture_tab_ = [Capture_tab new];
-	log_tab_ = [Log_tab new];
+	//log_tab_ = [Log_tab new];
 	share_tab_ = [Share_tab new];
 
-	if (!capture_tab_ || !log_tab_ || !share_tab_)
+	if (!capture_tab_ || !share_tab_)
 		return nil;
 
 	self.viewControllers = [NSArray arrayWithObjects:capture_tab_,
-		log_tab_, share_tab_, nil];
+		share_tab_, nil];
 	self.delegate = self;
 
 	return self;
