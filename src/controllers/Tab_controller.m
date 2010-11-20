@@ -24,6 +24,17 @@
 	if (!capture_tab_ || !share_tab_)
 		return nil;
 
+	// Create the tab bar items to associate icons.
+	UITabBarItem *item = [[UITabBarItem alloc] initWithTitle:@"Capture"
+		image:[UIImage imageNamed:@"capture_icon.png"] tag:0];
+	capture_tab_.tabBarItem = item;
+	[item release];
+
+	item = [[UITabBarItem alloc] initWithTitle:@"Share"
+		image:[UIImage imageNamed:@"share_icon.png"] tag:0];
+	share_tab_.tabBarItem = item;
+	[item release];
+
 	self.viewControllers = [NSArray arrayWithObjects:capture_tab_,
 		share_tab_, nil];
 	self.delegate = self;
