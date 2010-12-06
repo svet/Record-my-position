@@ -1,8 +1,8 @@
-==================
-Record my position
-==================
+======================
+Record my GPS position
+======================
 
-:author: Grzegorz Adam Hankiewicz <gradha@titanium.sabren.com>
+:author: Grzegorz Adam Hankiewicz <gradha@elhaso.com>
 
 .. contents::
 
@@ -15,11 +15,11 @@ Record my position
 General
 =======
 
-This is a simple iPhone client to record and save GPS information.
-Note that for the moment the program only uses active GPS, which
-drains the battery quickly, even when running in the background.
-Don't run it for more than an hour if you want to use your iPhone
-as something other than a dead weight.
+Record my GPS position is a simple iPhone client to record and save
+GPS information.  Note that for the moment the program only uses
+active GPS, which drains the battery quickly, even when running in
+the background.  Don't run it for more than an hour if you want to
+use your iPhone as something other than a dead weight.
 
 The app works for the iPod touch, but the precission varies a lot
 and you depend on wifi location, so you won't get very useful
@@ -31,15 +31,37 @@ whole day and didn't consume more than a quarter of the battery,
 so it seems the wifi location doesn't require as much power.
 
 
+App store
+=========
+
+Record my GPS position can be downloaded for free from the Apple
+App Store
+(http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=405865492&mt=8).
+You can find other of my creations on the App Store under my Electric
+Hands Software brand
+(http://itunes.apple.com/artist/electric-hands-software/id325946567) which
+you can also find at http://elhaso.com/.
+
+
+Requests and issues
+===================
+
+For requests and problems, feel free to use github's tracker at
+https://github.com/gradha/Record-my-position/issues.
+
+
+Source code
+===========
+
 Requirements
-============
+------------
 
 The source code uses SDK 4.1 and deploys on 3.x. Patches are welcome
 to make it compile out of the box with previous SDK versions.
 
 
 Installation
-============
+------------
 
 For the moment you have to compile and build yourself everything.
 Here are the steps:
@@ -59,18 +81,8 @@ Here are the steps:
 * Open the converted kml files with Google Earth (http://earth.google.com/).
 
 
-App store
-=========
-
-This is an early source code release. In the future I will upload
-the program to the App Store under my Electric Hands Software brand
-(http://itunes.apple.com/artist/electric-hands-software/id325946567)
-which you can also find at http://elhaso.com/. I'm waiting to at
-least have working the log tab.
-
-
 License
-=======
+-------
 
 Unless otherwise stated, this source code is available under the
 BSD license (http://www.opensource.org/licenses/bsd-license.php).
@@ -110,7 +122,3 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 
-TODO
-====
-
-Now tracking at https://github.com/gradha/Record-my-position/issues
