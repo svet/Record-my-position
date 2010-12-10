@@ -15,6 +15,6 @@
 	}																		\
 } while(0)
 #else
-#define LOG_ERROR(RES,QUERY,DO_ASSERT) do { RES = nil; } while(0)
+#define LOG_ERROR(RES,QUERY,DO_ASSERT) do { } while(0)
 #endif
 
