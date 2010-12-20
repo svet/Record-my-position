@@ -30,6 +30,9 @@ my iPod touch on with the program running in the background for a
 whole day and didn't consume more than a quarter of the battery,
 so it seems the wifi location doesn't require as much power.
 
+This program was possible due to http://efaber.net/ being nice guys
+and allowing me to release this as open source.
+
 
 App store
 =========
