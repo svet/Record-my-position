@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# vim:tabstop=4 shiftwidth=4 encoding=utf-8
+# vim:tabstop=4 shiftwidth=4
 """Converts CSV files with expected geodetic data into nice KML files.
 """
 
@@ -13,6 +13,7 @@ import csv
 import logging
 import os
 import os.path
+import sys
 import time
 import xml.etree.ElementTree as ET
 import zipfile
@@ -49,7 +50,9 @@ def process_arguments():
 	"""
 	parser = OptionParser()
 	parser.add_option("-Z", "--no-zip", dest="no_zip", action="store_true",
-		help = "generate uncompressed kml files instead of kmz.")
+		help = "generate uncompressed KML files instead of KMZ.")
+	parser.add_option("-g", "--gpx", dest="gpx", action="store_true",
+		help = "generate basic GPX files too.")
 	options, args = parser.parse_args()
 	if len(args) < 1:
 		logging.error("No input. Please specify *.csv files.")
@@ -219,11 +222,85 @@ def interpolate_position(positions, pos1, pos2, timestamp):
 	return x1 + factor * (x2 - x1), y1 + factor * (y2 - y1)
 
 
-def process_file(filename, do_zip):
+def internal_time_to_gpx_timestamp(utc_timestamp):
+	"""f(float) -> string
+
+	Converts a time in UTC to a string for the gpx xml file format.
+	"""
+	return "%04d-%02d-%02dT%02d:%02d:%02dZ" % time.gmtime(utc_timestamp)[:6]
+
+
+def convert_to_gpx(filename):
+	"""f(string) -> None
+
+	Converts the input csv file into a gpx file, replacing the extension.
+	"""
+	out_filename = "%s.gpx" % (os.path.splitext(filename)[0])
+	logging.info("%r -> %r", filename, out_filename)
+	tracks = filter_csv_rows(load_csv(filename))
+	if len(tracks) < 1:
+		logging.error("No data found in %r", filename)
+		return
+
+
+
+	output = StringIO.StringIO()
+	output.write("""<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<gpx xmlns="http://www.topografix.com/GPX/1/1">
+	<metadata><link href="https://github.com/gradha/Record-my-position/">
+	<text>Record-my-position</text></link><time>%s</time></metadata>
+""" % internal_time_to_gpx_timestamp(tracks[0].positions[0][9]))
+
+	for track in tracks:
+		generate_gpx_track(track, output)
+
+	output.write("</gpx>")
+	buf = output.getvalue()
+	output.close()
+
+	with open(out_filename, "wb") as output: output.write(buf)
+
+	# Validate generated xml.
+	ET.fromstring(buf)
+
+
+def generate_gpx_track(track, output):
+	"""f(Track, io-bbject) -> None
+
+	Outputs valid KML xml for the track.
+	"""
+	times = [x[9] for x in track.positions]
+	min_time, max_time = min(times), max(times)
+	min_hour, min_min = time.localtime(min_time)[3:5]
+	max_hour, max_min = time.localtime(max_time)[3:5]
+
+	# Filter out log entries.
+	positions = [x for x in track.positions if len(x[1]) < 1]
+
+	output.write("""<trk><name>%02d:%02d-%02d:%02d, %s positions</name>
+<trkseg>""" % (min_hour, min_min, max_hour, max_min, len(positions)))
+
+	for f in range(len(positions)):
+		(type, text, lon, lat, lon_text, lat_text, h, v, altitude,
+			timestamp, in_background, requested_accuracy, speed, direction,
+			battery_level, external_power, reachability) = positions[f]
+
+		output.write("""<trkpt lat="%f" lon="%f">""" % (lat, lon))
+		if altitude:
+			output.write("""<ele>%f</ele>\n""" % altitude)
+		output.write("<time>%s</time></trkpt>\n" %
+			internal_time_to_gpx_timestamp(timestamp))
+
+	output.write("""</trkseg></trk>""")
+
+
+
+def convert_to_kml(filename, do_zip):
 	"""f(string, bool) -> None
 
-	Converts the input csv file into an kml file, replacing the extension.
-	If the do_zip flag is set, a compressed kmz file will be generated instead.
+	Converts the input csv file into an KML file, replacing the extension.
+	If the do_zip flag is set, a compressed KMZ file will be generated instead.
 	"""
 	if do_zip:
 		out_filename = "%s.kmz" % (os.path.splitext(filename)[0])
@@ -253,7 +330,7 @@ def process_file(filename, do_zip):
 """ % (short_name))
 
 	for track in tracks:
-		generate_track(track, output)
+		generate_kml_track(track, output)
 
 	output.write("</Document></kml>")
 	buf = output.getvalue()
@@ -264,17 +341,16 @@ def process_file(filename, do_zip):
 		z.writestr("doc.kml", buf)
 		z.close()
 	else:
-		with open(out_filename, "wb") as output:
-			output.write(buf)
+		with open(out_filename, "wb") as output: output.write(buf)
 
-	# Validate generated kml..
+	# Validate generated xml.
 	ET.fromstring(buf)
 
 
-def generate_track(track, output):
+def generate_kml_track(track, output):
 	"""f(Track, io-bbject) -> None
 
-	Outputs valid kml xml for the track.
+	Outputs valid KML xml for the track.
 	"""
 	times = [x[9] for x in track.positions]
 	min_time, max_time = min(times), max(times)
@@ -386,7 +462,9 @@ def main():
 	"""
 	options, files = process_arguments()
 	for filename in files:
-		process_file(filename, not options.no_zip)
+		convert_to_kml(filename, not options.no_zip)
+		if options.gpx:
+			convert_to_gpx(filename)
 
 
 if "__main__" == __name__:
