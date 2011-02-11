@@ -1,4 +1,4 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
+// vim:tabstop=4 shiftwidth=4 syntax=objc
 
 #import "controllers/Note_taking_controller.h"
 
@@ -26,6 +26,11 @@
 {
 	NSAssert(location_, @"You need to set the location before calling this!");
 	[super loadView];
+
+	UIImageView *background = [[UIImageView alloc]
+		initWithImage:[UIImage imageNamed:@"back.jpg"]];
+	[self.view addSubview:background];
+	[background release];
 
 	dismiss_ = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
 	dismiss_.frame = self.view.frame;

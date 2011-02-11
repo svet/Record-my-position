@@ -293,4 +293,4 @@ static void _set_globals(void)
 			g_region_monitoring = YES;
 }
 
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
+// vim:tabstop=4 shiftwidth=4 syntax=objc

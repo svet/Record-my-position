@@ -45,6 +45,11 @@
 {
 	[super loadView];
 
+	UIImageView *background = [[UIImageView alloc]
+		initWithImage:[UIImage imageNamed:@"back.jpg"]];
+	[self.view addSubview:background];
+	[background release];
+
 	// Counter label.
 	counter_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 300, 40)];
 	counter_.text = @"0 entries available";

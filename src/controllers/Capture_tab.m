@@ -1,4 +1,4 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
+// vim:tabstop=4 shiftwidth=4 syntax=objc
 
 #import "controllers/Capture_tab.h"
 
@@ -66,6 +66,11 @@
 - (void)loadView
 {
 	[super loadView];
+
+	UIImageView *background = [[UIImageView alloc]
+		initWithImage:[UIImage imageNamed:@"back.jpg"]];
+	[self.view addSubview:background];
+	[background release];
 
 	note_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	note_.frame = CGRectMake(5, 85, 310, 135);
