@@ -1,4 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 /**
  * \file hardware.h
  * \brief Functions to query the underlying hardware.
@@ -57,3 +56,5 @@ void destroy_hardware_info(Hardware_info **info);
 
 
 #endif // __EGF_HARDWARE_H__
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

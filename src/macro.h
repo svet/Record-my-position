@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
-
 #ifndef __MACRO_H__
 #define __MACRO_H__
 
@@ -55,3 +53,5 @@
 #define IS_IPAD		(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
 #endif // __MACRO_H__
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

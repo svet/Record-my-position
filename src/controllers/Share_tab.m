@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
-
 #import "controllers/Share_tab.h"
 
 #import "App_delegate.h"
@@ -10,9 +8,13 @@
 
 
 #define _SWITCH_KEY_NEGATED		@"remove_entries_negated"
+#define _SWITCH_KEY_GPX			@"generate_gpx_negated"
 
 
 @interface Share_tab ()
+- (UISwitch*)build_switch:(NSString*)label_text label_rect:(CGRect)label_rect
+	switch_rect:(CGRect)switch_rect key:(NSString*)key;
+
 - (void)update_gui;
 - (void)increment_count:(NSNotification*)notification;
 - (void)switch_changed;
@@ -52,7 +54,7 @@
 
 	// Button to share data through email.
 	share_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-	share_.frame = CGRectMake(20, 300, 280, 40);
+	share_.frame = CGRectMake(20, 320, 280, 40);
 	[share_ setTitle:@"Send log by email" forState:UIControlStateNormal];
 	[share_ addTarget:self action:@selector(share_by_email)
 		forControlEvents:UIControlEventTouchUpInside];
@@ -60,30 +62,19 @@
 
 	// Button to purge disk database.
 	purge_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-	purge_.frame = CGRectMake(20, 200, 280, 40);
+	purge_.frame = CGRectMake(20, 220, 280, 40);
 	[purge_ setTitle:@"Purge database" forState:UIControlStateNormal];
 	[purge_ addTarget:self action:@selector(purge_database)
 		forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:purge_];
 
-	// Temporary label for switch.
-	UILabel *delete_label = [[UILabel alloc]
-		initWithFrame:CGRectMake(10, 70, 210, 40)];
-	delete_label.text = @"Remove entries sent by email";
-	delete_label.numberOfLines = 2;
-	delete_label.backgroundColor = [UIColor clearColor];
-	delete_label.textColor = [UIColor blackColor];
-	[self.view addSubview:delete_label];
-	[delete_label release];
+	remove_switch_ = [self build_switch:@"Remove entries sent by email"
+		label_rect:CGRectMake(10, 70, 210, 40)
+		switch_rect:CGRectMake(220, 70, 100, 40) key:_SWITCH_KEY_NEGATED];
 
-	// The actual switch.
-	switch_ = [[UISwitch alloc]
-		initWithFrame:CGRectMake(220, 70, 100, 40)];
-	[switch_ addTarget:self action:@selector(switch_changed)
-		forControlEvents:UIControlEventValueChanged];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	switch_.on = ![defaults boolForKey:_SWITCH_KEY_NEGATED];
-	[self.view addSubview:switch_];
+	gpx_switch_ = [self build_switch:@"Generate basic GPX file"
+		label_rect:CGRectMake(10, 120, 210, 40)
+		switch_rect:CGRectMake(220, 120, 100, 40) key:_SWITCH_KEY_GPX];
 
 	/// The shield view with a spinning element.
 	shield_ = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
@@ -108,7 +99,8 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[activity_ release];
 	[shield_ release];
-	[switch_ release];
+	[gpx_switch_ release];
+	[remove_switch_ release];
 	[purge_ release];
 	[share_ release];
 	[counter_ release];
@@ -138,6 +130,32 @@
 	[self update_gui];
 }
 
+/** Initialisation helper, constructs a pair of label an switch.
+ * Both the label and switch are added to the current view. The
+ * switch is returned and has to be released by the caller.
+ *
+ * The switch will be hooked to the switch_changed selector.
+ */
+- (UISwitch*)build_switch:(NSString*)label_text label_rect:(CGRect)label_rect
+	switch_rect:(CGRect)switch_rect key:(NSString*)key
+{
+	UILabel *label = [[UILabel alloc] initWithFrame:label_rect];
+	label.text = label_text;
+	label.numberOfLines = 2;
+	label.backgroundColor = [UIColor clearColor];
+	label.textColor = [UIColor blackColor];
+	[self.view addSubview:label];
+	[label release];
+
+	UISwitch *s = [[UISwitch alloc] initWithFrame:switch_rect];
+	[s addTarget:self action:@selector(switch_changed)
+		forControlEvents:UIControlEventValueChanged];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	s.on = ![defaults boolForKey:key];
+	[self.view addSubview:s];
+	return s;
+}
+
 /** Handles updating the gui labels and other state.
  */
 - (void)update_gui
@@ -161,7 +179,8 @@
 - (void)switch_changed
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setBool:!switch_.on forKey:_SWITCH_KEY_NEGATED];
+	[defaults setBool:!remove_switch_.on forKey:_SWITCH_KEY_NEGATED];
+	[defaults setBool:!gpx_switch_.on forKey:_SWITCH_KEY_GPX];
 }
 
 /** User clicked the purge button. Ask him if he's really serious.
@@ -274,7 +293,7 @@
 			[alert release];
 		}
 
-		if (switch_.on) {
+		if (remove_switch_.on) {
 			[rows_to_attach_ delete_rows];
 			DB *db = [DB get];
 			self.num_entries = [db get_num_entries];
@@ -286,5 +305,6 @@
 	[activity_ stopAnimating];
 }
 
-
 @end
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

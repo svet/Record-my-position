@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
-
 @class DB;
 @class Rows_to_attachment;
 
@@ -26,3 +24,5 @@
 - (bool)remaining;
 
 @end
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

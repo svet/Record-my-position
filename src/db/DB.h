@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
-
 #import "egodatabase/EGODatabase.h"
 
 @class CLLocation;
@@ -38,3 +36,5 @@ extern NSString *DB_bump_notification;
 - (void)delete_note:(int)num;
 
 @end
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

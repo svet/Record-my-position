@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
-
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
@@ -14,7 +12,8 @@
 	int num_entries_;
 
 	/// Switches and labels.
-	UISwitch *switch_;
+	UISwitch *remove_switch_;
+	UISwitch *gpx_switch_;
 
 	/// Action buttons.
 	UIButton *share_;
@@ -33,3 +32,5 @@
 - (id)init;
 
 @end
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc
