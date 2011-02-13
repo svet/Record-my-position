@@ -230,7 +230,7 @@
 	[mail setMessageBody:@"Here, parse this.\n\n" isHTML:NO];
 
 	rows_to_attach_ = [[DB get] prepare_to_attach];
-	NSArray *attachments = [rows_to_attach_ get_attachments:YES];
+	NSArray *attachments = [rows_to_attach_ get_attachments:gpx_switch_.on];
 	if (attachments) {
 		NSDateComponents *now = [[NSCalendar currentCalendar]
 			components:NSDayCalendarUnit | NSMonthCalendarUnit |

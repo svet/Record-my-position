@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
-
 #import "db/DB.h"
 
 #import "App_delegate.h"
@@ -376,3 +374,5 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 }
 
 @end
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

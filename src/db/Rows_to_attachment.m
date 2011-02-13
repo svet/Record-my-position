@@ -5,8 +5,12 @@
 #import "db/internal.h"
 #import "macro.h"
 
+#include <time.h>
 
 #define _MAX_EXPORT_ROWS		10000
+
+/// Forward static declarations.
+static NSString *gpx_timestamp(const time_t timestamp);
 
 
 @implementation Attachment
@@ -43,7 +47,12 @@
 	return self;
 }
 
-/** Returns the attachments to send.
+/** Builds and returns the attachments to send.
+ * This function always generates a CSV attachment. Pass YES if you
+ * want to generate also a GPX version. This function has the side
+ * effect of modifying max_row_ and remaining_ to allow multiple
+ * exportations.
+ *
  * Returns an empty array if there is no attachment or there was a
  * problem (more likely)
  */
@@ -60,21 +69,16 @@
 		[NSNumber numberWithInt:_MAX_EXPORT_ROWS], nil];
 	LOG_ERROR(result, nil, YES);
 
-	NSMutableArray *strings = [NSMutableArray
+	NSMutableArray *ret = [[NSMutableArray arrayWithCapacity:2] retain];
+	NSMutableArray *csv_strings = [NSMutableArray
 		arrayWithCapacity:_MAX_EXPORT_ROWS / 4];
+
+	NSMutableArray *gpx_strings = make_gpx ? [NSMutableArray
+		arrayWithCapacity:_MAX_EXPORT_ROWS / 4] : nil;
 
 	BOOL add_header = YES;
 	int last_id = -2;
 	for (EGODatabaseRow* row in result) {
-		// Should we preppend a text header with the column names?
-		if (add_header) {
-			[strings addObject:@"type,text,longitude,latitude,longitude,"
-				@"latitude,h_accuracy,v_accuracy,altitude,timestamp,"
-				@"in_background,requested_accuracy,speed,direction,"
-				@"battery_level, external_power, reachability"];
-			add_header = NO;
-		}
-
 		last_id = [row intForColumnIndex:0];
 		const int type = [row intForColumnIndex:1];
 		const int timestamp = [row intForColumnIndex:8];
@@ -86,8 +90,28 @@
 		const int external_power = [row intForColumnIndex:14];
 		const int reachability = [row intForColumnIndex:15];
 
+		// Should we preppend a text header with the column names?
+		if (add_header) {
+			[csv_strings addObject:@"type,text,longitude,latitude,longitude,"
+				@"latitude,h_accuracy,v_accuracy,altitude,timestamp,"
+				@"in_background,requested_accuracy,speed,direction,"
+				@"battery_level, external_power, reachability"];
+
+			if (gpx_strings) {
+				[gpx_strings addObject:@"<?xml version=\"1.0\" encoding=\"UTF-"
+					@"8\" standalone=\"no\" ?>\n<gpx xmlns=\"http://www."
+					@"topografix.com/GPX/1/1\">\n\t<metadata><link href=\""
+					@"https://github.com/gradha/Record-my-position/\">\n\t"
+					@"<text>Record-my-position</text></link>"];
+				[gpx_strings addObject:[NSString stringWithFormat:@"\t<time>%@"
+					@"</time></metadata>\n<trk><name>%@</name><trkseg>",
+					gpx_timestamp(timestamp), gpx_timestamp(timestamp)]];
+			}
+			add_header = NO;
+		}
+
 		if (DB_ROW_TYPE_LOG == type) {
-			[strings addObject:
+			[csv_strings addObject:
 				[NSString stringWithFormat:@"%d,%@,0,0,0,0,-1,-1,-1,%d,"
 				@"%d,%d,-1.0,-1.0,%0.2f,%d,%d",
 				type, [row stringForColumnIndex:2], timestamp,
@@ -97,48 +121,78 @@
 			NSString *text = NON_NIL_STRING([row stringForColumnIndex:2]);
 			const double longitude = [row doubleForColumnIndex:3];
 			const double latitude = [row doubleForColumnIndex:4];
-			[strings addObject:[NSString stringWithFormat:@"%d,%@,"
+			const double altitude = [row doubleForColumnIndex:7];
+			[csv_strings addObject:[NSString stringWithFormat:@"%d,%@,"
 				@"%0.8f,%0.8f,%@,%@,%0.1f,%0.1f,%0.1f,%d,"
 				@"%d,%d,%0.2f,%0.2f,%0.2f,%d,%d", type, text,
 				longitude, latitude, [GPS degrees_to_dms:longitude latitude:NO],
 				[GPS degrees_to_dms:latitude latitude:YES],
 				[row doubleForColumnIndex:5], [row doubleForColumnIndex:6],
-				[row doubleForColumnIndex:7], timestamp,
+				altitude, timestamp,
 				in_background, requested_accuracy, speed, direction,
 				battery_level, external_power, reachability]];
+
+			if (gpx_strings) {
+				NSString *elevation = (!altitude) ? @"" :
+					[NSString stringWithFormat:@"<ele>%f</ele>", altitude];
+				[gpx_strings addObject:[NSString stringWithFormat:@"<trkpt "
+					@"lat=\"%0.8f\" lon=\"%0.8f\">%@<time>%@</time></trkpt>",
+					latitude, longitude, elevation, gpx_timestamp(timestamp)]];
+			}
 		} else {
 			NSAssert(0, @"Unknown database row type?!");
-			return nil;
+			return ret;
 		}
 	}
 
-	NSString *string = [[strings componentsJoinedByString:@"\n"] retain];
+	if (gpx_strings)
+		[gpx_strings addObject:@"</trkseg></trk></gpx>"];
+
+	NSString *csv_string = [[csv_strings componentsJoinedByString:@"\n"] retain];
+	NSString *gpx_string = !make_gpx ? nil :
+		[[gpx_strings componentsJoinedByString:@"\n"] retain];
 
 	[pool drain];
+	[ret autorelease];
 
-	if (string && string.length < 2) {
-		[string release];
-		return nil;
+	if (csv_string) {
+		if (csv_string.length > 1) {
+			NSData *csv = [csv_string dataUsingEncoding:NSUTF8StringEncoding];
+			NSAssert(csv.length >= csv_string.length, @"Bad data conversion?");
+			Attachment *wrapper = [Attachment new];
+			wrapper.data = csv;
+			wrapper.extension = @"csv";
+			wrapper.mime_type = @"text/csv";
+			[ret addObject:wrapper];
+			[wrapper release];
+		}
+		[csv_string release];
 	}
 
-	NSData *attachment = [string dataUsingEncoding:NSUTF8StringEncoding];
-	NSAssert(attachment.length >= string.length, @"Bad data conversion?");
-	[string release];
-
-	/* Signal remaining rows? */
-	if (last_id >= 0 && last_id != max_row_) {
-		max_row_ = last_id;
-		remaining_ = YES;
+	if (gpx_string) {
+		if (gpx_string.length > 1) {
+			NSData *gpx = [gpx_string dataUsingEncoding:NSUTF8StringEncoding];
+			NSAssert(gpx.length >= gpx_string.length, @"Bad data conversion?");
+			Attachment *wrapper = [Attachment new];
+			wrapper.data = gpx;
+			wrapper.extension = @"gpx";
+			wrapper.mime_type = @"text/xml";
+			[ret addObject:wrapper];
+			[wrapper release];
+		}
+		[gpx_string release];
 	}
 
-	if (attachment) {
-		Attachment *wrapper = [Attachment new];
-		wrapper.data = attachment;
-		wrapper.extension = @"csv";
-		wrapper.mime_type = @"text/csv";
-		return [NSArray arrayWithObject:wrapper];
+	if (ret.count < 1) {
+		return ret;
 	} else {
-		return [NSArray array];
+		/* Signal remaining rows? */
+		if (last_id >= 0 && last_id != max_row_) {
+			max_row_ = last_id;
+			remaining_ = YES;
+		}
+
+		return ret;
 	}
 }
 
@@ -163,5 +217,19 @@
 }
 
 @end
+
+/** Returns an autoreleased string with the gpx timestamp of the parameter.
+ */
+NSString *gpx_timestamp(const time_t timestamp)
+{
+	DLOG(@"Calling by %d", timestamp);
+	struct tm *t = gmtime(&timestamp);
+	if (!t)
+		return @"Timestamp memory error";
+	else
+		return [NSString stringWithFormat:@"%04d-%02d-%02dT%02d:%02d:%02dZ",
+			1900 + t->tm_year, t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min,
+			t->tm_sec];
+}
 
 // vim:tabstop=4 shiftwidth=4 syntax=objc
