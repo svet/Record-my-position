@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
-
 #import "db/Rows_to_attachment.h"
 
 #import "GPS.h"
@@ -8,8 +6,26 @@
 #import "macro.h"
 
 
-
 #define _MAX_EXPORT_ROWS		10000
+
+
+@implementation Attachment
+
+@synthesize data = data_;
+@synthesize mime_type = mime_type_;
+@synthesize extension = extension_;
+
+- (void)dealloc
+{
+	[data_ release];
+	[mime_type_ release];
+	[extension_ release];
+	[super dealloc];
+}
+
+
+@end
+
 
 @implementation Rows_to_attachment
 
@@ -27,10 +43,11 @@
 	return self;
 }
 
-/** Returns the attachment to send as csv file.
- * Returns nil if there is no attachment or there was a problem (more likely)
+/** Returns the attachments to send.
+ * Returns an empty array if there is no attachment or there was a
+ * problem (more likely)
  */
-- (NSData*)get_attachment
+- (NSArray*)get_attachments:(BOOL)make_gpx
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
@@ -104,8 +121,8 @@
 		return nil;
 	}
 
-	NSData *ret = [string dataUsingEncoding:NSUTF8StringEncoding];
-	NSAssert(ret.length >= string.length, @"Bad data conversion?");
+	NSData *attachment = [string dataUsingEncoding:NSUTF8StringEncoding];
+	NSAssert(attachment.length >= string.length, @"Bad data conversion?");
 	[string release];
 
 	/* Signal remaining rows? */
@@ -114,12 +131,20 @@
 		remaining_ = YES;
 	}
 
-	return ret;
+	if (attachment) {
+		Attachment *wrapper = [Attachment new];
+		wrapper.data = attachment;
+		wrapper.extension = @"csv";
+		wrapper.mime_type = @"text/csv";
+		return [NSArray arrayWithObject:wrapper];
+	} else {
+		return [NSArray array];
+	}
 }
 
-/** Deletes the rows returned by get_attachment.
- * Note that if you call this before get_attachment: the whole
- * database will be wiped out, since get_attachment might have limited
+/** Deletes the rows returned by get_attachments.
+ * Note that if you call this before get_attachments: the whole
+ * database will be wiped out, since get_attachments: might have limited
  * the maximum row to _MAX_EXPORT_ROWS.
  */
 - (void)delete_rows
@@ -130,7 +155,7 @@
 	LOG_ERROR(result, nil, NO);
 }
 
-/** Returns YES if there were remaining rows not returned by get_attachment.
+/** Returns YES if there were remaining rows not returned by get_attachments.
  */
 - (bool)remaining
 {
@@ -138,3 +163,5 @@
 }
 
 @end
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

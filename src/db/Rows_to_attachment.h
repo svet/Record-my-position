@@ -1,6 +1,23 @@
 @class DB;
 @class Rows_to_attachment;
 
+/** Binary blob with attachment contents.
+ * Holds the data and meta information.
+ */
+@interface Attachment : NSObject
+{
+	NSData *data_;
+	NSString *extension_;
+	NSString *mime_type_;
+}
+
+@property (nonatomic, retain) NSData *data;
+@property (nonatomic, retain) NSString *extension;
+@property (nonatomic, retain) NSString *mime_type;
+
+@end;
+
+
 /** Temporary holder for SQLite to attachment interface.
  * The holder will remember how many rows are being prepared so
  * that other GPS events can be registered in the background and not
@@ -20,7 +37,7 @@
 
 - (id)initWithDB:(DB*)db max_row:(int)max_row;
 - (void)delete_rows;
-- (NSData*)get_attachment;
+- (NSArray*)get_attachments:(BOOL)make_gpx;
 - (bool)remaining;
 
 @end

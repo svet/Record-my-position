@@ -230,8 +230,8 @@
 	[mail setMessageBody:@"Here, parse this.\n\n" isHTML:NO];
 
 	rows_to_attach_ = [[DB get] prepare_to_attach];
-	NSData *attachment = [rows_to_attach_ get_attachment];
-	if (attachment) {
+	NSArray *attachments = [rows_to_attach_ get_attachments:YES];
+	if (attachments) {
 		NSDateComponents *now = [[NSCalendar currentCalendar]
 			components:NSDayCalendarUnit | NSMonthCalendarUnit |
 			NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit |
@@ -239,12 +239,16 @@
 
 		Hardware_info *info = get_hardware_info();
 
-		[mail addAttachmentData:attachment mimeType:@"text/csv"
-			fileName:[NSString stringWithFormat:@"positions %04d-%02d-%02d "
-			@"%02d:%02d:%02d %s %s.csv", [now year], [now month], [now day],
-			[now hour], [now minute], [now second],
-			(info && info->name) ? (info->name) : ("unknown"),
-			(info && info->udid[0]) ? (info->udid) : ("no udid"), nil]];
+		for (Attachment *attachment in attachments) {
+			[mail addAttachmentData:attachment.data
+				mimeType:attachment.mime_type
+				fileName:[NSString stringWithFormat:@"positions %04d-%02d-%02d "
+				@"%02d:%02d:%02d %s %s.%@", [now year], [now month], [now day],
+				[now hour], [now minute], [now second],
+				(info && info->name) ? (info->name) : ("unknown"),
+				(info && info->udid[0]) ? (info->udid) : ("no udid"),
+				attachment.extension, nil]];
+		}
 
 		destroy_hardware_info(&info);
 	}
