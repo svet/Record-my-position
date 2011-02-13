@@ -15,13 +15,22 @@ Record my GPS position
 General
 =======
 
+GPS information which can later be emailed as CSV and GPX attachments.
 Record my GPS position is a simple iPhone client to record and save
-GPS information.  Note that for the moment the program only uses
-active GPS, which drains the battery quickly, even when running in
-the background.  Don't run it for more than an hour if you want to
-use your iPhone as something other than a dead weight.
+The CSV attachment contains all the possible device information
+view positions in another program, since most information is stripped.
+while the GPX attachment is just for convenience allowing you to
+The ``csv_to_kml/csv_to_kml.py`` script can convert the CSV file
+to a prettier KML/GPX file for opening in `Google Earth`__.
 
-The app works for the iPod touch, but the precission varies a lot
+__ http://earth.google.com/
+
+Note that for the moment the program only uses active GPS, which
+drains the battery quickly, even when running in the background.
+Don't run it for more than an hour if you want to use your iPhone
+as something other than a dead weight.
+
+The app works for the iPod touch, but the accuracy varies a lot
 and you depend on wifi location, so you won't get very useful
 readings in open fields, only in crowded cities which may have been
 previously mapped by Skyhook (http://www.skyhookwireless.com/), the
@@ -30,8 +39,10 @@ my iPod touch on with the program running in the background for a
 whole day and didn't consume more than a quarter of the battery,
 so it seems the wifi location doesn't require as much power.
 
-This program was possible due to http://efaber.net/ being nice guys
-and allowing me to release this as open source.
+This program was possible due to `eFaber`__ being nice guys and
+allowing me to release this as open source.
+
+__ http://efaber.net/
 
 
 App store
@@ -79,9 +90,11 @@ Here are the steps:
 * Open Record_my_position.xcodeproj with XCode and build and run.
 * Turn on the GPS tracking and record some positions.
 * In the **Share** tab use the button that sends you the logs.
-* Process the csv logs with ``csv_to_kml/csv_to_kml.py``, a Python
-  script. It generates kml files.
-* Open the converted kml files with Google Earth (http://earth.google.com/).
+* Process the CSV logs with ``csv_to_kml/csv_to_kml.py``, a Python
+  script. It generates KML or GPX files.
+* Open the converted KML/GPX files with `Google Earth`__.
+
+__ http://earth.google.com/
 
 
 License
