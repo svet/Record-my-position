@@ -36,6 +36,7 @@
 	dismiss_.frame = self.view.frame;
 	[dismiss_ addTarget:self action:@selector(dismiss_touches)
 		forControlEvents:UIControlEventTouchDown];
+	_MAKE_BUTTON_LABEL_COLOR(dismiss_.titleLabel);
 	[self.view addSubview:dismiss_];
 
 	// Cancel button.
@@ -44,6 +45,7 @@
 	[cancel_ setTitle:@"Cancel note" forState:UIControlStateNormal];
 	[cancel_ addTarget:self action:@selector(cancel_note)
 		forControlEvents:UIControlEventTouchUpInside];
+	_MAKE_BUTTON_LABEL_COLOR(cancel_.titleLabel);
 	[self.view addSubview:cancel_];
 
 	if (can_take_pictures_) {
@@ -54,6 +56,7 @@
 			@"but it won't be included in the application's logs, sorry.";
 		label.numberOfLines = 0;
 		label.font = [UIFont systemFontOfSize:16];
+		_MAKE_DEFAULT_LABEL_COLOR(label);
 		[self.view addSubview:label];
 		[label release];
 
@@ -63,6 +66,7 @@
 		[photo_ setTitle:@"Take photo" forState:UIControlStateNormal];
 		[photo_ addTarget:self action:@selector(take_photo)
 			forControlEvents:UIControlEventTouchUpInside];
+		_MAKE_BUTTON_LABEL_COLOR(photo_.titleLabel);
 		[self.view addSubview:photo_];
 	}
 
@@ -80,6 +84,7 @@
 	[save_ setTitle:@"Save note" forState:UIControlStateNormal];
 	[save_ addTarget:self action:@selector(save_note)
 		forControlEvents:UIControlEventTouchUpInside];
+	_MAKE_BUTTON_LABEL_COLOR(save_.titleLabel);
 	[self.view addSubview:save_];
 
 	self.view.backgroundColor = [UIColor whiteColor];

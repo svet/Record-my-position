@@ -53,8 +53,7 @@
 	// Counter label.
 	counter_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 300, 40)];
 	counter_.text = @"0 entries available";
-	counter_.backgroundColor = [UIColor clearColor];
-	counter_.textColor = [UIColor blackColor];
+	_MAKE_DEFAULT_LABEL_COLOR(counter_);
 	[self.view addSubview:counter_];
 
 	// Button to share data through email.
@@ -63,6 +62,7 @@
 	[share_ setTitle:@"Send log by email" forState:UIControlStateNormal];
 	[share_ addTarget:self action:@selector(share_by_email)
 		forControlEvents:UIControlEventTouchUpInside];
+	_MAKE_BUTTON_LABEL_COLOR(share_.titleLabel);
 	[self.view addSubview:share_];
 
 	// Button to purge disk database.
@@ -71,6 +71,7 @@
 	[purge_ setTitle:@"Purge database" forState:UIControlStateNormal];
 	[purge_ addTarget:self action:@selector(purge_database)
 		forControlEvents:UIControlEventTouchUpInside];
+	_MAKE_BUTTON_LABEL_COLOR(purge_.titleLabel);
 	[self.view addSubview:purge_];
 
 	remove_switch_ = [self build_switch:@"Remove entries sent by email"
@@ -147,8 +148,7 @@
 	UILabel *label = [[UILabel alloc] initWithFrame:label_rect];
 	label.text = label_text;
 	label.numberOfLines = 2;
-	label.backgroundColor = [UIColor clearColor];
-	label.textColor = [UIColor blackColor];
+	_MAKE_DEFAULT_LABEL_COLOR(label);
 	[self.view addSubview:label];
 	[label release];
 

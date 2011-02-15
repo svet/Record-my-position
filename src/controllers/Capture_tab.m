@@ -77,12 +77,12 @@
 	[note_ setTitle:@"" forState:UIControlStateNormal];
 	[note_ addTarget:self action:@selector(add_note)
 		forControlEvents:UIControlEventTouchUpInside];
+	_MAKE_BUTTON_LABEL_COLOR(note_.titleLabel);
 	[self.view addSubview:note_];
 
 	start_title_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 210, 20)];
 	start_title_.text = @"1";
-	start_title_.backgroundColor = [UIColor clearColor];
-	start_title_.textColor = [UIColor blackColor];
+	_MAKE_DEFAULT_LABEL_COLOR(start_title_);
 	[self.view addSubview:start_title_];
 
 	switch_ = [[UISwitch alloc] initWithFrame:CGRectMake(220, 20, 100, 20)];
@@ -92,57 +92,49 @@
 
 	longitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 90, 300, 20)];
 	longitude_.text = @"2";
-	longitude_.backgroundColor = [UIColor clearColor];
-	longitude_.textColor = [UIColor blackColor];
+	_MAKE_BUTTON_LABEL_COLOR(longitude_);
 	[self.view addSubview:longitude_];
 
 	latitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, 300, 20)];
 	latitude_.text = @"3";
-	latitude_.backgroundColor = [UIColor clearColor];
-	latitude_.textColor = [UIColor blackColor];
+	_MAKE_BUTTON_LABEL_COLOR(latitude_);
 	[self.view addSubview:latitude_];
 
 	precission_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 130, 300, 20)];
 	precission_.text = @"4";
-	precission_.backgroundColor = [UIColor clearColor];
-	precission_.textColor = [UIColor blackColor];
+	_MAKE_BUTTON_LABEL_COLOR(precission_);
 	[self.view addSubview:precission_];
 
 	altitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 150, 300, 20)];
 	altitude_.text = @"5";
-	altitude_.backgroundColor = [UIColor clearColor];
-	altitude_.textColor = [UIColor blackColor];
+	_MAKE_BUTTON_LABEL_COLOR(altitude_);
 	[self.view addSubview:altitude_];
 
 	ago_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 170, 300, 20)];
 	ago_.text = @"6";
-	ago_.backgroundColor = [UIColor clearColor];
-	ago_.textColor = [UIColor blackColor];
+	_MAKE_BUTTON_LABEL_COLOR(ago_);
 	[self.view addSubview:ago_];
 
 	movement_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 190, 300, 20)];
 	movement_.text = @"7";
-	movement_.backgroundColor = [UIColor clearColor];
-	movement_.textColor = [UIColor blackColor];
+	_MAKE_BUTTON_LABEL_COLOR(movement_);
 	[self.view addSubview:movement_];
 
 	capabilities_ = [[UILabel alloc]
 		initWithFrame:CGRectMake(10, 220, 300, 79)];
 	capabilities_.text = @"";
 	capabilities_.numberOfLines = 0;
-	capabilities_.backgroundColor = [UIColor clearColor];
-	capabilities_.textColor = [UIColor blackColor];
 	capabilities_.font = [UIFont systemFontOfSize:15];
+	_MAKE_DEFAULT_LABEL_COLOR(capabilities_);
 	[self.view addSubview:capabilities_];
 
 	clock_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 300, 300, 100)];
 	clock_.text = @"00:00:00";
 	clock_.numberOfLines = 1;
-	clock_.backgroundColor = [UIColor clearColor];
-	clock_.textColor = [UIColor blackColor];
 	clock_.textAlignment = UITextAlignmentCenter;
 	clock_.adjustsFontSizeToFitWidth = YES;
 	clock_.font = [UIFont systemFontOfSize:80];
+	_MAKE_DEFAULT_LABEL_COLOR(clock_);
 	[self.view addSubview:clock_];
 }
 
