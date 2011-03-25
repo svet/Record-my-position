@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 syntax=objc
-
 #import <UIKit/UIKit.h>
 
 @class DB;
@@ -29,7 +27,7 @@
 @property (nonatomic, readonly) DB *db;
 
 
-- (void)handle_error:(NSString*)message abort:(BOOL)abort;
+- (void)handle_error:(NSString*)message do_abort:(BOOL)do_abort;
 - (void)purge_database;
 
 @end
@@ -50,3 +48,5 @@ extern BOOL g_location_changes;
 extern BOOL g_region_monitoring;
 
 NSString *get_path(NSString *filename, DIR_TYPE dir_type);
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

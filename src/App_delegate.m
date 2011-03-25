@@ -1,3 +1,12 @@
+#import "App_delegate.h"
+
+#import "GPS.h"
+#import "controllers/Tab_controller.h"
+#import "db/DB.h"
+#import "macro.h"
+
+#import "RPReachability.h"
+
 /** \mainpage Record my position
  *
  * \section meta Meta
@@ -28,16 +37,6 @@
  * look at the mess Apple did with the internal Message class in
  * their MessageUI framework. Madness.
  */
-
-#import "App_delegate.h"
-
-#import "GPS.h"
-#import "controllers/Tab_controller.h"
-#import "db/DB.h"
-#import "macro.h"
-
-#import "RPReachability.h"
-
 
 /// Pseudo constants.
 static NSString *REACH_HOST = @"github.com";
@@ -70,7 +69,7 @@ static void _set_globals(void);
 
 	db_ = [DB open_database];
 	if (!db_) {
-		[self handle_error:@"Couldn't open database" abort:YES];
+		[self handle_error:@"Couldn't open database" do_abort:YES];
 		return NO;
 	}
 
@@ -170,14 +169,14 @@ static void _set_globals(void);
  * Pass the message for the error and a boolean telling to force
  * exit or let the user acknowledge the problem.
  */
-- (void)handle_error:(NSString*)message abort:(BOOL)abort
+- (void)handle_error:(NSString*)message do_abort:(BOOL)do_abort
 {
-	if (abort)
+	if (do_abort)
 		abort_after_alert_ = YES;
 
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
 		message:NON_NIL_STRING(message) delegate:self
-		cancelButtonTitle:(abort ? @"Abort" : @"OK") otherButtonTitles:nil];
+		cancelButtonTitle:(do_abort ? @"Abort" : @"OK") otherButtonTitles:nil];
 	[alert show];
 	[alert release];
 	DLOG(@"Error: %@", message);
