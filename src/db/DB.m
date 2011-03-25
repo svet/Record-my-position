@@ -168,6 +168,7 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	if (db_log)
 		[[NSNotificationCenter defaultCenter]
 			postNotificationName:DB_bump_notification object:self];
+	[db_log release];
 }
 
 /** Stores the circular buffer to disk, freing the current buffer_.
@@ -262,6 +263,8 @@ NSString *DB_bump_notification = @"DB_bump_notification";
  * which remembers the correct state of how many rows were prepared
  * to read, and other interesting stuff, so the GPS readings can
  * continue working in the background.
+ *
+ * \return The caller has to release the returned object.
  */
 - (Rows_to_attachment*)prepare_to_attach
 {
@@ -321,8 +324,10 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 
 	if (!ret) {
 		LOG(@"Couldn't insert %@:\n\t%@", db_log, [self lastErrorMessage]);
+		[db_log release];
 		return -1;
 	}
+	[db_log release];
 
 	[[NSNotificationCenter defaultCenter]
 		postNotificationName:DB_bump_notification object:self];
