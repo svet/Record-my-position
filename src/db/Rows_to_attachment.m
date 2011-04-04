@@ -121,23 +121,29 @@ static NSString *gpx_timestamp(const time_t timestamp);
 			NSString *text = NON_NIL_STRING([row stringForColumnIndex:2]);
 			const double longitude = [row doubleForColumnIndex:3];
 			const double latitude = [row doubleForColumnIndex:4];
+			const double h_accuracy = [row doubleForColumnIndex:5];
+			const double v_accuracy = [row doubleForColumnIndex:6];
 			const double altitude = [row doubleForColumnIndex:7];
 			[csv_strings addObject:[NSString stringWithFormat:@"%d,%@,"
 				@"%0.8f,%0.8f,%@,%@,%0.1f,%0.1f,%0.1f,%d,"
 				@"%d,%d,%0.2f,%0.2f,%0.2f,%d,%d", type, text,
 				longitude, latitude, [GPS degrees_to_dms:longitude latitude:NO],
 				[GPS degrees_to_dms:latitude latitude:YES],
-				[row doubleForColumnIndex:5], [row doubleForColumnIndex:6],
-				altitude, timestamp,
+				h_accuracy, v_accuracy, altitude, timestamp,
 				in_background, requested_accuracy, speed, direction,
 				battery_level, external_power, reachability]];
 
 			if (gpx_strings) {
 				NSString *elevation = (!altitude) ? @"" :
-					[NSString stringWithFormat:@"<ele>%f</ele>", altitude];
+					[NSString stringWithFormat:@"<ele>%0.2f</ele>", altitude];
+				NSString *hdop = (h_accuracy < 0) ? @"" : [NSString
+					stringWithFormat:@"<hdop>%0.2f</hdop>", h_accuracy];
+				NSString *vdop = (v_accuracy < 0) ? @"" : [NSString
+					stringWithFormat:@"<vdop>%0.2f</vdop>", v_accuracy];
 				[gpx_strings addObject:[NSString stringWithFormat:@"<trkpt "
-					@"lat=\"%0.8f\" lon=\"%0.8f\">%@<time>%@</time></trkpt>",
-					latitude, longitude, elevation, gpx_timestamp(timestamp)]];
+					@"lat=\"%0.8f\" lon=\"%0.8f\">%@<time>%@</time>"
+					@"%@%@</trkpt>", latitude, longitude, elevation,
+					gpx_timestamp(timestamp), hdop, vdop]];
 			}
 		} else {
 			NSAssert(0, @"Unknown database row type?!");
