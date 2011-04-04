@@ -235,8 +235,6 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 
 		if (!ret)
 			LOG(@"Couldn't insert %@:\n\t%@", db_log, [self lastErrorMessage]);
-
-		[db_log release];
 	}
 
 	[pool drain];
