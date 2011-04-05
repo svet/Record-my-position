@@ -140,10 +140,15 @@ static NSString *gpx_timestamp(const time_t timestamp);
 					stringWithFormat:@"<hdop>%0.2f</hdop>", h_accuracy];
 				NSString *vdop = (v_accuracy < 0) ? @"" : [NSString
 					stringWithFormat:@"<vdop>%0.2f</vdop>", v_accuracy];
+				NSString *course = (direction < 0 || direction > 360) ? @"" :
+					[NSString stringWithFormat:@"<course>%0.2f</course>",
+					direction];
+				NSString *speed_tag = (speed < 0) ? @"" : [NSString
+					stringWithFormat:@"<speed>%0.3f</speed>", speed];
 				[gpx_strings addObject:[NSString stringWithFormat:@"<trkpt "
 					@"lat=\"%0.8f\" lon=\"%0.8f\">%@<time>%@</time>"
-					@"%@%@</trkpt>", latitude, longitude, elevation,
-					gpx_timestamp(timestamp), hdop, vdop]];
+					@"%@%@%@%@</trkpt>", latitude, longitude, elevation,
+					gpx_timestamp(timestamp), hdop, vdop, course, speed_tag]];
 			}
 		} else {
 			NSAssert(0, @"Unknown database row type?!");
