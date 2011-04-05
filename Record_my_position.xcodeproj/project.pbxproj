@@ -20,6 +20,42 @@
 		D56FF247127ACA810023FC0C /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D56FF246127ACA810023FC0C /* Icon@2x.png */; };
 		D57789F8130B3EDF00AB5803 /* back.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D57789F6130B3EDF00AB5803 /* back.jpg */; };
 		D57789F9130B3EDF00AB5803 /* back@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D57789F7130B3EDF00AB5803 /* back@2x.jpg */; };
+		D59AAEEB134BC5BC00E81139 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D56FF234127AC9C60023FC0C /* Icon.png */; };
+		D59AAEEC134BC5BC00E81139 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D56FF246127ACA810023FC0C /* Icon@2x.png */; };
+		D59AAEED134BC5BC00E81139 /* capture_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B75C6A1297D87800A4142B /* capture_icon.png */; };
+		D59AAEEE134BC5BC00E81139 /* capture_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B75C6B1297D87800A4142B /* capture_icon@2x.png */; };
+		D59AAEEF134BC5BC00E81139 /* share_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C86D1D1299CF8D00253C7F /* share_icon.png */; };
+		D59AAEF0134BC5BC00E81139 /* share_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C86D1E1299CF8D00253C7F /* share_icon@2x.png */; };
+		D59AAEF1134BC5BC00E81139 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F770701305EF3A006914C7 /* Default.png */; };
+		D59AAEF2134BC5BC00E81139 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5F770711305EF3A006914C7 /* Default@2x.png */; };
+		D59AAEF3134BC5BC00E81139 /* back.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D57789F6130B3EDF00AB5803 /* back.jpg */; };
+		D59AAEF4134BC5BC00E81139 /* back@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D57789F7130B3EDF00AB5803 /* back@2x.jpg */; };
+		D59AAEF6134BC5BC00E81139 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		D59AAEF7134BC5BC00E81139 /* App_delegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D59D0350126E372400F4D543 /* App_delegate.m */; };
+		D59AAEF8134BC5BC00E81139 /* EGODatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA78126F8C6A0056DB78 /* EGODatabase.m */; };
+		D59AAEF9134BC5BC00E81139 /* EGODatabaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7A126F8C6A0056DB78 /* EGODatabaseRequest.m */; };
+		D59AAEFA134BC5BC00E81139 /* EGODatabaseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7C126F8C6A0056DB78 /* EGODatabaseResult.m */; };
+		D59AAEFB134BC5BC00E81139 /* EGODatabaseRow.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7E126F8C6A0056DB78 /* EGODatabaseRow.m */; };
+		D59AAEFC134BC5BC00E81139 /* VTPG_Common.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDACA126F942C0056DB78 /* VTPG_Common.m */; };
+		D59AAEFD134BC5BC00E81139 /* GPS.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C47781127177D500CB008F /* GPS.m */; };
+		D59AAEFE134BC5BC00E81139 /* hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = D51EB90C127A297C0016E191 /* hardware.m */; };
+		D59AAEFF134BC5BC00E81139 /* DB.m in Sources */ = {isa = PBXBuildFile; fileRef = D544A086127F5FAA00835938 /* DB.m */; };
+		D59AAF00134BC5BC00E81139 /* DB_log.m in Sources */ = {isa = PBXBuildFile; fileRef = D544A088127F5FAA00835938 /* DB_log.m */; };
+		D59AAF01134BC5BC00E81139 /* Rows_to_attachment.m in Sources */ = {isa = PBXBuildFile; fileRef = D544A08A127F5FAA00835938 /* Rows_to_attachment.m */; };
+		D59AAF02134BC5BC00E81139 /* RPReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C4AFA7128978F1005BE697 /* RPReachability.m */; };
+		D59AAF03134BC5BC00E81139 /* Capture_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDCD128A9D1300B83104 /* Capture_tab.m */; };
+		D59AAF04134BC5BC00E81139 /* Log_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDCF128A9D1300B83104 /* Log_tab.m */; };
+		D59AAF05134BC5BC00E81139 /* Share_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDD1128A9D1300B83104 /* Share_tab.m */; };
+		D59AAF06134BC5BC00E81139 /* Tab_controller.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDD3128A9D1300B83104 /* Tab_controller.m */; };
+		D59AAF07134BC5BC00E81139 /* Note_taking_controller.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDED128AB14000B83104 /* Note_taking_controller.m */; };
+		D59AAF08134BC5BC00E81139 /* View_controller.m in Sources */ = {isa = PBXBuildFile; fileRef = D558C123128D481400641FE9 /* View_controller.m */; };
+		D59AAF0A134BC5BC00E81139 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		D59AAF0B134BC5BC00E81139 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		D59AAF0C134BC5BC00E81139 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		D59AAF0D134BC5BC00E81139 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */; };
+		D59AAF0E134BC5BC00E81139 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C477B112717BEA00CB008F /* CoreLocation.framework */; };
+		D59AAF0F134BC5BC00E81139 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5DF0B7D127636C300A9BC0D /* MessageUI.framework */; };
+		D59AAF10134BC5BC00E81139 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */; };
 		D59D0351126E372400F4D543 /* App_delegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D59D0350126E372400F4D543 /* App_delegate.m */; };
 		D5B08A55133D30E700A60B34 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D56FF234127AC9C60023FC0C /* Icon.png */; };
 		D5B08A56133D30E700A60B34 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D56FF246127ACA810023FC0C /* Icon@2x.png */; };
@@ -104,6 +140,8 @@
 		D56FF246127ACA810023FC0C /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		D57789F6130B3EDF00AB5803 /* back.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = back.jpg; sourceTree = "<group>"; };
 		D57789F7130B3EDF00AB5803 /* back@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "back@2x.jpg"; sourceTree = "<group>"; };
+		D59AAF14134BC5BC00E81139 /* Record_my_position_appstore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Record_my_position_appstore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D59AAF16134BC5BC00E81139 /* Record_my_position-appstore.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Record_my_position-appstore.plist"; path = "resources/Record_my_position-appstore.plist"; sourceTree = "<group>"; };
 		D59D034F126E372400F4D543 /* App_delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = App_delegate.h; sourceTree = "<group>"; };
 		D59D0350126E372400F4D543 /* App_delegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = App_delegate.m; sourceTree = "<group>"; };
 		D5B08A7E133D30E700A60B34 /* Er_recorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Er_recorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,6 +198,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D59AAF09134BC5BC00E81139 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D59AAF0A134BC5BC00E81139 /* Foundation.framework in Frameworks */,
+				D59AAF0B134BC5BC00E81139 /* UIKit.framework in Frameworks */,
+				D59AAF0C134BC5BC00E81139 /* CoreGraphics.framework in Frameworks */,
+				D59AAF0D134BC5BC00E81139 /* libsqlite3.dylib in Frameworks */,
+				D59AAF0E134BC5BC00E81139 /* CoreLocation.framework in Frameworks */,
+				D59AAF0F134BC5BC00E81139 /* MessageUI.framework in Frameworks */,
+				D59AAF10134BC5BC00E81139 /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D5B08A73133D30E700A60B34 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -182,6 +234,7 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* Record_my_position.app */,
 				D5B08A7E133D30E700A60B34 /* Er_recorder.app */,
+				D59AAF14134BC5BC00E81139 /* Record_my_position_appstore.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -204,6 +257,7 @@
 			children = (
 				D5B08A80133D30E700A60B34 /* Er_recorder.plist */,
 				8D1107310486CEB800E47090 /* Record_my_position-dev.plist */,
+				D59AAF16134BC5BC00E81139 /* Record_my_position-appstore.plist */,
 				32CA4F630368D1EE00C91783 /* Record_my_position_Prefix.pch */,
 			);
 			name = Other;
@@ -345,6 +399,23 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* Record_my_position.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D59AAEE9134BC5BC00E81139 /* Record_my_position_appstore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D59AAF11134BC5BC00E81139 /* Build configuration list for PBXNativeTarget "Record_my_position_appstore" */;
+			buildPhases = (
+				D59AAEEA134BC5BC00E81139 /* Resources */,
+				D59AAEF5134BC5BC00E81139 /* Sources */,
+				D59AAF09134BC5BC00E81139 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Record_my_position_appstore;
+			productName = Record_my_position;
+			productReference = D59AAF14134BC5BC00E81139 /* Record_my_position_appstore.app */;
+			productType = "com.apple.product-type.application";
+		};
 		D5B08A53133D30E700A60B34 /* Er recorder adhoc */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D5B08A7B133D30E700A60B34 /* Build configuration list for PBXNativeTarget "Er recorder adhoc" */;
@@ -383,6 +454,7 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Record_my_position */,
 				D5B08A53133D30E700A60B34 /* Er recorder adhoc */,
+				D59AAEE9134BC5BC00E81139 /* Record_my_position_appstore */,
 			);
 		};
 /* End PBXProject section */
@@ -402,6 +474,23 @@
 				D5F770731305EF3A006914C7 /* Default@2x.png in Resources */,
 				D57789F8130B3EDF00AB5803 /* back.jpg in Resources */,
 				D57789F9130B3EDF00AB5803 /* back@2x.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D59AAEEA134BC5BC00E81139 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D59AAEEB134BC5BC00E81139 /* Icon.png in Resources */,
+				D59AAEEC134BC5BC00E81139 /* Icon@2x.png in Resources */,
+				D59AAEED134BC5BC00E81139 /* capture_icon.png in Resources */,
+				D59AAEEE134BC5BC00E81139 /* capture_icon@2x.png in Resources */,
+				D59AAEEF134BC5BC00E81139 /* share_icon.png in Resources */,
+				D59AAEF0134BC5BC00E81139 /* share_icon@2x.png in Resources */,
+				D59AAEF1134BC5BC00E81139 /* Default.png in Resources */,
+				D59AAEF2134BC5BC00E81139 /* Default@2x.png in Resources */,
+				D59AAEF3134BC5BC00E81139 /* back.jpg in Resources */,
+				D59AAEF4134BC5BC00E81139 /* back@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +537,32 @@
 				D5D7CDD7128A9D1300B83104 /* Tab_controller.m in Sources */,
 				D5D7CDEE128AB14000B83104 /* Note_taking_controller.m in Sources */,
 				D558C124128D481400641FE9 /* View_controller.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D59AAEF5134BC5BC00E81139 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D59AAEF6134BC5BC00E81139 /* main.m in Sources */,
+				D59AAEF7134BC5BC00E81139 /* App_delegate.m in Sources */,
+				D59AAEF8134BC5BC00E81139 /* EGODatabase.m in Sources */,
+				D59AAEF9134BC5BC00E81139 /* EGODatabaseRequest.m in Sources */,
+				D59AAEFA134BC5BC00E81139 /* EGODatabaseResult.m in Sources */,
+				D59AAEFB134BC5BC00E81139 /* EGODatabaseRow.m in Sources */,
+				D59AAEFC134BC5BC00E81139 /* VTPG_Common.m in Sources */,
+				D59AAEFD134BC5BC00E81139 /* GPS.m in Sources */,
+				D59AAEFE134BC5BC00E81139 /* hardware.m in Sources */,
+				D59AAEFF134BC5BC00E81139 /* DB.m in Sources */,
+				D59AAF00134BC5BC00E81139 /* DB_log.m in Sources */,
+				D59AAF01134BC5BC00E81139 /* Rows_to_attachment.m in Sources */,
+				D59AAF02134BC5BC00E81139 /* RPReachability.m in Sources */,
+				D59AAF03134BC5BC00E81139 /* Capture_tab.m in Sources */,
+				D59AAF04134BC5BC00E81139 /* Log_tab.m in Sources */,
+				D59AAF05134BC5BC00E81139 /* Share_tab.m in Sources */,
+				D59AAF06134BC5BC00E81139 /* Tab_controller.m in Sources */,
+				D59AAF07134BC5BC00E81139 /* Note_taking_controller.m in Sources */,
+				D59AAF08134BC5BC00E81139 /* View_controller.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -549,6 +664,33 @@
 			};
 			name = Release;
 		};
+		D59AAF12134BC5BC00E81139 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
+				INFOPLIST_FILE = "resources/Record_my_position-appstore.plist";
+				PRODUCT_NAME = Record_my_position_appstore;
+			};
+			name = Debug;
+		};
+		D59AAF13134BC5BC00E81139 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
+				INFOPLIST_FILE = "resources/Record_my_position-appstore.plist";
+				PRODUCT_NAME = Record_my_position_appstore;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		D5B08A7C133D30E700A60B34 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -595,6 +737,15 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D59AAF11134BC5BC00E81139 /* Build configuration list for PBXNativeTarget "Record_my_position_appstore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D59AAF12134BC5BC00E81139 /* Debug */,
+				D59AAF13134BC5BC00E81139 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
