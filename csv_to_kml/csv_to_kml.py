@@ -286,11 +286,22 @@ def generate_gpx_track(track, output):
 			timestamp, in_background, requested_accuracy, speed, direction,
 			battery_level, external_power, reachability) = positions[f]
 
-		output.write("""<trkpt lat="%f" lon="%f">""" % (lat, lon))
+		l = []
+		l.append("""<trkpt lat="%f" lon="%f">""" % (lat, lon))
 		if altitude:
-			output.write("""<ele>%f</ele>\n""" % altitude)
-		output.write("<time>%s</time></trkpt>\n" %
-			internal_time_to_gpx_timestamp(timestamp))
+			l.append("""<ele>%f</ele>\n""" % altitude)
+		l.append("<time>%s</time>" % internal_time_to_gpx_timestamp(timestamp))
+		if h >= 0:
+			l.append("<hdop>%0.2f</hdop>" % h)
+		if v >= 0:
+			l.append("<vdop>%0.2f</vdop>" % v)
+		if direction >= 0 and direction <= 360:
+			l.append("<course>%0.2f</course>" % direction)
+		if speed >= 0:
+			l.append("<speed>%0.3f</speed>" % speed)
+
+		l.append("</trkpt>\n")
+		output.write("".join(l))
 
 	output.write("""</trkseg></trk>""")
 
