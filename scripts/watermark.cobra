@@ -1,0 +1,72 @@
+"""
+Watermarks the default images with a dynamic text string.
+"""
+
+@ref 'System.Drawing'
+
+use System.Drawing
+use System.Drawing.Drawing2D
+use System.Drawing.Imaging
+use System.Drawing.Text
+use System.IO
+
+
+class Bbiribbaba
+	def write_text(g, font_size as int, text as String, _
+			x as float32, y as float32, offset as float32)
+
+		format = StringFormat()
+		format.alignment = StringAlignment.Far
+		font = Font('Helvetica', font_size, FontStyle.Regular)
+		brush = SolidBrush(Color.fromArgb(128, 0, 0, 0))
+		g.drawString(text, font, brush, PointF(x - offset, y + offset), format)
+		brush = SolidBrush(Color.white)
+		g.drawString(text, font, brush, PointF(x, y), format)
+
+
+	def watermark(filename as String, text as String)
+		basename = Path.getFileName(filename)
+		if basename.contains("@2x")
+			font_size = 28
+			offset = 3f32
+		else
+			font_size = 13
+			offset = 1.5f32
+
+		dest_file = Path.combine("build", basename)
+		print "Loading [filename]"
+		original = Bitmap(filename)
+		# Can't put this in a single line, apparently
+		unit = GraphicsUnit.Pixel
+		bounds = original.getBounds(inout unit)
+		w, h = bounds.width, bounds.height
+		print "Size is [w]x[h]"
+
+		# Why do I have to cast to Bitmap here?
+		bmp = original.clone() to Bitmap
+		print "Creating [dest_file]"
+		g = Graphics.fromImage(bmp)
+		g.smoothingMode = SmoothingMode.AntiAlias
+		g.textRenderingHint = TextRenderingHint.ClearTypeGridFit
+
+		.write_text(g, font_size, text, w * 0.5f32, h * 0.26f32, offset)
+		g.flush
+		bmp.save(dest_file, ImageFormat.png)
+		print "Done"
+
+
+	def process_arguments(args) as String
+		if 1 <> args.count
+			print "Please specify the string to watermark as parameter"
+			return ""
+		else
+			return args[0]
+
+	def main
+		text = .process_arguments(CobraCore.commandLineArgs[1:])
+		if text.length < 1
+			return
+
+		for filename in ["resources/reference/Default@2x.png", _
+				"resources/reference/Default.png"]
+			.watermark(filename, text)

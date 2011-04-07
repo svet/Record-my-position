@@ -1,4 +1,5 @@
 *.diff
+*.exe
 *.mode1v3
 *.orig
 *.pbxuser
