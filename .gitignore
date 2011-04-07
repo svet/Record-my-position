@@ -20,4 +20,6 @@ docs/README*.html
 docs/background_tracking.html
 docs/doxygen
 docs/storage_schemas.html
+resources/Default.png
+resources/Default@2x.png
 tags

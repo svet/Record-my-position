@@ -33,7 +33,7 @@ class Bbiribbaba
 			font_size = 13
 			offset = 1.5f32
 
-		dest_file = Path.combine("build", basename)
+		dest_file = Path.combine("resources", basename)
 		print "Loading [filename]"
 		original = Bitmap(filename)
 		# Can't put this in a single line, apparently

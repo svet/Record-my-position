@@ -71,7 +71,10 @@ Requirements
 ------------
 
 The source code uses SDK 4.1 and deploys on 3.x. Patches are welcome
-to make it compile out of the box with previous SDK versions.
+to make it compile out of the box with previous SDK versions. In
+order to dynamically generate the versioned splash number, you need
+Cobra (http://cobra-language.com/) to compile the
+``script/watermark.cobra`` program and run it.
 
 
 Installation
@@ -87,6 +90,13 @@ Here are the steps:
     git submodule init
     git submodule update
 
+* If you want to generate the versioned splash images::
+
+    cobra scripts/watermark.cobra -run-args vX.Y.Z
+
+  If you don't want to bother with cobra, simply copy the
+  ``Default*.png`` images from ``resources/reference`` to ``resources``
+  so that XCode can find something.
 * Open Record_my_position.xcodeproj with XCode and build and run.
 * Turn on the GPS tracking and record some positions.
 * In the **Share** tab use the button that sends you the logs.
