@@ -48,6 +48,9 @@ __ http://efaber.net/
 App store
 =========
 
+.. image:: https://github.com/downloads/gradha/Record-my-position/record_my_gps_position_qr_appstore.png
+   :align: right
+
 Record my GPS position can be downloaded for free from the Apple
 App Store
 (http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=405865492&mt=8).
@@ -80,8 +83,7 @@ Cobra (http://cobra-language.com/) to compile the
 Installation
 ------------
 
-For the moment you have to compile and build yourself everything.
-Here are the steps:
+Here are the steps to compile and build yourself everything:
 
 * Perform some terminal magic::
 
