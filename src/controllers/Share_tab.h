@@ -16,7 +16,8 @@
 	UISwitch *gpx_switch_;
 
 	/// Action buttons.
-	UIButton *share_;
+	UIButton *share_mail_;
+	UIButton *share_file_;
 	UIButton *purge_;
 
 	/// Shows a wait dialog along with a non touchable interface.

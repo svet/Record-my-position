@@ -57,13 +57,31 @@
 	[self.view addSubview:counter_];
 
 	// Button to share data through email.
-	share_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-	share_.frame = CGRectMake(20, 320, 280, 40);
-	[share_ setTitle:@"Send log by email" forState:UIControlStateNormal];
-	[share_ addTarget:self action:@selector(share_by_email)
+	share_mail_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	share_mail_.frame = CGRectMake(20, 310, 120, 80);
+	share_mail_.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+	share_mail_.titleLabel.textAlignment = UITextAlignmentCenter;
+	[share_mail_ setTitle:@"Send log\nby email" forState:UIControlStateNormal];
+	[share_mail_ setTitle:@"Record\npositions!"
+		forState:UIControlStateDisabled];
+	[share_mail_ addTarget:self action:@selector(share_by_email)
 		forControlEvents:UIControlEventTouchUpInside];
-	_MAKE_BUTTON_LABEL_COLOR(share_.titleLabel);
-	[self.view addSubview:share_];
+	_MAKE_BUTTON_LABEL_COLOR(share_mail_.titleLabel);
+	[self.view addSubview:share_mail_];
+
+	// Button to share data through file.
+	share_file_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	share_file_.frame = CGRectMake(180, 310, 120, 80);
+	share_file_.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+	share_file_.titleLabel.textAlignment = UITextAlignmentCenter;
+	[share_file_ setTitle:@"Create log\non device"
+		forState:UIControlStateNormal];
+	[share_file_ setTitle:@"Record\npositions!"
+		forState:UIControlStateDisabled];
+	[share_file_ addTarget:self action:@selector(share_by_file)
+		forControlEvents:UIControlEventTouchUpInside];
+	_MAKE_BUTTON_LABEL_COLOR(share_file_.titleLabel);
+	[self.view addSubview:share_file_];
 
 	// Button to purge disk database.
 	purge_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
@@ -74,12 +92,12 @@
 	_MAKE_BUTTON_LABEL_COLOR(purge_.titleLabel);
 	[self.view addSubview:purge_];
 
-	remove_switch_ = [self build_switch:@"Remove entries sent by email"
-		label_rect:CGRectMake(10, 70, 210, 40)
+	remove_switch_ = [self build_switch:@"Remove entries after being shared"
+		label_rect:CGRectMake(10, 70, 210, 41)
 		switch_rect:CGRectMake(220, 70, 100, 40) key:_SWITCH_KEY_NEGATED];
 
-	gpx_switch_ = [self build_switch:@"Generate basic GPX file"
-		label_rect:CGRectMake(10, 120, 210, 40)
+	gpx_switch_ = [self build_switch:@"Generate basic GPX file too"
+		label_rect:CGRectMake(10, 120, 210, 41)
 		switch_rect:CGRectMake(220, 120, 100, 40) key:_SWITCH_KEY_GPX];
 
 	/// The shield view with a spinning element.
@@ -108,7 +126,8 @@
 	[gpx_switch_ release];
 	[remove_switch_ release];
 	[purge_ release];
-	[share_ release];
+	[share_file_ release];
+	[share_mail_ release];
 	[counter_ release];
 	[super dealloc];
 }
@@ -153,6 +172,8 @@
 	[label release];
 
 	UISwitch *s = [[UISwitch alloc] initWithFrame:switch_rect];
+	s.center = CGPointMake(CGRectGetMidX(switch_rect),
+		CGRectGetMidY(switch_rect));
 	[s addTarget:self action:@selector(switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -167,6 +188,8 @@
 {
 	counter_.text = [NSString stringWithFormat:@"%d entries collected",
 		self.num_entries];
+	share_mail_.enabled = self.num_entries > 0;
+	share_file_.enabled = self.num_entries > 0;
 }
 
 /** Handles receiving notifications.
@@ -199,6 +222,21 @@
 	[alert release];
 }
 
+/** User clicked on the share by file button. Save logs to device.
+ * Prepare the files, then save them into the directory where the user can
+ * later grab them through itunes.  This function is split into
+ * share_by_file_prepare so that the shield is refreshed immediately and the
+ * user sees it. Otherwise the long processing might not allow the shield to
+ * come up immediately.
+ */
+- (void)share_by_file
+{
+	shield_.hidden = NO;
+	[activity_ startAnimating];
+	[self performSelector:@selector(share_by_file_prepare) withObject:nil
+		afterDelay:1];
+}
+
 /** User clicked the share by email button. Prepare mail.
  * This function is split into share_by_email_prepare so that the
  * shield is refreshed immediately and the user sees it. Otherwise
@@ -221,6 +259,27 @@
 		afterDelay:0];
 }
 
+/** Builds a file name without extension good for exportation.
+ */
+- (NSString*)get_export_filename
+{
+	NSDateComponents *now = [[NSCalendar currentCalendar]
+		components:NSDayCalendarUnit | NSMonthCalendarUnit |
+		NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit |
+		NSSecondCalendarUnit fromDate:[NSDate date]];
+
+	Hardware_info *info = get_hardware_info();
+
+	NSString *ret = [NSString stringWithFormat:@"positions %04d-%02d-%02d "
+		@"%02d:%02d:%02d %s %s", [now year], [now month], [now day],
+		[now hour], [now minute], [now second],
+		(info && info->name) ? (info->name) : ("unknown"),
+		(info && info->udid[0]) ? (info->udid) : ("no udid"), nil];
+
+	destroy_hardware_info(&info);
+	return ret;
+}
+
 /** Second part of share_by_email.
  * This does the long work of setting up the attachments to the
  * email, hopefully after the UI has been updated to show a
@@ -237,29 +296,27 @@
 	rows_to_attach_ = [[DB get] prepare_to_attach];
 	NSArray *attachments = [rows_to_attach_ get_attachments:gpx_switch_.on];
 	if (attachments) {
-		NSDateComponents *now = [[NSCalendar currentCalendar]
-			components:NSDayCalendarUnit | NSMonthCalendarUnit |
-			NSYearCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit |
-			NSSecondCalendarUnit fromDate:[NSDate date]];
-
-		Hardware_info *info = get_hardware_info();
-
+		NSString *basename = [self get_export_filename];
 		for (Attachment *attachment in attachments) {
 			[mail addAttachmentData:attachment.data
 				mimeType:attachment.mime_type
-				fileName:[NSString stringWithFormat:@"positions %04d-%02d-%02d "
-				@"%02d:%02d:%02d %s %s.%@", [now year], [now month], [now day],
-				[now hour], [now minute], [now second],
-				(info && info->name) ? (info->name) : ("unknown"),
-				(info && info->udid[0]) ? (info->udid) : ("no udid"),
-				attachment.extension, nil]];
+				fileName:[NSString stringWithFormat:@"%@.%@",
+					basename, attachment.extension, nil]];
 		}
-
-		destroy_hardware_info(&info);
 	}
 
 	[self presentModalViewController:mail animated:YES];
 	[mail release];
+}
+
+/** Second part of share_by_file.
+ * This does the long work of creating up the files that get exported,
+ * hopefully after the UI has been updated to show a shield/processing screen.
+ */
+- (void)share_by_file_prepare
+{
+	DLOG(@"Hey!");
+	shield_.hidden = YES;
 }
 
 #pragma mark UIAlertViewDelegate protocol
