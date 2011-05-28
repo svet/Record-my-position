@@ -38,6 +38,7 @@ enum DIR_TYPE_ENUM
 {
 	DIR_BUNDLE,		///< Open the program's bundle for data reading.
 	DIR_DOCS,		///< Directory where persistent data is stored.
+	DIR_LIB,		///< Backed up data, but not exposed to the user.
 };
 /// Required alias for enum.
 typedef enum DIR_TYPE_ENUM DIR_TYPE;

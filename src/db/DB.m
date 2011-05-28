@@ -30,7 +30,34 @@ NSString *DB_bump_notification = @"DB_bump_notification";
  */
 + (NSString*)path
 {
-	return get_path(@"appdb", DIR_DOCS);
+	return get_path(@"appdb", DIR_LIB);
+}
+
+/** Tries to move the database from the previous location to the new one.
+ * During the implementation of file sharing (#30) the location of the sqlite
+ * file in the document directory was a bad idea, so this function moves the
+ * file (if it exists) from the documents to the library directory.
+ *
+ * This should be run every time the app launches so as to not lose data from
+ * people upgrading the application. Also, ignore errors. If somebody (or
+ * iTunes) messes up the files, we don't care about the old database, nor worry
+ * about the user removing it manually.
+ */
++ (void)preserve_old_db
+{
+	NSString *old_path = get_path(@"appdb", DIR_DOCS);
+	NSFileManager *manager = [NSFileManager defaultManager];
+
+	if (![manager fileExistsAtPath:old_path])
+		return;
+
+	NSString *new_path = [self path];
+	NSError *error = nil;
+	if ([manager moveItemAtPath:old_path toPath:new_path error:&error]) {
+		DLOG(@"Moved from %@ to %@", old_path, new_path);
+	} else {
+		DLOG(@"Couldn't move from %@ to %@: %@", old_path, new_path, error);
+	}
 }
 
 /** Called once per application, initialises the global application database.

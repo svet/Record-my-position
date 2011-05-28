@@ -60,6 +60,7 @@ static void _set_globals(void);
 
 	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
 	_set_globals();
+	[DB preserve_old_db];
 
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	window_.backgroundColor = [UIColor whiteColor];
@@ -241,6 +242,20 @@ NSString *get_path(NSString *filename, DIR_TYPE dir_type)
 
 			if (!path)
 				DLOG(@"File '%@' not found inside bundle!", filename);
+
+			return path;
+		}
+
+		case DIR_LIB:
+		{
+			NSArray *paths = NSSearchPathForDirectoriesInDomains(
+				NSLibraryDirectory, NSUserDomainMask, YES);
+			NSString *documentsDirectory = [paths objectAtIndex:0];
+			NSString *path = [documentsDirectory
+				stringByAppendingPathComponent:filename];
+
+			if (!path)
+				DLOG(@"File '%@' not found inside lib directory!", filename);
 
 			return path;
 		}

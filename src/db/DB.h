@@ -22,6 +22,7 @@ extern NSString *DB_bump_notification;
 @property (nonatomic, assign) BOOL in_background;
 
 + (NSString*)path;
++ (void)preserve_old_db;
 + (DB*)open_database;
 + (BOOL)purge;
 + (DB*)get;
