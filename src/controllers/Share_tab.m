@@ -234,7 +234,7 @@
 	shield_.hidden = NO;
 	[activity_ startAnimating];
 	[self performSelector:@selector(share_by_file_prepare) withObject:nil
-		afterDelay:1];
+		afterDelay:0];
 }
 
 /** User clicked the share by email button. Prepare mail.
@@ -309,14 +309,82 @@
 	[mail release];
 }
 
+/** Called when an exportation operation has finished without problems.
+ * The function will check the class rows_to_attach_ variable for remaining
+ * attachemts. If so, a special message will be shown to the user. Also, this
+ * function checks the state of the purge button and if it was on, removes the
+ * saved attachements.
+ */
+- (void)clean_up_remaining_attachments_on_success
+{
+	if ([rows_to_attach_ remaining]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Give me more!"
+			message:@"Only a portion of data was exported to avoid generating "
+				@"files too big. You will need to export again to get the "
+				@"remaining data." delegate:self cancelButtonTitle:@"Will do"
+			otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
+
+	if (remove_switch_.on) {
+		[rows_to_attach_ delete_rows];
+		DB *db = [DB get];
+		self.num_entries = [db get_num_entries];
+	}
+}
+
 /** Second part of share_by_file.
  * This does the long work of creating up the files that get exported,
  * hopefully after the UI has been updated to show a shield/processing screen.
  */
 - (void)share_by_file_prepare
 {
-	DLOG(@"Hey!");
+	rows_to_attach_ = [[DB get] prepare_to_attach];
+	NSArray *attachments = [rows_to_attach_ get_attachments:gpx_switch_.on];
+	BOOL failure = NO;
+	// Save the attachments.
+	if (attachments) {
+		NSString *basename = [self get_export_filename];
+		for (Attachment *attachment in attachments) {
+			NSString *filename = get_path([NSString stringWithFormat:@"%@.%@",
+				basename, attachment.extension, nil], DIR_DOCS);
+
+			if (![attachment.data writeToFile:filename atomically:YES]) {
+				DLOG(@"Error writting to %@!", filename);
+				failure = YES;
+				break;
+			}
+		}
+	}
+
+	// Tell the user something about the exportation, went it right?
+	NSString *title = nil, *message = nil;
+	if (failure) {
+		title = @"Error exporting data";
+		message = @"The exportation was unable to save the files. Please "
+			@"contact the developer of the application. The data you "
+			@"wanted to export will remain on the device for retries.";
+	} else {
+		[self clean_up_remaining_attachments_on_success];
+
+		title = @"Data was exported";
+		message = @"Now you need to connect this device to your computer "
+			@"and use iTunes to retrieve the exported files from it. ";
+	}
+
+	if (title && message) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+			message:message delegate:self cancelButtonTitle:@"Will do"
+			otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
+
+	// Clean up and return UI to normal.
+	[rows_to_attach_ release];
 	shield_.hidden = YES;
+	[activity_ stopAnimating];
 }
 
 #pragma mark UIAlertViewDelegate protocol
@@ -349,21 +417,7 @@
 	if (MFMailComposeResultSaved == result ||
 			MFMailComposeResultSent == result) {
 
-		if ([rows_to_attach_ remaining]) {
-			UIAlertView *alert = [[UIAlertView alloc]
-				initWithTitle:@"Give me more!"
-				message:@"Only a portion of data was sent. Send more emails."
-				delegate:self cancelButtonTitle:@"Will do"
-				otherButtonTitles:nil];
-			[alert show];
-			[alert release];
-		}
-
-		if (remove_switch_.on) {
-			[rows_to_attach_ delete_rows];
-			DB *db = [DB get];
-			self.num_entries = [db get_num_entries];
-		}
+		[self clean_up_remaining_attachments_on_success];
 	}
 
 	[rows_to_attach_ release];
