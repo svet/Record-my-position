@@ -15,13 +15,16 @@ Record my GPS position
 General
 =======
 
-Record my GPS position is a simple iPhone client to record and save
-GPS information which can later be emailed as CSV and GPX attachments.
-The CSV attachment contains all the possible device information
-while the GPX attachment is just for convenience allowing you to
-view positions in another program, since most information is stripped.
-The ``csv_to_kml/csv_to_kml.py`` script can convert the CSV file
-to a prettier KML/GPX file for opening in `Google Earth`__.
+Record my GPS position is a simple iPhone client to record and save GPS
+information. The stored positions in the database can later be extracted
+through iTunes file interface or emailed in CSV/GPX format to process for
+different purposes with external programs.
+
+The CSV dumps contains all the possible device information while the GPX
+version is just for convenience allowing you to view positions in another
+program, since most information is stripped.  The ``csv_to_kml/csv_to_kml.py``
+script can convert the CSV file to a prettier KML/GPX file for opening in
+`Google Earth`__.
 
 __ http://earth.google.com/
 
