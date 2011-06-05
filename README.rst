@@ -54,13 +54,11 @@ App store
 .. image:: https://github.com/downloads/gradha/Record-my-position/record_my_gps_position_qr_appstore.png
    :align: right
 
-Record my GPS position can be downloaded for free from the Apple
-App Store
-(http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=405865492&mt=8).
-You can find other of my creations on the App Store under my Electric
-Hands Software brand
-(http://itunes.apple.com/artist/electric-hands-software/id325946567) which
-you can also find at http://elhaso.com/.
+Record my GPS position can be downloaded for free from the Apple App Store
+(http://itunes.apple.com/app/record-my-gps-position/id405865492?mt=8). You can
+find other of my creations on the App Store under my Electric Hands Software
+brand (http://itunes.apple.com/artist/electric-hands-software/id325946567)
+which you can also find at http://elhaso.com/.
 
 
 Requests and issues
@@ -123,7 +121,7 @@ subdirectory, which has its own license as it wasn't written by me
 somewhere, if not, contact me to fix that).  Here's the license
 template applied to this project:
 
-Copyright (c) 2010, Grzegorz Adam Hankiewicz.
+Copyright (c) 2011, Grzegorz Adam Hankiewicz.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
