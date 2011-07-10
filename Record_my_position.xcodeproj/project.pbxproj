@@ -12,6 +12,36 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		D51EB90E127A297C0016E191 /* hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = D51EB90C127A297C0016E191 /* hardware.m */; };
+		D52550B013C9C0950050DD86 /* Base64+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D525509C13C9C0950050DD86 /* Base64+ELHASO.m */; };
+		D52550B113C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D525509E13C9C0950050DD86 /* CLLocation+ELHASO.m */; };
+		D52550B213C9C0950050DD86 /* ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A113C9C0950050DD86 /* ELHASO.m */; };
+		D52550B313C9C0950050DD86 /* NSArray+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A313C9C0950050DD86 /* NSArray+ELHASO.m */; };
+		D52550B413C9C0950050DD86 /* NSDictionary+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A513C9C0950050DD86 /* NSDictionary+ELHASO.m */; };
+		D52550B513C9C0950050DD86 /* NSString+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A713C9C0950050DD86 /* NSString+ELHASO.m */; };
+		D52550B613C9C0950050DD86 /* UIImage+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A913C9C0950050DD86 /* UIImage+ELHASO.m */; };
+		D52550B713C9C0950050DD86 /* UIImageView+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550AB13C9C0950050DD86 /* UIImageView+ELHASO.m */; };
+		D52550B813C9C0950050DD86 /* UILabel+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550AD13C9C0950050DD86 /* UILabel+ELHASO.m */; };
+		D52550B913C9C0950050DD86 /* UINavigationController+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550AF13C9C0950050DD86 /* UINavigationController+ELHASO.m */; };
+		D52550BA13C9C0950050DD86 /* Base64+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D525509C13C9C0950050DD86 /* Base64+ELHASO.m */; };
+		D52550BB13C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D525509E13C9C0950050DD86 /* CLLocation+ELHASO.m */; };
+		D52550BC13C9C0950050DD86 /* ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A113C9C0950050DD86 /* ELHASO.m */; };
+		D52550BD13C9C0950050DD86 /* NSArray+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A313C9C0950050DD86 /* NSArray+ELHASO.m */; };
+		D52550BE13C9C0950050DD86 /* NSDictionary+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A513C9C0950050DD86 /* NSDictionary+ELHASO.m */; };
+		D52550BF13C9C0950050DD86 /* NSString+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A713C9C0950050DD86 /* NSString+ELHASO.m */; };
+		D52550C013C9C0950050DD86 /* UIImage+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A913C9C0950050DD86 /* UIImage+ELHASO.m */; };
+		D52550C113C9C0950050DD86 /* UIImageView+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550AB13C9C0950050DD86 /* UIImageView+ELHASO.m */; };
+		D52550C213C9C0950050DD86 /* UILabel+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550AD13C9C0950050DD86 /* UILabel+ELHASO.m */; };
+		D52550C313C9C0950050DD86 /* UINavigationController+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550AF13C9C0950050DD86 /* UINavigationController+ELHASO.m */; };
+		D52550C413C9C0950050DD86 /* Base64+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D525509C13C9C0950050DD86 /* Base64+ELHASO.m */; };
+		D52550C513C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D525509E13C9C0950050DD86 /* CLLocation+ELHASO.m */; };
+		D52550C613C9C0950050DD86 /* ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A113C9C0950050DD86 /* ELHASO.m */; };
+		D52550C713C9C0950050DD86 /* NSArray+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A313C9C0950050DD86 /* NSArray+ELHASO.m */; };
+		D52550C813C9C0950050DD86 /* NSDictionary+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A513C9C0950050DD86 /* NSDictionary+ELHASO.m */; };
+		D52550C913C9C0950050DD86 /* NSString+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A713C9C0950050DD86 /* NSString+ELHASO.m */; };
+		D52550CA13C9C0950050DD86 /* UIImage+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550A913C9C0950050DD86 /* UIImage+ELHASO.m */; };
+		D52550CB13C9C0950050DD86 /* UIImageView+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550AB13C9C0950050DD86 /* UIImageView+ELHASO.m */; };
+		D52550CC13C9C0950050DD86 /* UILabel+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550AD13C9C0950050DD86 /* UILabel+ELHASO.m */; };
+		D52550CD13C9C0950050DD86 /* UINavigationController+ELHASO.m in Sources */ = {isa = PBXBuildFile; fileRef = D52550AF13C9C0950050DD86 /* UINavigationController+ELHASO.m */; };
 		D544A08C127F5FAA00835938 /* DB.m in Sources */ = {isa = PBXBuildFile; fileRef = D544A086127F5FAA00835938 /* DB.m */; };
 		D544A08D127F5FAA00835938 /* DB_log.m in Sources */ = {isa = PBXBuildFile; fileRef = D544A088127F5FAA00835938 /* DB_log.m */; };
 		D544A08E127F5FAA00835938 /* Rows_to_attachment.m in Sources */ = {isa = PBXBuildFile; fileRef = D544A08A127F5FAA00835938 /* Rows_to_attachment.m */; };
@@ -127,6 +157,27 @@
 		8D1107310486CEB800E47090 /* Record_my_position-dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Record_my_position-dev.plist"; path = "resources/Record_my_position-dev.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D51EB90B127A297C0016E191 /* hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hardware.h; sourceTree = "<group>"; };
 		D51EB90C127A297C0016E191 /* hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hardware.m; sourceTree = "<group>"; };
+		D525509B13C9C0950050DD86 /* Base64+ELHASO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Base64+ELHASO.h"; sourceTree = "<group>"; };
+		D525509C13C9C0950050DD86 /* Base64+ELHASO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Base64+ELHASO.m"; sourceTree = "<group>"; };
+		D525509D13C9C0950050DD86 /* CLLocation+ELHASO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLLocation+ELHASO.h"; sourceTree = "<group>"; };
+		D525509E13C9C0950050DD86 /* CLLocation+ELHASO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLLocation+ELHASO.m"; sourceTree = "<group>"; };
+		D525509F13C9C0950050DD86 /* ELHASO-types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ELHASO-types.h"; sourceTree = "<group>"; };
+		D52550A013C9C0950050DD86 /* ELHASO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELHASO.h; sourceTree = "<group>"; };
+		D52550A113C9C0950050DD86 /* ELHASO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELHASO.m; sourceTree = "<group>"; };
+		D52550A213C9C0950050DD86 /* NSArray+ELHASO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+ELHASO.h"; sourceTree = "<group>"; };
+		D52550A313C9C0950050DD86 /* NSArray+ELHASO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+ELHASO.m"; sourceTree = "<group>"; };
+		D52550A413C9C0950050DD86 /* NSDictionary+ELHASO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+ELHASO.h"; sourceTree = "<group>"; };
+		D52550A513C9C0950050DD86 /* NSDictionary+ELHASO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+ELHASO.m"; sourceTree = "<group>"; };
+		D52550A613C9C0950050DD86 /* NSString+ELHASO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ELHASO.h"; sourceTree = "<group>"; };
+		D52550A713C9C0950050DD86 /* NSString+ELHASO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ELHASO.m"; sourceTree = "<group>"; };
+		D52550A813C9C0950050DD86 /* UIImage+ELHASO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ELHASO.h"; sourceTree = "<group>"; };
+		D52550A913C9C0950050DD86 /* UIImage+ELHASO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ELHASO.m"; sourceTree = "<group>"; };
+		D52550AA13C9C0950050DD86 /* UIImageView+ELHASO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+ELHASO.h"; sourceTree = "<group>"; };
+		D52550AB13C9C0950050DD86 /* UIImageView+ELHASO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+ELHASO.m"; sourceTree = "<group>"; };
+		D52550AC13C9C0950050DD86 /* UILabel+ELHASO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+ELHASO.h"; sourceTree = "<group>"; };
+		D52550AD13C9C0950050DD86 /* UILabel+ELHASO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+ELHASO.m"; sourceTree = "<group>"; };
+		D52550AE13C9C0950050DD86 /* UINavigationController+ELHASO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+ELHASO.h"; sourceTree = "<group>"; };
+		D52550AF13C9C0950050DD86 /* UINavigationController+ELHASO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+ELHASO.m"; sourceTree = "<group>"; };
 		D5352EBA127F617900970D4C /* internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = internal.h; sourceTree = "<group>"; };
 		D544A085127F5FAA00835938 /* DB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DB.h; sourceTree = "<group>"; };
 		D544A086127F5FAA00835938 /* DB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DB.m; sourceTree = "<group>"; };
@@ -301,6 +352,35 @@
 			path = egf;
 			sourceTree = "<group>";
 		};
+		D525509A13C9C0950050DD86 /* ELHASO-iOS-snippets */ = {
+			isa = PBXGroup;
+			children = (
+				D525509B13C9C0950050DD86 /* Base64+ELHASO.h */,
+				D525509C13C9C0950050DD86 /* Base64+ELHASO.m */,
+				D525509D13C9C0950050DD86 /* CLLocation+ELHASO.h */,
+				D525509E13C9C0950050DD86 /* CLLocation+ELHASO.m */,
+				D525509F13C9C0950050DD86 /* ELHASO-types.h */,
+				D52550A013C9C0950050DD86 /* ELHASO.h */,
+				D52550A113C9C0950050DD86 /* ELHASO.m */,
+				D52550A213C9C0950050DD86 /* NSArray+ELHASO.h */,
+				D52550A313C9C0950050DD86 /* NSArray+ELHASO.m */,
+				D52550A413C9C0950050DD86 /* NSDictionary+ELHASO.h */,
+				D52550A513C9C0950050DD86 /* NSDictionary+ELHASO.m */,
+				D52550A613C9C0950050DD86 /* NSString+ELHASO.h */,
+				D52550A713C9C0950050DD86 /* NSString+ELHASO.m */,
+				D52550A813C9C0950050DD86 /* UIImage+ELHASO.h */,
+				D52550A913C9C0950050DD86 /* UIImage+ELHASO.m */,
+				D52550AA13C9C0950050DD86 /* UIImageView+ELHASO.h */,
+				D52550AB13C9C0950050DD86 /* UIImageView+ELHASO.m */,
+				D52550AC13C9C0950050DD86 /* UILabel+ELHASO.h */,
+				D52550AD13C9C0950050DD86 /* UILabel+ELHASO.m */,
+				D52550AE13C9C0950050DD86 /* UINavigationController+ELHASO.h */,
+				D52550AF13C9C0950050DD86 /* UINavigationController+ELHASO.m */,
+			);
+			name = "ELHASO-iOS-snippets";
+			path = "ELHASO-iOS-snippets/src";
+			sourceTree = "<group>";
+		};
 		D544A083127F5FAA00835938 /* db */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,6 +417,7 @@
 			children = (
 				D51EB90A127A297C0016E191 /* egf */,
 				D5BEDA52126F8C6A0056DB78 /* egodatabase */,
+				D525509A13C9C0950050DD86 /* ELHASO-iOS-snippets */,
 				D5C4AFA6128978F1005BE697 /* RPReachability.h */,
 				D5C4AFA7128978F1005BE697 /* RPReachability.m */,
 				D5BEDAC9126F942C0056DB78 /* VTPG_Common.h */,
@@ -537,6 +618,16 @@
 				D5D7CDD7128A9D1300B83104 /* Tab_controller.m in Sources */,
 				D5D7CDEE128AB14000B83104 /* Note_taking_controller.m in Sources */,
 				D558C124128D481400641FE9 /* View_controller.m in Sources */,
+				D52550B013C9C0950050DD86 /* Base64+ELHASO.m in Sources */,
+				D52550B113C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */,
+				D52550B213C9C0950050DD86 /* ELHASO.m in Sources */,
+				D52550B313C9C0950050DD86 /* NSArray+ELHASO.m in Sources */,
+				D52550B413C9C0950050DD86 /* NSDictionary+ELHASO.m in Sources */,
+				D52550B513C9C0950050DD86 /* NSString+ELHASO.m in Sources */,
+				D52550B613C9C0950050DD86 /* UIImage+ELHASO.m in Sources */,
+				D52550B713C9C0950050DD86 /* UIImageView+ELHASO.m in Sources */,
+				D52550B813C9C0950050DD86 /* UILabel+ELHASO.m in Sources */,
+				D52550B913C9C0950050DD86 /* UINavigationController+ELHASO.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,6 +654,16 @@
 				D59AAF06134BC5BC00E81139 /* Tab_controller.m in Sources */,
 				D59AAF07134BC5BC00E81139 /* Note_taking_controller.m in Sources */,
 				D59AAF08134BC5BC00E81139 /* View_controller.m in Sources */,
+				D52550C413C9C0950050DD86 /* Base64+ELHASO.m in Sources */,
+				D52550C513C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */,
+				D52550C613C9C0950050DD86 /* ELHASO.m in Sources */,
+				D52550C713C9C0950050DD86 /* NSArray+ELHASO.m in Sources */,
+				D52550C813C9C0950050DD86 /* NSDictionary+ELHASO.m in Sources */,
+				D52550C913C9C0950050DD86 /* NSString+ELHASO.m in Sources */,
+				D52550CA13C9C0950050DD86 /* UIImage+ELHASO.m in Sources */,
+				D52550CB13C9C0950050DD86 /* UIImageView+ELHASO.m in Sources */,
+				D52550CC13C9C0950050DD86 /* UILabel+ELHASO.m in Sources */,
+				D52550CD13C9C0950050DD86 /* UINavigationController+ELHASO.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,6 +690,16 @@
 				D5B08A70133D30E700A60B34 /* Tab_controller.m in Sources */,
 				D5B08A71133D30E700A60B34 /* Note_taking_controller.m in Sources */,
 				D5B08A72133D30E700A60B34 /* View_controller.m in Sources */,
+				D52550BA13C9C0950050DD86 /* Base64+ELHASO.m in Sources */,
+				D52550BB13C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */,
+				D52550BC13C9C0950050DD86 /* ELHASO.m in Sources */,
+				D52550BD13C9C0950050DD86 /* NSArray+ELHASO.m in Sources */,
+				D52550BE13C9C0950050DD86 /* NSDictionary+ELHASO.m in Sources */,
+				D52550BF13C9C0950050DD86 /* NSString+ELHASO.m in Sources */,
+				D52550C013C9C0950050DD86 /* UIImage+ELHASO.m in Sources */,
+				D52550C113C9C0950050DD86 /* UIImageView+ELHASO.m in Sources */,
+				D52550C213C9C0950050DD86 /* UILabel+ELHASO.m in Sources */,
+				D52550C313C9C0950050DD86 /* UINavigationController+ELHASO.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

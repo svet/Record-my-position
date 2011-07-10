@@ -1,3 +1,6 @@
 [submodule "external/egodatabase"]
 	path = external/egodatabase
 	url = git://github.com/gradha/egodatabase.git
+[submodule "external/ELHASO-iOS-snippets"]
+	path = external/ELHASO-iOS-snippets
+	url = git://github.com/gradha/ELHASO-iOS-snippets.git

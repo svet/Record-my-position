@@ -222,65 +222,6 @@ BOOL g_is_multitasking = NO;
 BOOL g_location_changes = NO;
 BOOL g_region_monitoring = NO;
 
-/** Builds up the path of a file in a specific directory.
- * Note that making a path inside a DIR_BUNDLE will always fail if the file
- * doesn't exist (bundles are not allowed to be modified), while a path for
- * DIR_DOCS may succeed even if the file doesn't yet exists (useful to create
- * persistant configuration files).
- *
- * \return Returns an NSString with the path, or NULL if there was an error.
- * If you want to use the returned path with C functions, you will likely
- * call the method cStringUsingEncoding:1 on the returned object.
- */
-NSString *get_path(NSString *filename, DIR_TYPE dir_type)
-{
-	switch (dir_type) {
-		case DIR_BUNDLE:
-		{
-			NSString *path = [[NSBundle mainBundle]
-				pathForResource:filename ofType:nil];
-
-			if (!path)
-				DLOG(@"File '%@' not found inside bundle!", filename);
-
-			return path;
-		}
-
-		case DIR_LIB:
-		{
-			NSArray *paths = NSSearchPathForDirectoriesInDomains(
-				NSLibraryDirectory, NSUserDomainMask, YES);
-			NSString *documentsDirectory = [paths objectAtIndex:0];
-			NSString *path = [documentsDirectory
-				stringByAppendingPathComponent:filename];
-
-			if (!path)
-				DLOG(@"File '%@' not found inside lib directory!", filename);
-
-			return path;
-		}
-
-		case DIR_DOCS:
-		{
-			NSArray *paths = NSSearchPathForDirectoriesInDomains(
-				NSDocumentDirectory, NSUserDomainMask, YES);
-			NSString *documentsDirectory = [paths objectAtIndex:0];
-			NSString *path = [documentsDirectory
-				stringByAppendingPathComponent:filename];
-
-			if (!path)
-				DLOG(@"File '%@' not found inside doc directory!", filename);
-
-			return path;
-		}
-
-		default:
-			DLOG(@"Trying to use dir_type %d", dir_type);
-			assert(0 && "Invalid get_path(dir_type).");
-			return 0;
-	}
-}
-
 /** Updates the state of some global variables.
  * These are variables like g_is_multitasking, which can be read
  * by any one any time. Call this function whenever you want,
