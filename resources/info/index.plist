@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>Program usage</string>
+	<array>
+		<string>What is this for?</string>
+		<string>usage_what_is_this.html</string>
+		<string>I get short battery life!</string>
+		<string>usage_short_battery_life.html</string>
+		<string>It doesn't record my positions</string>
+		<string>usage_doesnt_record.html</string>
+		<string>Can I take notes?</string>
+		<string>usage_notes.html</string>
+		<string>How do I export logs?</string>
+		<string>usage_exporting.html</string>
+		<string>File formats</string>
+		<string>usage_formats.html</string>
+	</array>
+	<string>Credits and contact info</string>
+	<string>credits.html</string>
+	<string>Source code</string>
+	<string>source.html</string>
+</array>
+</plist>

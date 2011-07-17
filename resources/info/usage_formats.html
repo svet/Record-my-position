@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="user-scalable=false; initial-scale=1.0">
+<style type="text/css">
+
+body {
+	font-family: Arial,Helvetica, sans-serif; font-size: 14px;
+	margin: 1em 0.5em 1em; padding: 0px; background: #fff;
+	color: #000000;
+}
+
+h1 {
+	font-family: Arial,Helvetica, sans-serif; font-size: 16px;
+	font-weight: bold; color: #126574 !important;
+}
+
+h2 {
+    font-family: Arial,Helvetica, sans-serif; font-size: 14px;
+	color: #126574 !important;
+}
+
+</style>
+</head>
+<body>
+
+<h1>File formats</h1>
+
+The program can generate CSV and GPX files. The CSV files are comma separated
+value text files where each column represents a value recorded by the device.
+The file will contain a header with the name of the stored value. If you don't
+want to parse this file yourself, you can use the python script avaialble at <a
+	href="https://github.com/gradha/Record-my-position/tree/master/csv_to_kml">https://github.com/gradha/Record-my-position/tree/master/csv_to_kml</a>
+to convert it into a KML file which you can open with Google Earth.
+<p>
+The GPX file format is supported by many programs, so it is likely you will be
+able to use it straight away with any geographical program. However, not all
+the information stored in the CSV file is recorded on the GPX version. For
+instance, one of the columns in the CSV file stores the amount of battery power
+left on your device at that time (so you can make statistics about power usage)
+and another the reachability of internet websites (useful for mapping free wifi
+zones). These are values not stored in the GPX version.
+
+</body></html>
