@@ -44,10 +44,10 @@
  */
 - (void)alert_opening_url
 {
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Enlace externo"
-		message:@"¿Desea abrir el enlace en Safari? La aplicación será cerrada"
-		delegate:self cancelButtonTitle:@"Cancelar"
-		otherButtonTitles:@"Aceptar", nil];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"External link"
+		message:@"Do you want to open the link with Safari and exit this program?"
+		delegate:self cancelButtonTitle:@"Cancel"
+		otherButtonTitles:@"Accept", nil];
 	[alert show];
 	[alert release];
 }
