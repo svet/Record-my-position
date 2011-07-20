@@ -20,6 +20,8 @@ docs/README*.html
 docs/background_tracking.html
 docs/doxygen
 docs/storage_schemas.html
+project.xcworkspace/
 resources/Default.png
 resources/Default@2x.png
 tags
+xcuserdata/
