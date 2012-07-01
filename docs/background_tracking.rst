@@ -4,7 +4,7 @@ Record my position: Background tracking
 
 .. vim:tabstop=4 shiftwidth=4 encoding=utf-8 noexpandtab
 
-:author: Grzegorz Adam Hankiewicz <gradha@titanium.sabren.com>
+:author: Grzegorz Adam Hankiewicz <gradha@imap.cc>
 
 .. contents::
 

@@ -4,7 +4,7 @@ Hands Software.
 
 The code here is an extract and will be replaced with the full
 library once it is open sourced. For more information contact
-gradha@elhaso.com.
+gradha@imap.cc.
 
 You are free to use the files of this directory under the BSD license
 (http://www.opensource.org/licenses/bsd-license.php) independently

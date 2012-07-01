@@ -2,7 +2,7 @@
 Record my GPS position
 ======================
 
-:author: Grzegorz Adam Hankiewicz <gradha@elhaso.com>
+:author: Grzegorz Adam Hankiewicz <gradha@imap.cc>
 
 .. contents::
 

@@ -2,7 +2,7 @@
 Record my position: csv_to_kml.py
 =================================
 
-:author: Grzegorz Adam Hankiewicz <gradha@elhaso.com>
+:author: Grzegorz Adam Hankiewicz <gradha@imap.cc>
 
 .. contents::
 
