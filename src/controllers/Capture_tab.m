@@ -21,6 +21,9 @@
 
 @synthesize old_location = old_location_;
 
+#pragma mark -
+#pragma mark Life
+
 - (id)init
 {
 	if (!(self = [super init]))
@@ -73,67 +76,67 @@
 	[background release];
 
 	note_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-	note_.frame = CGRectMake(5, 85, 310, 135);
+	note_.frame = CGRectMake(5, 138, 310, 135);
 	[note_ setTitle:@"" forState:UIControlStateNormal];
 	[note_ addTarget:self action:@selector(add_note)
 		forControlEvents:UIControlEventTouchUpInside];
 	_MAKE_BUTTON_LABEL_COLOR(note_.titleLabel);
 	[self.view addSubview:note_];
 
-	start_title_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 210, 20)];
+	start_title_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 210, 30)];
 	start_title_.text = @"1";
 	_MAKE_DEFAULT_LABEL_COLOR(start_title_);
 	[self.view addSubview:start_title_];
 
-	switch_ = [[UISwitch alloc] initWithFrame:CGRectMake(220, 20, 100, 20)];
+	switch_ = [[UISwitch alloc] initWithFrame:CGRectMake(220, 20, 100, 30)];
 	[switch_ addTarget:self action:@selector(switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:switch_];
 
-	longitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 90, 300, 20)];
+	longitude_ = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, 300, 20)];
 	longitude_.text = @"2";
 	_MAKE_BUTTON_LABEL_COLOR(longitude_);
-	[self.view addSubview:longitude_];
+	[note_ addSubview:longitude_];
 
-	latitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, 300, 20)];
+	latitude_ = [[UILabel alloc] initWithFrame:CGRectMake(5, 25, 300, 20)];
 	latitude_.text = @"3";
 	_MAKE_BUTTON_LABEL_COLOR(latitude_);
-	[self.view addSubview:latitude_];
+	[note_ addSubview:latitude_];
 
-	precission_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 130, 300, 20)];
+	precission_ = [[UILabel alloc] initWithFrame:CGRectMake(5, 45, 300, 20)];
 	precission_.text = @"4";
 	_MAKE_BUTTON_LABEL_COLOR(precission_);
-	[self.view addSubview:precission_];
+	[note_ addSubview:precission_];
 
-	altitude_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 150, 300, 20)];
+	altitude_ = [[UILabel alloc] initWithFrame:CGRectMake(5, 65, 300, 20)];
 	altitude_.text = @"5";
 	_MAKE_BUTTON_LABEL_COLOR(altitude_);
-	[self.view addSubview:altitude_];
+	[note_ addSubview:altitude_];
 
-	ago_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 170, 300, 20)];
+	ago_ = [[UILabel alloc] initWithFrame:CGRectMake(5, 85, 300, 20)];
 	ago_.text = @"6";
 	_MAKE_BUTTON_LABEL_COLOR(ago_);
-	[self.view addSubview:ago_];
+	[note_ addSubview:ago_];
 
-	movement_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 190, 300, 20)];
+	movement_ = [[UILabel alloc] initWithFrame:CGRectMake(5, 105, 300, 20)];
 	movement_.text = @"7";
 	_MAKE_BUTTON_LABEL_COLOR(movement_);
-	[self.view addSubview:movement_];
+	[note_ addSubview:movement_];
 
 	capabilities_ = [[UILabel alloc]
-		initWithFrame:CGRectMake(10, 220, 300, 79)];
+		initWithFrame:CGRectMake(10, 273, 300, 79)];
 	capabilities_.text = @"";
 	capabilities_.numberOfLines = 0;
 	capabilities_.font = [UIFont systemFontOfSize:15];
 	_MAKE_DEFAULT_LABEL_COLOR(capabilities_);
 	[self.view addSubview:capabilities_];
 
-	clock_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 300, 300, 100)];
+	clock_ = [[UILabel alloc] initWithFrame:CGRectMake(0, 351, 320, 60)];
 	clock_.text = @"00:00:00";
 	clock_.numberOfLines = 1;
 	clock_.textAlignment = UITextAlignmentCenter;
 	clock_.adjustsFontSizeToFitWidth = YES;
-	clock_.font = [UIFont systemFontOfSize:80];
+	clock_.font = [UIFont systemFontOfSize:50];
 	_MAKE_DEFAULT_LABEL_COLOR(clock_);
 	[self.view addSubview:clock_];
 }
@@ -160,7 +163,8 @@
 	timer_ = 0;
 }
 
-#pragma mark Custom methods
+#pragma mark -
+#pragma mark Methods
 
 /** User toggled on/off GUI switch.
  */
@@ -324,6 +328,7 @@
 	[controller release];
 }
 
+#pragma mark -
 #pragma mark KVO
 
 /** Watches GPS changes.
