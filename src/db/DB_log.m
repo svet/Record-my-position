@@ -5,7 +5,7 @@
 #import "db/internal.h"
 #import "macro.h"
 
-#import "RPReachability.h"
+#import "EHReachability.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <time.h>
@@ -33,7 +33,7 @@
 	battery_level_ = device.batteryLevel;
 	external_power_ = (UIDeviceBatteryStateCharging == device.batteryState ||
 		UIDeviceBatteryStateFull == device.batteryState);
-	reachability_ = !(NotReachable == [RPReachability current_status]);
+	reachability_ = !(NotReachable == [EHReachability current_status]);
 
 	return self;
 }
@@ -55,7 +55,7 @@
 	battery_level_ = device.batteryLevel;
 	external_power_ = (UIDeviceBatteryStateCharging == device.batteryState ||
 		UIDeviceBatteryStateFull == device.batteryState);
-	reachability_ = !(NotReachable == [RPReachability current_status]);
+	reachability_ = !(NotReachable == [EHReachability current_status]);
 
 	return self;
 }

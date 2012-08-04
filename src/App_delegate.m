@@ -5,7 +5,7 @@
 #import "db/DB.h"
 #import "macro.h"
 
-#import "RPReachability.h"
+#import "EHReachability.h"
 
 #ifdef USE_DCINTROSPECT
 #ifdef TARGET_IPHONE_SIMULATOR
@@ -72,7 +72,7 @@ static void _set_globals(void);
 	window_.backgroundColor = [UIColor whiteColor];
 
 	/** Set up the reachability class. This works slowly, so let it be first. */
-	[RPReachability init_with_host:REACH_HOST];
+	[EHReachability init_with_host:REACH_HOST];
 
 	db_ = [DB open_database];
 	if (!db_) {

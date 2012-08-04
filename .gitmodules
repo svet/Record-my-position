@@ -7,3 +7,6 @@
 [submodule "external/DCIntrospect"]
 	path = external/DCIntrospect
 	url = git://github.com/gradha/DCIntrospect.git
+[submodule "external/EHReachability"]
+	path = external/EHReachability
+	url = git://github.com/gradha/EHReachability.git
