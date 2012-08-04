@@ -126,6 +126,11 @@
 		D59AAF0F134BC5BC00E81139 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5DF0B7D127636C300A9BC0D /* MessageUI.framework */; };
 		D59AAF10134BC5BC00E81139 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */; };
 		D59D0351126E372400F4D543 /* App_delegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D59D0350126E372400F4D543 /* App_delegate.m */; };
+		D5AAF85915CDB55D006D6D90 /* DCCrossHairView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF85115CDB55D006D6D90 /* DCCrossHairView.m */; };
+		D5AAF85A15CDB55D006D6D90 /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF85315CDB55D006D6D90 /* DCFrameView.m */; };
+		D5AAF85B15CDB55D006D6D90 /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF85515CDB55D006D6D90 /* DCIntrospect.m */; };
+		D5AAF85C15CDB55D006D6D90 /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF85815CDB55D006D6D90 /* DCStatusBarOverlay.m */; };
+		D5AAF85E15CDB5BD006D6D90 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5AAF85D15CDB5BD006D6D90 /* QuartzCore.framework */; };
 		D5B08A55133D30E700A60B34 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D56FF234127AC9C60023FC0C /* Icon.png */; };
 		D5B08A56133D30E700A60B34 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D56FF246127ACA810023FC0C /* Icon@2x.png */; };
 		D5B08A57133D30E700A60B34 /* capture_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B75C6A1297D87800A4142B /* capture_icon.png */; };
@@ -249,6 +254,16 @@
 		D59AAF16134BC5BC00E81139 /* Record_my_position-appstore.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Record_my_position-appstore.plist"; path = "resources/Record_my_position-appstore.plist"; sourceTree = "<group>"; };
 		D59D034F126E372400F4D543 /* App_delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = App_delegate.h; sourceTree = "<group>"; };
 		D59D0350126E372400F4D543 /* App_delegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = App_delegate.m; sourceTree = "<group>"; };
+		D5AAF85015CDB55D006D6D90 /* DCCrossHairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCCrossHairView.h; path = DCIntrospect/DCIntrospect/DCCrossHairView.h; sourceTree = "<group>"; };
+		D5AAF85115CDB55D006D6D90 /* DCCrossHairView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCCrossHairView.m; path = DCIntrospect/DCIntrospect/DCCrossHairView.m; sourceTree = "<group>"; };
+		D5AAF85215CDB55D006D6D90 /* DCFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCFrameView.h; path = DCIntrospect/DCIntrospect/DCFrameView.h; sourceTree = "<group>"; };
+		D5AAF85315CDB55D006D6D90 /* DCFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCFrameView.m; path = DCIntrospect/DCIntrospect/DCFrameView.m; sourceTree = "<group>"; };
+		D5AAF85415CDB55D006D6D90 /* DCIntrospect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCIntrospect.h; path = DCIntrospect/DCIntrospect/DCIntrospect.h; sourceTree = "<group>"; };
+		D5AAF85515CDB55D006D6D90 /* DCIntrospect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCIntrospect.m; path = DCIntrospect/DCIntrospect/DCIntrospect.m; sourceTree = "<group>"; };
+		D5AAF85615CDB55D006D6D90 /* DCIntrospectSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCIntrospectSettings.h; path = DCIntrospect/DCIntrospect/DCIntrospectSettings.h; sourceTree = "<group>"; };
+		D5AAF85715CDB55D006D6D90 /* DCStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCStatusBarOverlay.h; path = DCIntrospect/DCIntrospect/DCStatusBarOverlay.h; sourceTree = "<group>"; };
+		D5AAF85815CDB55D006D6D90 /* DCStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCStatusBarOverlay.m; path = DCIntrospect/DCIntrospect/DCStatusBarOverlay.m; sourceTree = "<group>"; };
+		D5AAF85D15CDB5BD006D6D90 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D5B08A7E133D30E700A60B34 /* Er_recorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Er_recorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5B08A80133D30E700A60B34 /* Er_recorder.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Er_recorder.plist; path = resources/Er_recorder.plist; sourceTree = "<group>"; };
 		D5B75C6A1297D87800A4142B /* capture_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = capture_icon.png; sourceTree = "<group>"; };
@@ -293,6 +308,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5AAF85E15CDB5BD006D6D90 /* QuartzCore.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -378,6 +394,7 @@
 				D5C477B112717BEA00CB008F /* CoreLocation.framework */,
 				D5DF0B7D127636C300A9BC0D /* MessageUI.framework */,
 				D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */,
+				D5AAF85D15CDB5BD006D6D90 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -485,9 +502,26 @@
 			path = info;
 			sourceTree = "<group>";
 		};
+		D5AAF84F15CDB550006D6D90 /* DCIntrospect */ = {
+			isa = PBXGroup;
+			children = (
+				D5AAF85015CDB55D006D6D90 /* DCCrossHairView.h */,
+				D5AAF85115CDB55D006D6D90 /* DCCrossHairView.m */,
+				D5AAF85215CDB55D006D6D90 /* DCFrameView.h */,
+				D5AAF85315CDB55D006D6D90 /* DCFrameView.m */,
+				D5AAF85415CDB55D006D6D90 /* DCIntrospect.h */,
+				D5AAF85515CDB55D006D6D90 /* DCIntrospect.m */,
+				D5AAF85615CDB55D006D6D90 /* DCIntrospectSettings.h */,
+				D5AAF85715CDB55D006D6D90 /* DCStatusBarOverlay.h */,
+				D5AAF85815CDB55D006D6D90 /* DCStatusBarOverlay.m */,
+			);
+			name = DCIntrospect;
+			sourceTree = "<group>";
+		};
 		D5BEDA51126F8C6A0056DB78 /* external */ = {
 			isa = PBXGroup;
 			children = (
+				D5AAF84F15CDB550006D6D90 /* DCIntrospect */,
 				D51EB90A127A297C0016E191 /* egf */,
 				D5BEDA52126F8C6A0056DB78 /* egodatabase */,
 				D525509A13C9C0950050DD86 /* ELHASO-iOS-snippets */,
@@ -740,6 +774,10 @@
 				D52550B913C9C0950050DD86 /* UINavigationController+ELHASO.m in Sources */,
 				D5753E6913D3348B0088E034 /* HTML_view_controller.m in Sources */,
 				D5753E6A13D3348B0088E034 /* Info_view_controller.m in Sources */,
+				D5AAF85915CDB55D006D6D90 /* DCCrossHairView.m in Sources */,
+				D5AAF85A15CDB55D006D6D90 /* DCFrameView.m in Sources */,
+				D5AAF85B15CDB55D006D6D90 /* DCIntrospect.m in Sources */,
+				D5AAF85C15CDB55D006D6D90 /* DCStatusBarOverlay.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -830,6 +868,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					USE_DCINTROSPECT,
+				);
 				INFOPLIST_FILE = "resources/Record_my_position-dev.plist";
 			};
 			name = Debug;
@@ -840,6 +882,10 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					USE_DCINTROSPECT,
+				);
 				INFOPLIST_FILE = "resources/Record_my_position-dev.plist";
 				VALIDATE_PRODUCT = YES;
 			};
