@@ -34,7 +34,7 @@ Hardware_info *get_hardware_info(void)
 	}
 	info->name = calloc(1, size);
 	if (!info->name) {
-		DLOG(@"Not enough memory to get hardware name (%d).", size);
+		DLOG(@"Not enough memory to get hardware name (%lu).", size);
 		free(info);
 		info = 0;
 		goto exit;

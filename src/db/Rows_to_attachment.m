@@ -233,7 +233,7 @@ static NSString *gpx_timestamp(const time_t timestamp);
  */
 NSString *gpx_timestamp(const time_t timestamp)
 {
-	DLOG(@"Calling by %d", timestamp);
+	DLOG(@"Calling by %ld", timestamp);
 	struct tm *t = gmtime(&timestamp);
 	if (!t)
 		return @"Timestamp memory error";
