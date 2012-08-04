@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
-
 #import "controllers/View_controller.h"
 
 @class CLLocation;
@@ -7,7 +5,9 @@
 @interface Capture_tab : View_controller
 {
 	UILabel *start_title_;
-	UISwitch *switch_;
+	UISwitch *start_switch_;
+	UISwitch *record_type_switch_;
+	UILabel *explanation_label_;
 
 	UILabel *longitude_;
 	UILabel *latitude_;
@@ -35,3 +35,5 @@
 - (id)init;
 
 @end
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 syntax=objc
-
 #import "controllers/Capture_tab.h"
 
 #import "App_delegate.h"
@@ -8,9 +6,11 @@
 #import "macro.h"
 
 
+#define _KEY_SAVE_SINGLE_POSITION		@"save_single_positions"
+
 
 @interface Capture_tab ()
-- (void)switch_changed;
+- (void)gps_switch_changed;
 - (void)update_gui;
 - (void)start_timer;
 - (void)add_note;
@@ -49,20 +49,22 @@
 	[timer_ invalidate];
 	if (watching_)
 		[[GPS get] remove_watcher:self];
-	[switch_ removeTarget:self action:@selector(switch_changed)
+	[start_switch_ removeTarget:self action:@selector(gps_switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[clock_ release];
 	[ago_ release];
 	[note_ release];
 	[capabilities_ release];
 	[movement_ release];
-	[switch_ release];
+	[start_switch_ release];
 	[altitude_ release];
 	[precission_ release];
 	[latitude_ release];
 	[longitude_ release];
 	[start_title_ release];
 	[old_location_ release];
+	[record_type_switch_ release];
+	[explanation_label_ release];
 	[super dealloc];
 }
 
@@ -88,10 +90,36 @@
 	_MAKE_DEFAULT_LABEL_COLOR(start_title_);
 	[self.view addSubview:start_title_];
 
-	switch_ = [[UISwitch alloc] initWithFrame:CGRectMake(220, 20, 100, 30)];
-	[switch_ addTarget:self action:@selector(switch_changed)
+	start_switch_ = [[UISwitch alloc]
+		initWithFrame:CGRectMake(220, 20, 100, 30)];
+	[start_switch_ addTarget:self action:@selector(gps_switch_changed)
 		forControlEvents:UIControlEventValueChanged];
-	[self.view addSubview:switch_];
+	[self.view addSubview:start_switch_];
+
+	UILabel *record_type_title = [[UILabel alloc]
+		initWithFrame:CGRectMake(10, 70, 210, 30)];
+	record_type_title.text = @"Save all GPS positions";
+	_MAKE_DEFAULT_LABEL_COLOR(record_type_title);
+	[self.view addSubview:record_type_title];
+	[record_type_title release];
+
+	record_type_switch_ = [[UISwitch alloc]
+		initWithFrame:CGRectMake(220, 70, 100, 30)];
+	[record_type_switch_ addTarget:self
+		action:@selector(record_type_switch_changed)
+		forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview:record_type_switch_];
+
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	record_type_switch_.on = ![defaults
+		boolForKey:_KEY_SAVE_SINGLE_POSITION];
+
+	explanation_label_ = [[UILabel alloc]
+		initWithFrame:CGRectMake(10, 105, 300, 25)];
+	explanation_label_.text = @"Touch the button below to save a position";
+	explanation_label_.adjustsFontSizeToFitWidth = YES;
+	_MAKE_DEFAULT_LABEL_COLOR(explanation_label_);
+	[self.view addSubview:explanation_label_];
 
 	longitude_ = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, 300, 20)];
 	longitude_.text = @"2";
@@ -147,7 +175,7 @@
 {
 	[super viewWillAppear:animated];
 
-	switch_.on = [GPS get].gps_is_on;
+	start_switch_.on = [GPS get].gps_is_on;
 	[self update_gui];
 
 	[self start_timer];
@@ -166,15 +194,14 @@
 #pragma mark -
 #pragma mark Methods
 
-/** User toggled on/off GUI switch.
- */
-- (void)switch_changed
+/// User toggled on/off GUI switch.
+- (void)gps_switch_changed
 {
 	GPS *gps = [GPS get];
 
-	if ([switch_ isOn]) {
+	if ([start_switch_ isOn]) {
 		if (![gps start]) {
-			switch_.on = false;
+			start_switch_.on = false;
 			[self warn:@"Couldn't start GPS" title:@"GPS"];
 		} else {
 			[gps add_watcher:self];
@@ -194,6 +221,17 @@
 	[defaults synchronize];
 }
 
+/// User toggled the record all/single switch.
+- (void)record_type_switch_changed
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setBool:!record_type_switch_.on forKey:_KEY_SAVE_SINGLE_POSITION];
+	[self update_gui];
+
+	// Force saving preferences here, otherwise if we get killed they are lost.
+	[defaults synchronize];
+}
+
 /** Handles updating the gui labels and other state.
  */
 - (void)update_gui
@@ -206,10 +244,15 @@
 	[formatter release];
 
 	// State of capture.
-	if (switch_.on)
+	if (start_switch_.on)
 		start_title_.text = @"Reading GPS...";
 	else
 		start_title_.text = @"GPS off";
+
+	// Visibility of the explanation for the second switch.
+	[UIView beginAnimations:nil context:nil];
+	explanation_label_.alpha = (record_type_switch_.on) ? 0 : 1;
+	[UIView commitAnimations];
 
 	// Device information. Update only if needed, it doesn't change at runtime.
 	if (capabilities_.text.length < 1) {
@@ -252,7 +295,7 @@
 			location.altitude, location.verticalAccuracy];
 
 	NSTimeInterval diff = [now timeIntervalSinceDate:location.timestamp];
-	ago_.text = [NSString stringWithFormat:@"%@ ago", (diff > 60 ? 
+	ago_.text = [NSString stringWithFormat:@"%@ ago", (diff > 60 ?
 		[NSString stringWithFormat:@"%d minute(s)", (int)diff / 60] :
 		[NSString stringWithFormat:@"%d second(s)", (int)diff])];
 
@@ -344,3 +387,5 @@
 }
 
 @end
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc
