@@ -1,14 +1,13 @@
-// vim:tabstop=4 shiftwidth=4 syntax=objc
-
 #import "GPS.h"
 
 #import "db/DB.h"
 #import "macro.h"
 
 
-#define _KEY_PATH			@"last_pos"
-#define _WATCHDOG_SECONDS	(60 * 60)
-#define _GPS_IS_ON_KEY		@"gps_is_on"
+#define _KEY_PATH						@"last_pos"
+#define _WATCHDOG_SECONDS				(60 * 60)
+#define _GPS_IS_ON_KEY					@"gps_is_on"
+#define _KEY_SAVE_SINGLE_POSITION		@"save_single_positions"
 
 
 @interface GPS ()
@@ -25,6 +24,9 @@ static GPS *g_;
 @synthesize gps_is_on = gps_is_on_;
 @synthesize accuracy = accuracy_;
 
+#pragma mark -
+#pragma mark Life
+
 /** Returns the pointer to the singleton GPS class.
  * The class will be constructed if necessary.
  */
@@ -37,10 +39,78 @@ static GPS *g_;
 		const BOOL gps_is_on = [defaults boolForKey:_GPS_IS_ON_KEY];
 		if (gps_is_on)
 			[g_ start];
+
+		g_->save_all_positions_ =
+			![defaults boolForKey:_KEY_SAVE_SINGLE_POSITION];
 	}
 
 	return g_;
 }
+
+/** Initialises the GPS class.
+ */
+- (id)init
+{
+	if (!(self = [super init]))
+		return nil;
+
+	manager_ = [[CLLocationManager alloc] init];
+	if (!manager_) {
+		LOG(@"Couldn't instantiate CLLocationManager!");
+		return nil;
+	}
+
+	// Set no filter and try to get the best accuracy possible.
+	accuracy_ = HIGH_ACCURACY;
+	manager_.distanceFilter = kCLDistanceFilterNone;
+	manager_.desiredAccuracy = kCLLocationAccuracyBest;
+	manager_.delegate = self;
+
+	return self;
+}
+
+- (void)dealloc
+{
+	[self stop];
+	[manager_ release];
+	[super dealloc];
+}
+
+#pragma mark -
+#pragma mark Properties
+
+/** Write property to serialize value for later usage.
+ * Setting the variable also saves it to the user's defaults,
+ * allowing the value to be restored in case of crash or device without
+ * background tracking support.
+ */
+- (void)setGps_is_on:(BOOL)value
+{
+	gps_is_on_ = value;
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setBool:value forKey:_GPS_IS_ON_KEY];
+	[defaults synchronize];
+}
+
+/// Sets the setting for saving all positions.
+- (void)setSave_all_positions:(BOOL)value
+{
+	save_all_positions_ = value;
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setBool:!value forKey:_KEY_SAVE_SINGLE_POSITION];
+
+	// Force saving preferences here, otherwise if we get killed they are lost.
+	[defaults synchronize];
+}
+
+/// Reads the setting for reading all positions.
+- (BOOL)save_all_positions
+{
+	return save_all_positions_;
+}
+
+#pragma mark -
+#pragma mark Methods
 
 /** Converts a coordinate from degrees to decimal minute second format.
  * Specify with the latitude bool if you are converting the latitude
@@ -73,47 +143,6 @@ static GPS *g_;
 	else
 		return [NSString stringWithFormat:@"%ddeg %dmin %0.2fsec",
 			degrees, minutes, seconds];
-}
-
-/** Initialises the GPS class.
- */
-- (id)init
-{
-	if (!(self = [super init]))
-		return nil;
-
-	manager_ = [[CLLocationManager alloc] init];
-	if (!manager_) {
-		LOG(@"Couldn't instantiate CLLocationManager!");
-		return nil;
-	}
-
-	// Set no filter and try to get the best accuracy possible.
-	accuracy_ = HIGH_ACCURACY;
-	manager_.distanceFilter = kCLDistanceFilterNone;
-	manager_.desiredAccuracy = kCLLocationAccuracyBest;
-	manager_.delegate = self;
-
-	return self;
-}
-
-- (void)dealloc
-{
-	[self stop];
-	[manager_ release];
-	[super dealloc];
-}
-
-/** Write property to serialize value for later usage.
- * Setting the variable also saves it to the user's defaults,
- * allowing the value to be restored in case of crash or device without
- * background tracking support.
- */
-- (void)setGps_is_on:(BOOL)value
-{
-	gps_is_on_ = value;
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setBool:value forKey:_GPS_IS_ON_KEY];
 }
 
 /** Starts the GPS tracking.
@@ -315,3 +344,5 @@ static GPS *g_;
 }
 
 @end
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

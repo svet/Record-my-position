@@ -6,10 +6,8 @@
 #import "macro.h"
 
 
-#define _KEY_SAVE_SINGLE_POSITION		@"save_single_positions"
-
-
 @interface Capture_tab ()
+- (void)gps_switch_changed;
 - (void)gps_switch_changed;
 - (void)update_gui;
 - (void)start_timer;
@@ -50,6 +48,9 @@
 	if (watching_)
 		[[GPS get] remove_watcher:self];
 	[start_switch_ removeTarget:self action:@selector(gps_switch_changed)
+		forControlEvents:UIControlEventValueChanged];
+	[record_type_switch_ removeTarget:self
+		action:@selector(record_type_switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[clock_ release];
 	[ago_ release];
@@ -109,10 +110,7 @@
 		action:@selector(record_type_switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:record_type_switch_];
-
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	record_type_switch_.on = ![defaults
-		boolForKey:_KEY_SAVE_SINGLE_POSITION];
+	record_type_switch_.on = [GPS get].save_all_positions;
 
 	explanation_label_ = [[UILabel alloc]
 		initWithFrame:CGRectMake(10, 210, 300, 25)];
@@ -215,21 +213,13 @@
 	}
 
 	[self update_gui];
-
-	// Force saving preferences here, otherwise if we get killed they are lost.
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults synchronize];
 }
 
 /// User toggled the record all/single switch.
 - (void)record_type_switch_changed
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setBool:!record_type_switch_.on forKey:_KEY_SAVE_SINGLE_POSITION];
+	[GPS get].save_all_positions = record_type_switch_.on;
 	[self update_gui];
-
-	// Force saving preferences here, otherwise if we get killed they are lost.
-	[defaults synchronize];
 }
 
 /** Handles updating the gui labels and other state.

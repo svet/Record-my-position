@@ -1,5 +1,3 @@
-// vim:tabstop=4 shiftwidth=4 syntax=objc
-
 #import <CoreLocation/CoreLocation.h>
 
 /// Possible values for the accuracy setting of the GPS.
@@ -37,11 +35,15 @@ typedef enum ACCURACY_ENUM ACCURACY;
 
 	/// Current accuracy setting.
 	ACCURACY accuracy_;
+
+	/// Remembers if we are saving all the positions.
+	BOOL save_all_positions_;
 }
 
 @property (nonatomic, retain, readonly) CLLocation *last_pos;
 @property (nonatomic, readonly, assign) BOOL gps_is_on;
 @property (nonatomic, readonly, assign) ACCURACY accuracy;
+@property (nonatomic, assign) BOOL save_all_positions;
 
 + (GPS*)get;
 + (NSString*)degrees_to_dms:(CLLocationDegrees)value latitude:(BOOL)latitude;
@@ -53,5 +55,6 @@ typedef enum ACCURACY_ENUM ACCURACY;
 - (void)remove_watcher:(id)watcher;
 - (void)set_accuracy:(ACCURACY)accuracy reason:(NSString*)reason;
 
-
 @end
+
+// vim:tabstop=4 shiftwidth=4 syntax=objc

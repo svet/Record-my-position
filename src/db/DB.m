@@ -397,11 +397,14 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
 	change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:[GPS key_path]])
-		[self log:[GPS get].last_pos];
-	else
+	if ([keyPath isEqual:[GPS key_path]]) {
+		GPS *gps = [GPS get];
+		if (gps.save_all_positions)
+			[self log:gps.last_pos];
+	} else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change
 			context:context];
+	}
 }
 
 @end
