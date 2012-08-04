@@ -78,7 +78,7 @@
 	[background release];
 
 	note_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
-	note_.frame = CGRectMake(5, 138, 310, 135);
+	note_.frame = CGRectMake(5, 70, 310, 135);
 	[note_ setTitle:@"" forState:UIControlStateNormal];
 	[note_ addTarget:self action:@selector(add_note)
 		forControlEvents:UIControlEventTouchUpInside];
@@ -97,14 +97,14 @@
 	[self.view addSubview:start_switch_];
 
 	UILabel *record_type_title = [[UILabel alloc]
-		initWithFrame:CGRectMake(10, 70, 210, 30)];
+		initWithFrame:CGRectMake(10, 245, 210, 30)];
 	record_type_title.text = @"Save all GPS positions";
 	_MAKE_DEFAULT_LABEL_COLOR(record_type_title);
 	[self.view addSubview:record_type_title];
 	[record_type_title release];
 
 	record_type_switch_ = [[UISwitch alloc]
-		initWithFrame:CGRectMake(220, 70, 100, 30)];
+		initWithFrame:CGRectMake(220, 245, 100, 30)];
 	[record_type_switch_ addTarget:self
 		action:@selector(record_type_switch_changed)
 		forControlEvents:UIControlEventValueChanged];
@@ -115,8 +115,8 @@
 		boolForKey:_KEY_SAVE_SINGLE_POSITION];
 
 	explanation_label_ = [[UILabel alloc]
-		initWithFrame:CGRectMake(10, 105, 300, 25)];
-	explanation_label_.text = @"Touch the button below to save a position";
+		initWithFrame:CGRectMake(10, 210, 300, 25)];
+	explanation_label_.text = @"Touch the button above to save a position";
 	explanation_label_.adjustsFontSizeToFitWidth = YES;
 	_MAKE_DEFAULT_LABEL_COLOR(explanation_label_);
 	[self.view addSubview:explanation_label_];
