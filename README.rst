@@ -42,8 +42,10 @@ my iPod touch on with the program running in the background for a
 whole day and didn't consume more than a quarter of the battery,
 so it seems the wifi location doesn't require as much power.
 
-This program was possible due to `eFaber`__ being nice guys and
-allowing me to release this as open source.
+This program was possible due to `eFaber`__ being nice guys and allowing me to
+release this as open source. You can browse more software made by eFaber at
+http://itunes.apple.com/artist/svetoslav-ivantchev/id383327245.
+
 
 __ http://efaber.net/
 
