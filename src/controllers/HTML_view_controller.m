@@ -9,6 +9,9 @@
 //@synthesize title = title_;
 @synthesize external = external_;
 
+#pragma mark -
+#pragma mark Life
+
 - (void)loadView
 {
 	[super loadView];
@@ -39,6 +42,9 @@
 	[super dealloc];
 }
 
+#pragma mark -
+#pragma mark Methods
+
 /** Used by the web view delegate to open an url.
  * Before calling this you are meant to set the self.external variable properly.
  */
@@ -61,6 +67,24 @@
 	}
 }
 
+/// See if we can open the mail composer or alert the user.
+- (void)show_mail_composer:(NSString*)address
+{
+	if ([MFMailComposeViewController canSendMail]) {
+		MFMailComposeViewController *c =
+			[[MFMailComposeViewController alloc] init];
+		[c setSubject:@"From Record my GPS position"];
+		c.mailComposeDelegate = self;
+		[c setToRecipients:[NSArray arrayWithObject:address]];
+		[self presentModalViewController:c animated:YES];
+		[c release];
+	} else {
+		[self warn:@"You must have an email account in order to send an email"
+			title:@"No email"];
+	}
+}
+
+#pragma mark -
 #pragma mark UIWebViewDelegate protocol
 
 - (void)webViewDidStartLoad:(UIWebView*)webView
@@ -89,8 +113,7 @@
 			DLOG(@"Requesting %@", request);
 			if (NSOrderedSame ==
 					[[[request URL] scheme] caseInsensitiveCompare:@"mailto"]) {
-				DLOG(@"Mailto not implemented");
-				//[self show_mail_composer:[[request URL] resourceSpecifier]];
+				[self show_mail_composer:[[request URL] resourceSpecifier]];
 			} else {
 				self.external = request.URL;
 				[self alert_opening_url];
@@ -101,6 +124,17 @@
 			return YES;
 	}
 	return YES;
+}
+
+#pragma mark -
+#pragma mark MFMailComposeViewControllerDelegate
+
+/// Forces dismissing of the view, only logging the error, not dealing with it.
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+	didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+	DLOG(@"Did mail fail? %@", error);
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 @end

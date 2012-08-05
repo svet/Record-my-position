@@ -1,11 +1,14 @@
+#import "controllers/View_controller.h"
+#import <MessageUI/MessageUI.h>
+
 @class NSURL;
 
 /** Shows an HTML to the user.
  *
  * Nothing fancy, the file comes from the bundle's resources.
  */
-@interface HTML_view_controller : UIViewController
-	<UIWebViewDelegate>
+@interface HTML_view_controller : View_controller
+	<UIWebViewDelegate, MFMailComposeViewControllerDelegate>
 {
 	/// Tracks our web view.
 	UIWebView *web_view_;
