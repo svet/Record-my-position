@@ -42,9 +42,9 @@ my iPod touch on with the program running in the background for a
 whole day and didn't consume more than a quarter of the battery,
 so it seems the wifi location doesn't require as much power.
 
-This program was possible due to `eFaber`__ being nice guys and allowing me to
-release this as open source. You can browse more software made by eFaber at
-http://itunes.apple.com/artist/svetoslav-ivantchev/id383327245.
+This program was possible due to `eFaber`__ being nice guys and
+allowing me to release this as open source. You can browse more
+software made by eFaber at http://itunes.com/apps/svetoslavivantchev/.
 
 
 __ http://efaber.net/
@@ -56,10 +56,11 @@ App store
 .. image:: https://github.com/downloads/gradha/Record-my-position/record_my_gps_position_qr_appstore.png
    :align: right
 
-Record my GPS position can be downloaded for free from the Apple App Store
-(http://itunes.apple.com/app/record-my-gps-position/id405865492?mt=8). You can
-find other of my creations on the App Store under my Electric Hands Software
-brand (http://itunes.apple.com/artist/electric-hands-software/id325946567)
+Record my GPS position can be downloaded for free from the Apple
+App Store
+(http://itunes.com/apps/electrichandssoftware/recordmygpsposition/). You
+can find other of my creations on the App Store under my Electric
+Hands Software brand (http://itunes.com/apps/electrichandssoftware/)
 which you can also find at http://elhaso.com/.
 
 
