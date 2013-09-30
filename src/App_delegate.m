@@ -28,7 +28,7 @@
  * from enormego (http://enormego.com/).
  *
  * Fragments of code from a private library by Grzegorz Adam
- * Hankiewicz from Electric Hands Software (http://elhaso.com/) have
+ * Hankiewicz from Electric Hands Software (http://elhaso.es/) have
  * made it to Floki for hardware UDID detection. See licensing
  * information under \c external/egf/readme.txt.
  *

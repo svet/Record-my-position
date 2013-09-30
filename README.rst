@@ -61,7 +61,7 @@ App Store
 (http://itunes.com/apps/electrichandssoftware/recordmygpsposition/). You
 can find other of my creations on the App Store under my Electric
 Hands Software brand (http://itunes.com/apps/electrichandssoftware/)
-which you can also find at http://elhaso.com/.
+which you can also find at http://elhaso.es/.
 
 
 Requests and issues
