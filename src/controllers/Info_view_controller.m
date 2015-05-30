@@ -49,7 +49,7 @@
 	cell.textLabel.textColor = [UIColor colorWithRed:0x12 / 255.0
 		green:0x65 / 255.0 blue:0x74 / 255.0 alpha:1];
 	cell.textLabel.adjustsFontSizeToFitWidth = YES;
-	cell.textLabel.minimumFontSize = 10;
+	cell.textLabel.minimumScaleFactor = 0.1;
 	return cell;
 }
 

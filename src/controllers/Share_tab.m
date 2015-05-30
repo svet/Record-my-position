@@ -59,8 +59,8 @@
 	// Button to share data through email.
 	share_mail_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	share_mail_.frame = CGRectMake(20, 310, 120, 80);
-	share_mail_.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-	share_mail_.titleLabel.textAlignment = UITextAlignmentCenter;
+	share_mail_.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+	share_mail_.titleLabel.textAlignment = NSTextAlignmentCenter;
 	[share_mail_ setTitle:@"Send log\nby email" forState:UIControlStateNormal];
 	[share_mail_ setTitle:@"Record\npositions!"
 		forState:UIControlStateDisabled];
@@ -72,8 +72,8 @@
 	// Button to share data through file.
 	share_file_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
 	share_file_.frame = CGRectMake(180, 310, 120, 80);
-	share_file_.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-	share_file_.titleLabel.textAlignment = UITextAlignmentCenter;
+	share_file_.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+	share_file_.titleLabel.textAlignment = NSTextAlignmentCenter;
 	[share_file_ setTitle:@"Create log\non device"
 		forState:UIControlStateNormal];
 	[share_file_ setTitle:@"Record\npositions!"

@@ -160,7 +160,7 @@
 	clock_ = [[UILabel alloc] initWithFrame:CGRectMake(0, 351, 320, 60)];
 	clock_.text = @"00:00:00";
 	clock_.numberOfLines = 1;
-	clock_.textAlignment = UITextAlignmentCenter;
+	clock_.textAlignment = NSTextAlignmentCenter;
 	clock_.adjustsFontSizeToFitWidth = YES;
 	clock_.font = [UIFont systemFontOfSize:50];
 	_MAKE_DEFAULT_LABEL_COLOR(clock_);
