@@ -4,6 +4,7 @@
 #import "controllers/Tab_controller.h"
 #import "db/DB.h"
 #import "macro.h"
+#import "Record_my_position-Swift.h"
 
 #import "EHReachability.h"
 
@@ -63,6 +64,8 @@ static void _set_globals(void);
 	didFinishLaunchingWithOptions:(NSDictionary *)launch_options
 {
 	DLOG(@"Lunching application with %@", launch_options);
+
+    [[SGPS get] start];
 
 	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
 	_set_globals();

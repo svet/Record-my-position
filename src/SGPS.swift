@@ -1,20 +1,36 @@
 import Foundation
 
-class SGPS
+public class Test
 {
-    static let cInstance: SGPS = SGPS()
-
-    get { return cInstance; }
-    init()
-    {
-        let defaults = NSUserDefaults.standardUserDefaults
-        let gpsIsOn = defaults.boolForKey(_GPS_IS_ON_KEY);
-
+    init(a: String) {
+        println("Hello \(a)")
     }
 }
-//		const BOOL gps_is_on = [defaults boolForKey:_GPS_IS_ON_KEY];
-//		if (gps_is_on)
-//			[g_ start];
-//
-//		g_->save_all_positions_ =
-//			![defaults boolForKey:_KEY_SAVE_SINGLE_POSITION];
+
+@objc public class SGPS
+{
+    private let _GPS_IS_ON_KEY = "gps_is_on"
+    private let _KEY_SAVE_SINGLE_POSITION = "save_single_positions"
+
+    static private let cInstance: SGPS = SGPS();
+    static private var cSaveAllPositions: Bool = false
+
+    static func get() -> SGPS {
+        return cInstance
+    }
+
+    public init()
+    {
+        let defaults = NSUserDefaults.standardUserDefaults()
+
+        if defaults.boolForKey(_GPS_IS_ON_KEY) {
+            start();
+        }
+        SGPS.cSaveAllPositions = defaults.boolForKey(_KEY_SAVE_SINGLE_POSITION);
+    }
+
+    public func start()
+    {
+        println("Starting!");
+    }
+}
