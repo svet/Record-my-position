@@ -271,10 +271,9 @@
 	Hardware_info *info = get_hardware_info();
 
 	NSString *ret = [NSString stringWithFormat:@"positions %04d-%02d-%02d "
-		@"%02d:%02d:%02d %s %s", [now year], [now month], [now day],
+		@"%02d:%02d:%02d %s", [now year], [now month], [now day],
 		[now hour], [now minute], [now second],
-		(info && info->name) ? (info->name) : ("unknown"),
-		(info && info->udid[0]) ? (info->udid) : ("no udid"), nil];
+		(info && info->name) ? (info->name) : ("unknown"), nil];
 
 	destroy_hardware_info(&info);
 	return ret;

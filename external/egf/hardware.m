@@ -1,4 +1,4 @@
-// vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
+// vim:tabstop=4 shiftwidth=4 syntax=objc
 
 #include "egf/hardware.h"
 
@@ -34,24 +34,10 @@ Hardware_info *get_hardware_info(void)
 	}
 	info->name = calloc(1, size);
 	if (!info->name) {
-		DLOG(@"Not enough memory to get hardware name (%lu).", size);
+		DLOG(@"Not enough memory to get hardware name (%ld).", size);
 		free(info);
 		info = 0;
 		goto exit;
-	}
-
-	info->udid[0] = 0;
-	UIDevice *dev = [UIDevice currentDevice];
-	NSString *udid = dev.uniqueIdentifier;
-	if (udid) {
-		if (UDID_LEN == strlen([udid cStringUsingEncoding:1])) {
-			strncpy(info->udid, [udid cStringUsingEncoding:1], UDID_LEN);
-			info->udid[UDID_LEN] = 0;
-		} else {
-			DLOG(@"Unexpected UDID length for '%@'.", udid);
-		}
-	} else {
-		DLOG(@"Couldn't read UDID.");
 	}
 
 	sysctlbyname("hw.machine", info->name, &size, 0, 0);

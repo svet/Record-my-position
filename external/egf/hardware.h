@@ -1,3 +1,4 @@
+// vim:tabstop=4 shiftwidth=4 syntax=objc
 /**
  * \file hardware.h
  * \brief Functions to query the underlying hardware.
@@ -47,7 +48,6 @@ struct Hardware_info_t
 	HW_FAMILY family;			// Hardware family.
 	char version;				// Zero or positive means recognised version.
 	char *name;					// Hardware name as C string.
-	char udid[UDID_LEN + 1];	// UDID plus NULL terminator.
 };
 
 
@@ -56,5 +56,3 @@ void destroy_hardware_info(Hardware_info **info);
 
 
 #endif // __EGF_HARDWARE_H__
-
-// vim:tabstop=4 shiftwidth=4 syntax=objc
