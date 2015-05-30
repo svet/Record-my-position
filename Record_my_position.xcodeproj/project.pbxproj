@@ -934,7 +934,7 @@
 					src,
 					external,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "-weak-lSystem";
 				PREBINDING = NO;
 				PRODUCT_NAME = Record_my_position;
@@ -960,7 +960,7 @@
 					src,
 					external,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-weak-lSystem";
 				PREBINDING = NO;
