@@ -178,6 +178,9 @@
 		D5C4AFCD12897956005BE697 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */; };
 		D5C86D1F1299CF8D00253C7F /* share_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C86D1D1299CF8D00253C7F /* share_icon.png */; };
 		D5C86D201299CF8D00253C7F /* share_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C86D1E1299CF8D00253C7F /* share_icon@2x.png */; };
+		D5D216571B1A312800AB04AB /* SGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D216561B1A312800AB04AB /* SGPS.swift */; };
+		D5D216581B1A312800AB04AB /* SGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D216561B1A312800AB04AB /* SGPS.swift */; };
+		D5D216591B1A312800AB04AB /* SGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D216561B1A312800AB04AB /* SGPS.swift */; };
 		D5D7CDD4128A9D1300B83104 /* Capture_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDCD128A9D1300B83104 /* Capture_tab.m */; };
 		D5D7CDD5128A9D1300B83104 /* Log_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDCF128A9D1300B83104 /* Log_tab.m */; };
 		D5D7CDD6128A9D1300B83104 /* Share_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDD1128A9D1300B83104 /* Share_tab.m */; };
@@ -285,6 +288,10 @@
 		D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D5C86D1D1299CF8D00253C7F /* share_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share_icon.png; sourceTree = "<group>"; };
 		D5C86D1E1299CF8D00253C7F /* share_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share_icon@2x.png"; sourceTree = "<group>"; };
+		D5D216531B1A312800AB04AB /* Record_my_position-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Record_my_position-Bridging-Header.h"; sourceTree = "<group>"; };
+		D5D216541B1A312800AB04AB /* Er recorder adhoc-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Er recorder adhoc-Bridging-Header.h"; sourceTree = "<group>"; };
+		D5D216551B1A312800AB04AB /* Record_my_position_appstore-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Record_my_position_appstore-Bridging-Header.h"; sourceTree = "<group>"; };
+		D5D216561B1A312800AB04AB /* SGPS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGPS.swift; sourceTree = "<group>"; };
 		D5D7CDCC128A9D1300B83104 /* Capture_tab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Capture_tab.h; sourceTree = "<group>"; };
 		D5D7CDCD128A9D1300B83104 /* Capture_tab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Capture_tab.m; sourceTree = "<group>"; };
 		D5D7CDCE128A9D1300B83104 /* Log_tab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Log_tab.h; sourceTree = "<group>"; };
@@ -407,6 +414,10 @@
 				D5C47781127177D500CB008F /* GPS.m */,
 				D5BEDA3D126F8C100056DB78 /* macro.h */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				D5D216561B1A312800AB04AB /* SGPS.swift */,
+				D5D216531B1A312800AB04AB /* Record_my_position-Bridging-Header.h */,
+				D5D216541B1A312800AB04AB /* Er recorder adhoc-Bridging-Header.h */,
+				D5D216551B1A312800AB04AB /* Record_my_position_appstore-Bridging-Header.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -635,6 +646,8 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Record_my_position" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -768,6 +781,7 @@
 				D52550B013C9C0950050DD86 /* Base64+ELHASO.m in Sources */,
 				D52550B113C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */,
 				D52550B213C9C0950050DD86 /* ELHASO.m in Sources */,
+				D5D216571B1A312800AB04AB /* SGPS.swift in Sources */,
 				D52550B313C9C0950050DD86 /* NSArray+ELHASO.m in Sources */,
 				D52550B413C9C0950050DD86 /* NSDictionary+ELHASO.m in Sources */,
 				D52550B513C9C0950050DD86 /* NSString+ELHASO.m in Sources */,
@@ -807,6 +821,7 @@
 				D59AAF07134BC5BC00E81139 /* Note_taking_controller.m in Sources */,
 				D59AAF08134BC5BC00E81139 /* View_controller.m in Sources */,
 				D52550C413C9C0950050DD86 /* Base64+ELHASO.m in Sources */,
+				D5D216591B1A312800AB04AB /* SGPS.swift in Sources */,
 				D52550C513C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */,
 				D52550C613C9C0950050DD86 /* ELHASO.m in Sources */,
 				D52550C713C9C0950050DD86 /* NSArray+ELHASO.m in Sources */,
@@ -844,6 +859,7 @@
 				D5B08A71133D30E700A60B34 /* Note_taking_controller.m in Sources */,
 				D5B08A72133D30E700A60B34 /* View_controller.m in Sources */,
 				D52550BA13C9C0950050DD86 /* Base64+ELHASO.m in Sources */,
+				D5D216581B1A312800AB04AB /* SGPS.swift in Sources */,
 				D52550BB13C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */,
 				D52550BC13C9C0950050DD86 /* ELHASO.m in Sources */,
 				D52550BD13C9C0950050DD86 /* NSArray+ELHASO.m in Sources */,
@@ -865,6 +881,7 @@
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -875,12 +892,16 @@
 					USE_DCINTROSPECT,
 				);
 				INFOPLIST_FILE = "resources/Record_my_position-dev.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SWIFT_OBJC_BRIDGING_HEADER = "src/Record_my_position-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
@@ -889,6 +910,8 @@
 					USE_DCINTROSPECT,
 				);
 				INFOPLIST_FILE = "resources/Record_my_position-dev.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SWIFT_OBJC_BRIDGING_HEADER = "src/Record_my_position-Bridging-Header.h";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -950,6 +973,7 @@
 		D59AAF12134BC5BC00E81139 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -957,19 +981,25 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
 				INFOPLIST_FILE = "resources/Record_my_position-appstore.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Record_my_position_appstore;
+				SWIFT_OBJC_BRIDGING_HEADER = "src/Record_my_position_appstore-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		D59AAF13134BC5BC00E81139 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
 				INFOPLIST_FILE = "resources/Record_my_position-appstore.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Record_my_position_appstore;
+				SWIFT_OBJC_BRIDGING_HEADER = "src/Record_my_position_appstore-Bridging-Header.h";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -977,6 +1007,7 @@
 		D5B08A7C133D30E700A60B34 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = resources/Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
@@ -985,20 +1016,26 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
 				INFOPLIST_FILE = resources/Er_recorder.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Er_recorder;
+				SWIFT_OBJC_BRIDGING_HEADER = "src/Er recorder adhoc-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		D5B08A7D133D30E700A60B34 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = resources/Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
 				INFOPLIST_FILE = resources/Er_recorder.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Er_recorder;
+				SWIFT_OBJC_BRIDGING_HEADER = "src/Er recorder adhoc-Bridging-Header.h";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
