@@ -1,36 +1,78 @@
 import Foundation
+import CoreLocation
 
-public class Test
+
+enum Accuracy
 {
-    init(a: String) {
-        println("Hello \(a)")
-    }
+    case High, Medium, Low
 }
 
-@objc public class SGPS
+@objc public class SGPS : NSObject, CLLocationManagerDelegate
 {
     private let _GPS_IS_ON_KEY = "gps_is_on"
     private let _KEY_SAVE_SINGLE_POSITION = "save_single_positions"
 
     static private let cInstance: SGPS = SGPS();
-    static private var cSaveAllPositions: Bool = false
+    private var mSaveAllPositions: Bool {
+        get { return self.mSaveAllPositions }
+        set {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setBool(newValue, forKey:_KEY_SAVE_SINGLE_POSITION)
+            defaults.synchronize()
+        }
+    }
 
-    static func get() -> SGPS {
+    private var mManager: CLLocationManager
+    private var mAccuracy: Accuracy
+
+    static func get() -> SGPS
+    {
         return cInstance
     }
 
-    public init()
+    override public init()
     {
-        let defaults = NSUserDefaults.standardUserDefaults()
+        println("Initializing SGPS")
+        mManager = CLLocationManager()
+        //assert(nil !== mManager) TODO: Why does the check fail?
+        mAccuracy = .High
+        super.init()
 
+        // Set no filter and try to get the best accuracy possible.
+        mManager.distanceFilter = kCLDistanceFilterNone
+        mManager.desiredAccuracy = kCLLocationAccuracyBest
+        mManager.delegate = self
+
+        let defaults = NSUserDefaults.standardUserDefaults()
         if defaults.boolForKey(_GPS_IS_ON_KEY) {
-            start();
+            start()
         }
-        SGPS.cSaveAllPositions = defaults.boolForKey(_KEY_SAVE_SINGLE_POSITION);
+        mSaveAllPositions = defaults.boolForKey(_KEY_SAVE_SINGLE_POSITION)
+    }
+
+    deinit {
+        stop()
+        //mManager = nil
+    }
+
+    public var mGpsIsOn: Bool {
+        get {
+            return self.mGpsIsOn
+        }
+        set {
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setBool(newValue, forKey:_GPS_IS_ON_KEY)
+            defaults.synchronize()
+        }
     }
 
     public func start()
     {
-        println("Starting!");
+        println("Starting!")
+    }
+
+    public func stop()
+    {
+        println("Stopping")
     }
 }
