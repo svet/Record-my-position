@@ -59,7 +59,10 @@ static void _set_globals(void);
 {
 	DLOG(@"Lunching application with %@", launch_options);
 
-    [[SGPS get] start];
+    SGPS* test = [SGPS get];
+    [test start];
+    test.gpsIsOn = YES;
+    test.saveAllPositions = YES;
 
 	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
 	_set_globals();

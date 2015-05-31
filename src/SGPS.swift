@@ -7,21 +7,15 @@ enum Accuracy
     case High, Medium, Low
 }
 
-@objc public class SGPS : NSObject, CLLocationManagerDelegate
+@objc class SGPS : NSObject, CLLocationManagerDelegate
 {
     private let _GPS_IS_ON_KEY = "gps_is_on"
     private let _KEY_SAVE_SINGLE_POSITION = "save_single_positions"
 
-    static private let cInstance: SGPS = SGPS();
-    private var mSaveAllPositions: Bool {
-        get { return self.mSaveAllPositions }
-        set {
-            let defaults = NSUserDefaults.standardUserDefaults()
-            defaults.setBool(newValue, forKey:_KEY_SAVE_SINGLE_POSITION)
-            defaults.synchronize()
-        }
-    }
+    static private let cInstance: SGPS = SGPS()
 
+    private var mSaveAllPositions = false
+    private var mGpsIsOn = false
     private var mManager: CLLocationManager
     private var mAccuracy: Accuracy
 
@@ -30,7 +24,7 @@ enum Accuracy
         return cInstance
     }
 
-    override public init()
+    override init()
     {
         println("Initializing SGPS")
         mManager = CLLocationManager()
@@ -55,23 +49,32 @@ enum Accuracy
         //mManager = nil
     }
 
-    public var mGpsIsOn: Bool {
-        get {
-            return self.mGpsIsOn
-        }
+    var saveAllPositions: Bool {
+        get { return mSaveAllPositions }
         set {
+            mSaveAllPositions = newValue
+            let defaults = NSUserDefaults.standardUserDefaults()
+            defaults.setBool(newValue, forKey:_KEY_SAVE_SINGLE_POSITION)
+            defaults.synchronize()
+        }
+    }
+
+    var gpsIsOn: Bool {
+        get { return mGpsIsOn }
+        set {
+            mGpsIsOn = newValue
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setBool(newValue, forKey:_GPS_IS_ON_KEY)
             defaults.synchronize()
         }
     }
 
-    public func start()
+    func start()
     {
         println("Starting!")
     }
 
-    public func stop()
+    func stop()
     {
         println("Stopping")
     }
