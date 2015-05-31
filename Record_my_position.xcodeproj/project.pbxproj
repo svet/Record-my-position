@@ -124,10 +124,6 @@
 		D59AAF0F134BC5BC00E81139 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5DF0B7D127636C300A9BC0D /* MessageUI.framework */; };
 		D59AAF10134BC5BC00E81139 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */; };
 		D59D0351126E372400F4D543 /* App_delegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D59D0350126E372400F4D543 /* App_delegate.m */; };
-		D5AAF85915CDB55D006D6D90 /* DCCrossHairView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF85115CDB55D006D6D90 /* DCCrossHairView.m */; };
-		D5AAF85A15CDB55D006D6D90 /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF85315CDB55D006D6D90 /* DCFrameView.m */; };
-		D5AAF85B15CDB55D006D6D90 /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF85515CDB55D006D6D90 /* DCIntrospect.m */; };
-		D5AAF85C15CDB55D006D6D90 /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF85815CDB55D006D6D90 /* DCStatusBarOverlay.m */; };
 		D5AAF85E15CDB5BD006D6D90 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5AAF85D15CDB5BD006D6D90 /* QuartzCore.framework */; };
 		D5AAF87015CDD13B006D6D90 /* EHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF86515CDD13B006D6D90 /* EHReachability.m */; };
 		D5AAF87115CDD13B006D6D90 /* EHReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D5AAF86515CDD13B006D6D90 /* EHReachability.m */; };
@@ -254,15 +250,6 @@
 		D59AAF16134BC5BC00E81139 /* Record_my_position-appstore.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Record_my_position-appstore.plist"; path = "resources/Record_my_position-appstore.plist"; sourceTree = "<group>"; };
 		D59D034F126E372400F4D543 /* App_delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = App_delegate.h; sourceTree = "<group>"; };
 		D59D0350126E372400F4D543 /* App_delegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = App_delegate.m; sourceTree = "<group>"; };
-		D5AAF85015CDB55D006D6D90 /* DCCrossHairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCCrossHairView.h; path = DCIntrospect/DCIntrospect/DCCrossHairView.h; sourceTree = "<group>"; };
-		D5AAF85115CDB55D006D6D90 /* DCCrossHairView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCCrossHairView.m; path = DCIntrospect/DCIntrospect/DCCrossHairView.m; sourceTree = "<group>"; };
-		D5AAF85215CDB55D006D6D90 /* DCFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCFrameView.h; path = DCIntrospect/DCIntrospect/DCFrameView.h; sourceTree = "<group>"; };
-		D5AAF85315CDB55D006D6D90 /* DCFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCFrameView.m; path = DCIntrospect/DCIntrospect/DCFrameView.m; sourceTree = "<group>"; };
-		D5AAF85415CDB55D006D6D90 /* DCIntrospect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCIntrospect.h; path = DCIntrospect/DCIntrospect/DCIntrospect.h; sourceTree = "<group>"; };
-		D5AAF85515CDB55D006D6D90 /* DCIntrospect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCIntrospect.m; path = DCIntrospect/DCIntrospect/DCIntrospect.m; sourceTree = "<group>"; };
-		D5AAF85615CDB55D006D6D90 /* DCIntrospectSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCIntrospectSettings.h; path = DCIntrospect/DCIntrospect/DCIntrospectSettings.h; sourceTree = "<group>"; };
-		D5AAF85715CDB55D006D6D90 /* DCStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DCStatusBarOverlay.h; path = DCIntrospect/DCIntrospect/DCStatusBarOverlay.h; sourceTree = "<group>"; };
-		D5AAF85815CDB55D006D6D90 /* DCStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DCStatusBarOverlay.m; path = DCIntrospect/DCIntrospect/DCStatusBarOverlay.m; sourceTree = "<group>"; };
 		D5AAF85D15CDB5BD006D6D90 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D5AAF86115CDD13B006D6D90 /* Apple_ReadMe.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Apple_ReadMe.txt; sourceTree = "<group>"; };
 		D5AAF86415CDD13B006D6D90 /* EHReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EHReachability.h; sourceTree = "<group>"; };
@@ -510,22 +497,6 @@
 			path = info;
 			sourceTree = "<group>";
 		};
-		D5AAF84F15CDB550006D6D90 /* DCIntrospect */ = {
-			isa = PBXGroup;
-			children = (
-				D5AAF85015CDB55D006D6D90 /* DCCrossHairView.h */,
-				D5AAF85115CDB55D006D6D90 /* DCCrossHairView.m */,
-				D5AAF85215CDB55D006D6D90 /* DCFrameView.h */,
-				D5AAF85315CDB55D006D6D90 /* DCFrameView.m */,
-				D5AAF85415CDB55D006D6D90 /* DCIntrospect.h */,
-				D5AAF85515CDB55D006D6D90 /* DCIntrospect.m */,
-				D5AAF85615CDB55D006D6D90 /* DCIntrospectSettings.h */,
-				D5AAF85715CDB55D006D6D90 /* DCStatusBarOverlay.h */,
-				D5AAF85815CDB55D006D6D90 /* DCStatusBarOverlay.m */,
-			);
-			name = DCIntrospect;
-			sourceTree = "<group>";
-		};
 		D5AAF85F15CDD13B006D6D90 /* EHReachability */ = {
 			isa = PBXGroup;
 			children = (
@@ -540,7 +511,6 @@
 		D5BEDA51126F8C6A0056DB78 /* external */ = {
 			isa = PBXGroup;
 			children = (
-				D5AAF84F15CDB550006D6D90 /* DCIntrospect */,
 				D51EB90A127A297C0016E191 /* egf */,
 				D5BEDA52126F8C6A0056DB78 /* egodatabase */,
 				D5AAF85F15CDD13B006D6D90 /* EHReachability */,
@@ -791,10 +761,6 @@
 				D52550B913C9C0950050DD86 /* UINavigationController+ELHASO.m in Sources */,
 				D5753E6913D3348B0088E034 /* HTML_view_controller.m in Sources */,
 				D5753E6A13D3348B0088E034 /* Info_view_controller.m in Sources */,
-				D5AAF85915CDB55D006D6D90 /* DCCrossHairView.m in Sources */,
-				D5AAF85A15CDB55D006D6D90 /* DCFrameView.m in Sources */,
-				D5AAF85B15CDB55D006D6D90 /* DCIntrospect.m in Sources */,
-				D5AAF85C15CDB55D006D6D90 /* DCStatusBarOverlay.m in Sources */,
 				D5AAF87015CDD13B006D6D90 /* EHReachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -889,7 +855,6 @@
 				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					USE_DCINTROSPECT,
 				);
 				INFOPLIST_FILE = "resources/Record_my_position-dev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -907,7 +872,6 @@
 				GCC_PREFIX_HEADER = Record_my_position_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					USE_DCINTROSPECT,
 				);
 				INFOPLIST_FILE = "resources/Record_my_position-dev.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

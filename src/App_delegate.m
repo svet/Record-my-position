@@ -8,12 +8,6 @@
 
 #import "EHReachability.h"
 
-#ifdef USE_DCINTROSPECT
-#ifdef TARGET_IPHONE_SIMULATOR
-#import "DCIntrospect.h"
-#endif
-#endif
-
 /** \mainpage Record my position
  *
  * \section meta Meta
@@ -93,11 +87,6 @@ static void _set_globals(void);
 
 	[window_ makeKeyAndVisible];
 
-#ifdef USE_DCINTROSPECT
-#if TARGET_IPHONE_SIMULATOR
-	[[DCIntrospect sharedIntrospector] start];
-#endif
-#endif
 	return YES;
 }
 
