@@ -78,4 +78,36 @@ enum Accuracy
     {
         println("Stopping")
     }
+
+    /** Converts a coordinate from degrees to decimal minute second format.
+     * Specify with the latitude bool if you are converting the latitude
+     * part of the coordinates, which has a different letter.
+     *
+     * \return Returns the string with the formated value as
+     * Ddeg Mmin Ssec X, where X is a letter.
+     */
+    static func degreesToDms(value: CLLocationDegrees, latitude: Bool) -> String
+    {
+        let degrees = Int(fabs(value))
+        let min_rest = (fabs(value) - Double(degrees)) * 60.0;
+        let minutes = Int(min_rest);
+        let seconds = (min_rest - Double(minutes)) * 60.0;
+        var letter = ""
+        if latitude {
+            if value >= 0 {
+                letter = "N"
+            } else {
+                letter = "S"
+            }
+        } else {
+            if value >= 0 {
+                letter = "E"
+            } else {
+                letter = "W"
+            }
+        }
+
+        return String(format: "%ddeg %dmin %0.2fsec %@",
+            degrees, minutes, seconds, letter)
+    }
 }

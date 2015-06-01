@@ -63,6 +63,9 @@ static void _set_globals(void);
     [test start];
     test.gpsIsOn = YES;
     test.saveAllPositions = YES;
+#ifdef DEBUG
+    [self test_swift_migration];
+#endif
 
 	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
 	_set_globals();
@@ -207,6 +210,27 @@ static void _set_globals(void);
 	db_ = [DB open_database];
 	if (activate)
 		[gps start];
+}
+
+/** Runs some asserts on values returned by the swift implementation.
+ * These values are checked against the objc version for sanity.
+ */
+- (void)test_swift_migration
+{
+    CLLocationDegrees d = 33.333;
+    NSString *objc, *swift;
+
+#define TEST(X) do { \
+    d = X; \
+    objc = [GPS degrees_to_dms:d latitude:NO]; \
+    swift = [SGPS degreesToDms:d latitude:NO]; \
+    DLOG(@"Testing %@ vs %@", objc, swift); \
+    LASSERT([objc isEqualToString:swift], @"Bad check"); \
+} while(0)
+    TEST(33.33);
+    TEST(133.33);
+    TEST(-1133.33);
+    TEST(0.02);
 }
 
 #pragma mark UIAlertViewDelegate protocol
