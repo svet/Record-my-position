@@ -10,6 +10,7 @@ enum Accuracy
 @objc class SGPS : NSObject, CLLocationManagerDelegate
 {
     private let _GPS_IS_ON_KEY = "gps_is_on"
+    private let _KEY_PATH = "last_pos"
     private let _KEY_SAVE_SINGLE_POSITION = "save_single_positions"
 
     static private let cInstance: SGPS = SGPS()
@@ -70,14 +71,14 @@ enum Accuracy
         }
     }
 
-    func stop()
-    {
-        println("Stopping, not implemented!")
-    }
-
     func pingWatchdog()
     {
         println("Pinging watchdog, not implemented!");
+    }
+
+    func stopWatchdog()
+    {
+        println("Stopping watchdog, not implemented!");
     }
 
     /** Converts a coordinate from degrees to decimal minute second format.
@@ -132,4 +133,30 @@ enum Accuracy
             return false
     	}
     }
+    /** Stops the GPS tracking.
+     * You can call this function anytime, doesn't really fail.
+     */
+    func stop() {
+        if gpsIsOn && !mNoLog {
+            DB.get().log("Stopping location updates");
+        }
+        stopWatchdog()
+        gpsIsOn = false
+        mManager.stopUpdatingLocation()
+    }
+
+    /** Registers an observer for changes to last_pos.
+     * Observers will monitor the key_path value.
+     */
+    func addWatcher(watcher: NSObject) {
+        addObserver(watcher, forKeyPath:_KEY_PATH,
+            options: .New, context: nil)
+    }
+
+    /** Removes an observer for changes to last_pos.
+     */
+    func removeWatcher(watcher: NSObject) {
+        removeObserver(watcher, forKeyPath: _KEY_PATH)
+    }
+
 }
