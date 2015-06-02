@@ -18,6 +18,7 @@ enum Accuracy
     private var mGpsIsOn = false
     private var mManager: CLLocationManager
     private var mAccuracy: Accuracy
+    private var mNoLog = false
 
     static func get() -> SGPS
     {
@@ -69,14 +70,14 @@ enum Accuracy
         }
     }
 
-    func start()
-    {
-        println("Starting!")
-    }
-
     func stop()
     {
-        println("Stopping")
+        println("Stopping, not implemented!")
+    }
+
+    func pingWatchdog()
+    {
+        println("Pinging watchdog, not implemented!");
     }
 
     /** Converts a coordinate from degrees to decimal minute second format.
@@ -109,5 +110,26 @@ enum Accuracy
 
         return String(format: "%ddeg %dmin %0.2fsec %@",
             degrees, minutes, seconds, letter)
+    }
+
+    /** Starts the GPS tracking.
+     * Returns false if the location services are not available.
+     */
+    func start() -> Bool
+    {
+        if CLLocationManager.locationServicesEnabled() {
+            if (!mGpsIsOn && !mNoLog) {
+                DB.get().log("Starting to update location")
+            }
+
+            pingWatchdog()
+
+            mManager.startUpdatingLocation()
+            gpsIsOn = true
+    		return true
+    	} else {
+            gpsIsOn = false
+            return false
+    	}
     }
 }
