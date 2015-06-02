@@ -14,8 +14,8 @@ enum Accuracy
 
     static private let cInstance: SGPS = SGPS()
 
-    private var mSaveAllPositions = false
-    private var mGpsIsOn = false
+    private var _saveAllPositions = false
+    private var _GpsIsOn = false
     private var mManager: CLLocationManager
     private var mAccuracy: Accuracy
     private var mNoLog = false
@@ -42,7 +42,7 @@ enum Accuracy
         if defaults.boolForKey(_GPS_IS_ON_KEY) {
             start()
         }
-        mSaveAllPositions = defaults.boolForKey(_KEY_SAVE_SINGLE_POSITION)
+        _saveAllPositions = defaults.boolForKey(_KEY_SAVE_SINGLE_POSITION)
     }
 
     deinit {
@@ -51,9 +51,9 @@ enum Accuracy
     }
 
     var saveAllPositions: Bool {
-        get { return mSaveAllPositions }
+        get { return _saveAllPositions }
         set {
-            mSaveAllPositions = newValue
+            _saveAllPositions = newValue
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setBool(newValue, forKey:_KEY_SAVE_SINGLE_POSITION)
             defaults.synchronize()
@@ -61,9 +61,9 @@ enum Accuracy
     }
 
     var gpsIsOn: Bool {
-        get { return mGpsIsOn }
+        get { return _GpsIsOn }
         set {
-            mGpsIsOn = newValue
+            _GpsIsOn = newValue
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setBool(newValue, forKey:_GPS_IS_ON_KEY)
             defaults.synchronize()
@@ -118,7 +118,7 @@ enum Accuracy
     func start() -> Bool
     {
         if CLLocationManager.locationServicesEnabled() {
-            if (!mGpsIsOn && !mNoLog) {
+            if (!gpsIsOn && !mNoLog) {
                 DB.get().log("Starting to update location")
             }
 
