@@ -15,8 +15,8 @@ enum Accuracy
 
     static private let cInstance: SGPS = SGPS()
 
-    private var _saveAllPositions = false
-    private var _GpsIsOn = false
+    private var mSaveAllPositions = false
+    private var mGpsIsOn = false
     private var mManager: CLLocationManager
     private var mAccuracy: Accuracy
     private var mNoLog = false
@@ -43,7 +43,7 @@ enum Accuracy
         if defaults.boolForKey(_GPS_IS_ON_KEY) {
             start()
         }
-        _saveAllPositions = defaults.boolForKey(_KEY_SAVE_SINGLE_POSITION)
+        mSaveAllPositions = defaults.boolForKey(_KEY_SAVE_SINGLE_POSITION)
     }
 
     deinit {
@@ -52,9 +52,9 @@ enum Accuracy
     }
 
     var saveAllPositions: Bool {
-        get { return _saveAllPositions }
+        get { return mSaveAllPositions }
         set {
-            _saveAllPositions = newValue
+            mSaveAllPositions = newValue
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setBool(newValue, forKey:_KEY_SAVE_SINGLE_POSITION)
             defaults.synchronize()
@@ -62,9 +62,9 @@ enum Accuracy
     }
 
     var gpsIsOn: Bool {
-        get { return _GpsIsOn }
+        get { return mGpsIsOn }
         set {
-            _GpsIsOn = newValue
+            mGpsIsOn = newValue
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setBool(newValue, forKey:_GPS_IS_ON_KEY)
             defaults.synchronize()
