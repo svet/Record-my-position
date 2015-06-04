@@ -221,11 +221,11 @@ enum Accuracy
         }
 
         // TODO: More compact way to write this if?
-        if let pos = lastPos {
-            if pos.timestamp.isEqualToDate(newLocation.timestamp) {
-                DLOG("Discarding repeated location \(newLocation.description)")
-                return
-            }
+        if let pos = lastPos
+            where pos.timestamp.isEqualToDate(newLocation.timestamp) {
+
+            DLOG("Discarding repeated location \(newLocation.description)")
+            return
         }
 
         DLOG("Updating to \(newLocation.description)")
