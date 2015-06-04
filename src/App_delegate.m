@@ -59,14 +59,6 @@ static void _set_globals(void);
 {
 	DLOG(@"Lunching application with %@", launch_options);
 
-    SGPS* test = [SGPS get];
-    [test start];
-    test.gpsIsOn = YES;
-    test.saveAllPositions = YES;
-#ifdef DEBUG
-    [self test_swift_migration];
-#endif
-
 	[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
 	_set_globals();
 	[DB preserve_old_db];
@@ -82,6 +74,15 @@ static void _set_globals(void);
 		[self handle_error:@"Couldn't open database" do_abort:YES];
 		return NO;
 	}
+
+    SGPS* test = [SGPS get];
+    [test start];
+    test.gpsIsOn = YES;
+    test.saveAllPositions = YES;
+#ifdef DEBUG
+    [self test_swift_migration];
+#endif
+
 
 	// For the moment we don't know what to do with this...
 	if (launch_options)
