@@ -10,8 +10,9 @@ enum Accuracy
 @objc class SGPS : NSObject, CLLocationManagerDelegate
 {
     private let _GPS_IS_ON_KEY = "gps_is_on"
-    private let _KEY_PATH = "last_pos"
+    static internal let KEY_PATH = "lastPos"
     private let _KEY_SAVE_SINGLE_POSITION = "save_single_positions"
+    private let _WATCHDOG_SECONDS = 60 * 60.0
 
     static private let cInstance: SGPS = SGPS()
 
@@ -20,6 +21,8 @@ enum Accuracy
     private var mManager: CLLocationManager
     private var mAccuracy: Accuracy
     private var mNoLog = false
+    private var mZasca: NSTimer?
+    internal var lastPos: CLLocation?
 
     static func get() -> SGPS
     {
@@ -69,16 +72,6 @@ enum Accuracy
             defaults.setBool(newValue, forKey:_GPS_IS_ON_KEY)
             defaults.synchronize()
         }
-    }
-
-    func pingWatchdog()
-    {
-        println("Pinging watchdog, not implemented!");
-    }
-
-    func stopWatchdog()
-    {
-        println("Stopping watchdog, not implemented!");
     }
 
     /** Converts a coordinate from degrees to decimal minute second format.
@@ -149,14 +142,145 @@ enum Accuracy
      * Observers will monitor the key_path value.
      */
     func addWatcher(watcher: NSObject) {
-        addObserver(watcher, forKeyPath:_KEY_PATH,
+        addObserver(watcher, forKeyPath:SGPS.KEY_PATH,
             options: .New, context: nil)
     }
 
     /** Removes an observer for changes to last_pos.
      */
     func removeWatcher(watcher: NSObject) {
-        removeObserver(watcher, forKeyPath: _KEY_PATH)
+        removeObserver(watcher, forKeyPath: SGPS.KEY_PATH)
     }
 
+    /** Changes the desired accuracy of the GPS readings.
+     * If the GPS is on, it will be reset just in case. Provide a reason
+     * for the change or nil if you don't want to log the change.
+     */
+    func setAccuracy(accuracy: Accuracy, reason: String?)
+    {
+        if accuracy == mAccuracy {
+            return
+        }
+
+        mAccuracy = accuracy
+        let message = "Setting accuracy to \(accuracy)";
+
+        switch accuracy {
+        case .High:
+            mManager.distanceFilter = kCLDistanceFilterNone
+            mManager.desiredAccuracy = kCLLocationAccuracyBest
+
+        case .Medium:
+            mManager.distanceFilter = 50
+            mManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+
+        case .Low:
+            mManager.distanceFilter = 150
+            mManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        }
+
+        if gpsIsOn {
+            if let reason = reason {
+                DB.get().log(String(format: "%@ Reason: %@", message, reason))
+            } else {
+                DB.get().log(message)
+            }
+
+            mNoLog = true
+            stop()
+            start()
+            mNoLog = false
+        }
+    }
+
+    /** Something bad happened retrieving the location. What?
+     * We ignore location errors only. Rest are logged.
+     */
+    func locationManager(manager: CLLocationManager!,
+        didFailWithError error: NSError!)
+    {
+        if CLError.LocationUnknown == CLError(rawValue: error.code) {
+            return
+        }
+
+        DB.get().log("location error: " + error.localizedDescription)
+    }
+
+    /** Receives a location update.
+     * This generates the correct KVO messages to notify observers.
+     * Also resets the watchdog. Repeated locations based on timestamp
+     * will be discarded.
+     */
+    func locationManager(manager: CLLocationManager!,
+        didUpdateLocations locations: [AnyObject]!)
+    {
+        let newLocation = locations.last as! CLLocation
+        if newLocation.horizontalAccuracy < 0 {
+            DLOG("Bad returned accuracy, ignoring update.")
+            return
+        }
+
+        // TODO: More compact way to write this if?
+        if let pos = lastPos {
+            if pos.timestamp.isEqualToDate(newLocation.timestamp) {
+                DLOG("Discarding repeated location \(newLocation.description)")
+                return
+            }
+        }
+
+        DLOG("Updating to \(newLocation.description)")
+        // TODO: Do we need here the Objc KVO dance?
+        lastPos = newLocation
+
+        pingWatchdog()
+    }
+
+    /** Starts or refreshes the timer used for the GPS watchdog.
+     * Sometimes if you loose network signal the GPS will stop updating
+     * values even though the hardware may well be getting them. The
+     * watchdog will set a time and force a stop/start if there were no
+     * recent updates received.
+     *
+     * You have to call this function every time you start to watch
+     * updates and every time you receive one, so the watchdog timer is
+     * reset.
+     *
+     * Miss Merge: I'm walking on sunshine, woo hoo!
+     */
+    func pingWatchdog()
+    {
+        if let timer = mZasca {
+            timer.invalidate()
+        }
+
+        mZasca = NSTimer.scheduledTimerWithTimeInterval(_WATCHDOG_SECONDS,
+            target: self, selector: Selector("zasca"),
+            userInfo: nil, repeats: false)
+    }
+
+    /** Stops the watchdog, if it is on. Otherwise does nothing.
+     */
+    func stopWatchdog()
+    {
+        if let timer = mZasca {
+            timer.invalidate()
+        }
+
+        mZasca = nil
+    }
+
+    /** Handles the stop/start of the GPS.
+     * Note that the stop/start will automatically reschedule the watchdog.
+     */
+    func zasca()
+    {
+        DB.get().log("Watchdog timer kicking in due to inactivity.")
+        mNoLog = true
+        stop()
+        start()
+        mNoLog = false
+    }
 }
+
+// TODO: Figure how to make this conditional on compilation.
+func DLOG(text: String) { NSLog("%@", text) }
