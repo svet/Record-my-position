@@ -1,37 +1,39 @@
 import Foundation
 import CoreLocation
+import UIKit
 
 
-enum Accuracy
+@objc internal enum Accuracy: Int
 {
     case High, Medium, Low
 }
 
-@objc class SGPS : NSObject, CLLocationManagerDelegate
+@objc class EHGPS : NSObject, CLLocationManagerDelegate
 {
     private let _GPS_IS_ON_KEY = "gps_is_on"
-    static internal let KEY_PATH = "lastPos"
     private let _KEY_SAVE_SINGLE_POSITION = "save_single_positions"
     private let _WATCHDOG_SECONDS = 60 * 60.0
+    static internal let KEY_PATH = "lastPos"
+    static internal var mDB: DB?
 
-    static private let cInstance: SGPS = SGPS()
+    static private let cInstance: EHGPS = EHGPS()
 
     private var mSaveAllPositions = false
     private var mGpsIsOn = false
     private var mManager: CLLocationManager
-    private var mAccuracy: Accuracy
     private var mNoLog = false
     private var mZasca: NSTimer?
+    internal var mAccuracy: Accuracy
     internal var lastPos: CLLocation?
 
-    static func get() -> SGPS
+    static func get() -> EHGPS
     {
         return cInstance
     }
 
     override init()
     {
-        println("Initializing SGPS")
+        println("Initializing EHGPS")
         mManager = CLLocationManager()
         //assert(nil !== mManager) TODO: Why does the check fail?
         mAccuracy = .High
@@ -112,8 +114,9 @@ enum Accuracy
     func start() -> Bool
     {
         if CLLocationManager.locationServicesEnabled() {
+            assert(nil != EHGPS.mDB)
             if (!gpsIsOn && !mNoLog) {
-                DB.get().log("Starting to update location")
+                EHGPS.mDB!.log("Starting to update location")
             }
 
             pingWatchdog()
@@ -131,7 +134,8 @@ enum Accuracy
      */
     func stop() {
         if gpsIsOn && !mNoLog {
-            DB.get().log("Stopping location updates");
+            assert(nil != EHGPS.mDB)
+            EHGPS.mDB!.log("Stopping location updates");
         }
         stopWatchdog()
         gpsIsOn = false
@@ -142,14 +146,14 @@ enum Accuracy
      * Observers will monitor the key_path value.
      */
     func addWatcher(watcher: NSObject) {
-        addObserver(watcher, forKeyPath:SGPS.KEY_PATH,
+        addObserver(watcher, forKeyPath:EHGPS.KEY_PATH,
             options: .New, context: nil)
     }
 
     /** Removes an observer for changes to last_pos.
      */
     func removeWatcher(watcher: NSObject) {
-        removeObserver(watcher, forKeyPath: SGPS.KEY_PATH)
+        removeObserver(watcher, forKeyPath: EHGPS.KEY_PATH)
     }
 
     /** Changes the desired accuracy of the GPS readings.
@@ -180,10 +184,11 @@ enum Accuracy
         }
 
         if gpsIsOn {
+            assert(nil != EHGPS.mDB)
             if let reason = reason {
-                DB.get().log(String(format: "%@ Reason: %@", message, reason))
+                EHGPS.mDB!.log(String(format: "%@ Reason: %@", message, reason))
             } else {
-                DB.get().log(message)
+                EHGPS.mDB!.log(message)
             }
 
             mNoLog = true
@@ -203,7 +208,8 @@ enum Accuracy
             return
         }
 
-        DB.get().log("location error: " + error.localizedDescription)
+        assert(nil != EHGPS.mDB)
+        EHGPS.mDB!.log("location error: " + error.localizedDescription)
     }
 
     /** Receives a location update.
@@ -220,7 +226,6 @@ enum Accuracy
             return
         }
 
-        // TODO: More compact way to write this if?
         if let pos = lastPos
             where pos.timestamp.isEqualToDate(newLocation.timestamp) {
 
@@ -274,7 +279,8 @@ enum Accuracy
      */
     func zasca()
     {
-        DB.get().log("Watchdog timer kicking in due to inactivity.")
+        assert(nil != EHGPS.mDB)
+        EHGPS.mDB!.log("Watchdog timer kicking in due to inactivity.")
         mNoLog = true
         stop()
         start()

@@ -1,6 +1,5 @@
 #import "App_delegate.h"
 
-#import "GPS.h"
 #import "controllers/Tab_controller.h"
 #import "db/DB.h"
 #import "macro.h"
@@ -75,15 +74,6 @@ static void _set_globals(void);
 		return NO;
 	}
 
-    SGPS* test = [SGPS get];
-    [test start];
-    test.gpsIsOn = YES;
-    test.saveAllPositions = YES;
-#ifdef DEBUG
-    [self test_swift_migration];
-#endif
-
-
 	// For the moment we don't know what to do with this...
 	if (launch_options)
 		[db_ log:[NSString stringWithFormat:@"Launch options? %@",
@@ -102,7 +92,7 @@ static void _set_globals(void);
  */
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-	[[GPS get] set_accuracy:MEDIUM_ACCURACY reason:@"Lost focus."];
+	[[EHGPS get] setAccuracy:AccuracyMedium reason:@"Lost focus."];
 	[db_ flush];
 }
 
@@ -111,7 +101,7 @@ static void _set_globals(void);
  */
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-	[[GPS get] set_accuracy:HIGH_ACCURACY reason:@"Gained focus."];
+	[[EHGPS get] setAccuracy:AccuracyHigh reason:@"Gained focus."];
 }
 
 /** The user quit the app, and we are supporting background operation.
@@ -124,7 +114,7 @@ static void _set_globals(void);
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
 	db_.in_background = YES;
-	[[GPS get] set_accuracy:LOW_ACCURACY reason:@"Entering background mode."];
+	[[EHGPS get] setAccuracy:AccuracyLow reason:@"Entering background mode."];
 	[db_ flush];
 }
 
@@ -134,7 +124,7 @@ static void _set_globals(void);
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
 	db_.in_background = NO;
-	[[GPS get] set_accuracy:HIGH_ACCURACY reason:@"Raising from background."];
+	[[EHGPS get] setAccuracy:AccuracyHigh reason:@"Raising from background."];
 }
 
 /** Application shutdown. Save cache and stuff...
@@ -146,7 +136,7 @@ static void _set_globals(void);
  */
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-	if ([GPS get].gps_is_on)
+	if ([EHGPS get].gpsIsOn)
 		[db_ log:@"Terminating app while GPS was on..."];
 
 	[db_ flush];
@@ -202,8 +192,8 @@ static void _set_globals(void);
 	DLOG(@"Purging database.");
 	[db_ flush];
 	[db_ close];
-	GPS *gps = [GPS get];
-	const BOOL activate = gps.gps_is_on;
+	EHGPS *gps = [EHGPS get];
+	const BOOL activate = gps.gpsIsOn;
 	[gps stop];
 
 	[DB purge];
@@ -211,27 +201,6 @@ static void _set_globals(void);
 	db_ = [DB open_database];
 	if (activate)
 		[gps start];
-}
-
-/** Runs some asserts on values returned by the swift implementation.
- * These values are checked against the objc version for sanity.
- */
-- (void)test_swift_migration
-{
-    CLLocationDegrees d = 33.333;
-    NSString *objc, *swift;
-
-#define TEST(X) do { \
-    d = X; \
-    objc = [GPS degrees_to_dms:d latitude:NO]; \
-    swift = [SGPS degreesToDms:d latitude:NO]; \
-    DLOG(@"Testing %@ vs %@", objc, swift); \
-    LASSERT([objc isEqualToString:swift], @"Bad check"); \
-} while(0)
-    TEST(33.33);
-    TEST(133.33);
-    TEST(-1133.33);
-    TEST(0.02);
 }
 
 #pragma mark UIAlertViewDelegate protocol

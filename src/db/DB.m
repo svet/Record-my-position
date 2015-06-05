@@ -1,11 +1,11 @@
 #import "db/DB.h"
 
 #import "App_delegate.h"
-#import "GPS.h"
 #import "db/DB_log.h"
 #import "db/Rows_to_attachment.h"
 #import "db/internal.h"
 #import "macro.h"
+#import "Record_my_position-Swift.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -120,7 +120,8 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 
 	[defaults setInteger:_DB_MODEL_VERSION forKey:_DB_MODEL_KEY];
 	DLOG(@"Disk db open at %@", path);
-	[[GPS get] add_watcher:db];
+    [EHGPS setMDB:db];
+	[[EHGPS get] addWatcher:db];
 	return db;
 }
 
@@ -161,7 +162,7 @@ NSString *DB_bump_notification = @"DB_bump_notification";
  */
 - (void)close
 {
-	[[GPS get] remove_watcher:self];
+	[[EHGPS get] removeWatcher:self];
 	[super close];
 }
 
@@ -175,7 +176,7 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	if (!buffer_)
 		buffer_ = [[NSMutableArray alloc] initWithCapacity:_BUFFER];
 
-	const ACCURACY accuracy = [[GPS get] accuracy];
+	const Accuracy accuracy = [EHGPS get].mAccuracy;
 	DB_log *db_log = nil;
 	if ([text_or_location respondsToSelector:@selector(coordinate)])
 		db_log = [[DB_log alloc] init_with_location:text_or_location
@@ -320,7 +321,7 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	[self flush];
 
 	DB_log *db_log = [[DB_log alloc] init_with_location:location
-		in_background:in_background_ accuracy:[[GPS get] accuracy]];
+		in_background:in_background_ accuracy:[EHGPS get].mAccuracy];
 	RASSERT(db_log, @"Couldn't create DB_log", return -1);
 
 	const BOOL ret = [self executeUpdateWithParameters:@"INSERT into Positions "
@@ -397,10 +398,10 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
 	change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:[GPS key_path]]) {
-		GPS *gps = [GPS get];
-		if (gps.save_all_positions)
-			[self log:gps.last_pos];
+	if ([keyPath isEqual:EHGPS.KEY_PATH]) {
+		EHGPS *gps = [EHGPS get];
+		if (gps.saveAllPositions)
+			[self log:gps.lastPos];
 	} else {
 		[super observeValueForKeyPath:keyPath ofObject:object change:change
 			context:context];

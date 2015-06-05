@@ -19,7 +19,7 @@
 /** Constructs a text oriented log entry.
  */
 - (id)init_with_string:(NSString*)text in_background:(BOOL)in_background
-	accuracy:(ACCURACY)accuracy
+	accuracy:(Accuracy)accuracy
 {
 	if (!(self = [super init]))
 		return nil;
@@ -41,7 +41,7 @@
 /** Constructs a location oriented log entry.
  */
 - (id)init_with_location:(CLLocation*)location
-	in_background:(BOOL)in_background accuracy:(ACCURACY)accuracy
+	in_background:(BOOL)in_background accuracy:(Accuracy)accuracy
 {
 	if (!(self = [super init]))
 		return nil;

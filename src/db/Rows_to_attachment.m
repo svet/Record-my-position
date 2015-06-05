@@ -1,9 +1,9 @@
 #import "db/Rows_to_attachment.h"
 
-#import "GPS.h"
 #import "db/DB.h"
 #import "db/internal.h"
 #import "macro.h"
+#import "Record_my_position-Swift.h"
 
 #include <time.h>
 
@@ -127,8 +127,8 @@ static NSString *gpx_timestamp(const time_t timestamp);
 			[csv_strings addObject:[NSString stringWithFormat:@"%d,%@,"
 				@"%0.8f,%0.8f,%@,%@,%0.1f,%0.1f,%0.1f,%d,"
 				@"%d,%d,%0.2f,%0.2f,%0.2f,%d,%d", type, text,
-				longitude, latitude, [GPS degrees_to_dms:longitude latitude:NO],
-				[GPS degrees_to_dms:latitude latitude:YES],
+				longitude, latitude, [EHGPS degreesToDms:longitude latitude:NO],
+				[EHGPS degreesToDms:latitude latitude:YES],
 				h_accuracy, v_accuracy, altitude, timestamp,
 				in_background, requested_accuracy, speed, direction,
 				battery_level, external_power, reachability]];

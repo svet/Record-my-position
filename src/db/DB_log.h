@@ -1,6 +1,6 @@
 // vim:tabstop=4 shiftwidth=4 encoding=utf-8 syntax=objc
 
-#import "GPS.h"
+#import "Record_my_position-Swift.h"
 
 @class CLLocation;
 
@@ -30,7 +30,7 @@
 	float battery_level_;
 
 	/// Accuracy setting at the time of logging.
-	ACCURACY accuracy_;
+	Accuracy accuracy_;
 
 	/// Tells if the device is connected to an external power source.
 	BOOL external_power_;
@@ -50,10 +50,10 @@
 @property (nonatomic, retain) CLLocation *location;
 
 - (id)init_with_string:(NSString*)text in_background:(BOOL)in_background
-	accuracy:(ACCURACY)accuracy;
+	accuracy:(Accuracy)accuracy;
 
 - (id)init_with_location:(CLLocation*)location
-	in_background:(BOOL)in_background accuracy:(ACCURACY)accuracy;
+	in_background:(BOOL)in_background accuracy:(Accuracy)accuracy;
 
 - (NSString*)description;
 

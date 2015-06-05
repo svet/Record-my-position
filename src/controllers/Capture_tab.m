@@ -1,9 +1,9 @@
 #import "controllers/Capture_tab.h"
 
 #import "App_delegate.h"
-#import "GPS.h"
 #import "controllers/Note_taking_controller.h"
 #import "macro.h"
+#import "Record_my_position-swift.h"
 
 
 @interface Capture_tab ()
@@ -46,7 +46,7 @@
 
 	[timer_ invalidate];
 	if (watching_)
-		[[GPS get] remove_watcher:self];
+		[[EHGPS get] remove_watcher:self];
 	[start_switch_ removeTarget:self action:@selector(gps_switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[record_type_switch_ removeTarget:self
@@ -110,7 +110,7 @@
 		action:@selector(record_type_switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:record_type_switch_];
-	record_type_switch_.on = [GPS get].save_all_positions;
+	record_type_switch_.on = [EHGPS get].saveAllPositions;
 
 	explanation_label_ = [[UILabel alloc]
 		initWithFrame:CGRectMake(10, 210, 300, 25)];
@@ -173,7 +173,7 @@
 {
 	[super viewWillAppear:animated];
 
-	start_switch_.on = [GPS get].gps_is_on;
+	start_switch_.on = [EHGPS get].gpsIsOn;
 	[self update_gui];
 
 	[self start_timer];
@@ -195,7 +195,7 @@
 /// User toggled on/off GUI switch.
 - (void)gps_switch_changed
 {
-	GPS *gps = [GPS get];
+	EHGPS *gps = [EHGPS get];
 
 	if ([start_switch_ isOn]) {
 		if (![gps start]) {
@@ -218,7 +218,7 @@
 /// User toggled the record all/single switch.
 - (void)record_type_switch_changed
 {
-	[GPS get].save_all_positions = record_type_switch_.on;
+	[EHGPS get].saveAllPositions = record_type_switch_.on;
 	[self update_gui];
 }
 
@@ -259,7 +259,7 @@
 	}
 
 	// Last location.
-	CLLocation *location = [GPS get].last_pos;
+	CLLocation *location = [EHGPS get].lastPos;
 	if (!location) {
 		longitude_.text = @"No last position";
 		latitude_.text = @"";
@@ -271,10 +271,10 @@
 	}
 
 	longitude_.text = [NSString stringWithFormat:@"Longitude: %@",
-		[GPS degrees_to_dms:location.coordinate.longitude latitude:NO]];
+		[EHGPS degrees_to_dms:location.coordinate.longitude latitude:NO]];
 
 	latitude_.text = [NSString stringWithFormat:@"Latitude: %@",
-		[GPS degrees_to_dms:location.coordinate.latitude latitude:YES]];
+		[EHGPS degrees_to_dms:location.coordinate.latitude latitude:YES]];
 
 	const CLLocationAccuracy v = (location.horizontalAccuracy +
 		location.horizontalAccuracy) / 2.0;
@@ -342,13 +342,13 @@
  */
 - (void)add_note
 {
-	if (![GPS get].gps_is_on) {
+	if (![EHGPS get].gpsIsOn) {
 		[self warn:@"Please turn GPS on to take a note with position."
 			title:@"GPS capture off"];
 		return;
 	}
 
-	CLLocation *location = [GPS get].last_pos;
+	CLLocation *location = [EHGPS get].lastPos;
 	if (!location) {
 		[self warn:@"Wait until the GPS receives at least one position."
 			title:@"No GPS data"];
@@ -369,7 +369,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
 	change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:[GPS key_path]])
+	if ([keyPath isEqual:[EHGPS key_path]])
 		[self update_gui];
 	else
 		[super observeValueForKeyPath:keyPath ofObject:object change:change

@@ -105,7 +105,6 @@
 		D59AAEF9134BC5BC00E81139 /* EGODatabaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7A126F8C6A0056DB78 /* EGODatabaseRequest.m */; };
 		D59AAEFA134BC5BC00E81139 /* EGODatabaseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7C126F8C6A0056DB78 /* EGODatabaseResult.m */; };
 		D59AAEFB134BC5BC00E81139 /* EGODatabaseRow.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7E126F8C6A0056DB78 /* EGODatabaseRow.m */; };
-		D59AAEFD134BC5BC00E81139 /* GPS.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C47781127177D500CB008F /* GPS.m */; };
 		D59AAEFE134BC5BC00E81139 /* hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = D51EB90C127A297C0016E191 /* hardware.m */; };
 		D59AAEFF134BC5BC00E81139 /* DB.m in Sources */ = {isa = PBXBuildFile; fileRef = D544A086127F5FAA00835938 /* DB.m */; };
 		D59AAF00134BC5BC00E81139 /* DB_log.m in Sources */ = {isa = PBXBuildFile; fileRef = D544A088127F5FAA00835938 /* DB_log.m */; };
@@ -144,7 +143,6 @@
 		D5B08A63133D30E700A60B34 /* EGODatabaseRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7A126F8C6A0056DB78 /* EGODatabaseRequest.m */; };
 		D5B08A64133D30E700A60B34 /* EGODatabaseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7C126F8C6A0056DB78 /* EGODatabaseResult.m */; };
 		D5B08A65133D30E700A60B34 /* EGODatabaseRow.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7E126F8C6A0056DB78 /* EGODatabaseRow.m */; };
-		D5B08A67133D30E700A60B34 /* GPS.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C47781127177D500CB008F /* GPS.m */; };
 		D5B08A68133D30E700A60B34 /* hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = D51EB90C127A297C0016E191 /* hardware.m */; };
 		D5B08A69133D30E700A60B34 /* DB.m in Sources */ = {isa = PBXBuildFile; fileRef = D544A086127F5FAA00835938 /* DB.m */; };
 		D5B08A6A133D30E700A60B34 /* DB_log.m in Sources */ = {isa = PBXBuildFile; fileRef = D544A088127F5FAA00835938 /* DB_log.m */; };
@@ -169,14 +167,13 @@
 		D5BEDA98126F8C6A0056DB78 /* EGODatabaseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7C126F8C6A0056DB78 /* EGODatabaseResult.m */; };
 		D5BEDA99126F8C6A0056DB78 /* EGODatabaseRow.m in Sources */ = {isa = PBXBuildFile; fileRef = D5BEDA7E126F8C6A0056DB78 /* EGODatabaseRow.m */; };
 		D5BEDAA2126F8D130056DB78 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */; };
-		D5C47782127177D500CB008F /* GPS.m in Sources */ = {isa = PBXBuildFile; fileRef = D5C47781127177D500CB008F /* GPS.m */; };
 		D5C477B212717BEA00CB008F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C477B112717BEA00CB008F /* CoreLocation.framework */; };
 		D5C4AFCD12897956005BE697 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */; };
 		D5C86D1F1299CF8D00253C7F /* share_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C86D1D1299CF8D00253C7F /* share_icon.png */; };
 		D5C86D201299CF8D00253C7F /* share_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C86D1E1299CF8D00253C7F /* share_icon@2x.png */; };
-		D5D216571B1A312800AB04AB /* SGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D216561B1A312800AB04AB /* SGPS.swift */; };
-		D5D216581B1A312800AB04AB /* SGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D216561B1A312800AB04AB /* SGPS.swift */; };
-		D5D216591B1A312800AB04AB /* SGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D216561B1A312800AB04AB /* SGPS.swift */; };
+		D5D216571B1A312800AB04AB /* EHGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D216561B1A312800AB04AB /* EHGPS.swift */; };
+		D5D216581B1A312800AB04AB /* EHGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D216561B1A312800AB04AB /* EHGPS.swift */; };
+		D5D216591B1A312800AB04AB /* EHGPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D216561B1A312800AB04AB /* EHGPS.swift */; };
 		D5D7CDD4128A9D1300B83104 /* Capture_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDCD128A9D1300B83104 /* Capture_tab.m */; };
 		D5D7CDD5128A9D1300B83104 /* Log_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDCF128A9D1300B83104 /* Log_tab.m */; };
 		D5D7CDD6128A9D1300B83104 /* Share_tab.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D7CDD1128A9D1300B83104 /* Share_tab.m */; };
@@ -269,8 +266,6 @@
 		D5BEDA7D126F8C6A0056DB78 /* EGODatabaseRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGODatabaseRow.h; sourceTree = "<group>"; };
 		D5BEDA7E126F8C6A0056DB78 /* EGODatabaseRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGODatabaseRow.m; sourceTree = "<group>"; };
 		D5BEDAA1126F8D130056DB78 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		D5C47780127177D500CB008F /* GPS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPS.h; sourceTree = "<group>"; };
-		D5C47781127177D500CB008F /* GPS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPS.m; sourceTree = "<group>"; };
 		D5C477B112717BEA00CB008F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D5C4AFCC12897956005BE697 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D5C86D1D1299CF8D00253C7F /* share_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share_icon.png; sourceTree = "<group>"; };
@@ -278,7 +273,7 @@
 		D5D216531B1A312800AB04AB /* Record_my_position-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Record_my_position-Bridging-Header.h"; sourceTree = "<group>"; };
 		D5D216541B1A312800AB04AB /* Er recorder adhoc-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Er recorder adhoc-Bridging-Header.h"; sourceTree = "<group>"; };
 		D5D216551B1A312800AB04AB /* Record_my_position_appstore-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Record_my_position_appstore-Bridging-Header.h"; sourceTree = "<group>"; };
-		D5D216561B1A312800AB04AB /* SGPS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SGPS.swift; sourceTree = "<group>"; };
+		D5D216561B1A312800AB04AB /* EHGPS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EHGPS.swift; sourceTree = "<group>"; };
 		D5D7CDCC128A9D1300B83104 /* Capture_tab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Capture_tab.h; sourceTree = "<group>"; };
 		D5D7CDCD128A9D1300B83104 /* Capture_tab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Capture_tab.m; sourceTree = "<group>"; };
 		D5D7CDCE128A9D1300B83104 /* Log_tab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Log_tab.h; sourceTree = "<group>"; };
@@ -397,11 +392,9 @@
 				D544A083127F5FAA00835938 /* db */,
 				D59D034F126E372400F4D543 /* App_delegate.h */,
 				D59D0350126E372400F4D543 /* App_delegate.m */,
-				D5C47780127177D500CB008F /* GPS.h */,
-				D5C47781127177D500CB008F /* GPS.m */,
 				D5BEDA3D126F8C100056DB78 /* macro.h */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
-				D5D216561B1A312800AB04AB /* SGPS.swift */,
+				D5D216561B1A312800AB04AB /* EHGPS.swift */,
 				D5D216531B1A312800AB04AB /* Record_my_position-Bridging-Header.h */,
 				D5D216541B1A312800AB04AB /* Er recorder adhoc-Bridging-Header.h */,
 				D5D216551B1A312800AB04AB /* Record_my_position_appstore-Bridging-Header.h */,
@@ -738,7 +731,6 @@
 				D5BEDA97126F8C6A0056DB78 /* EGODatabaseRequest.m in Sources */,
 				D5BEDA98126F8C6A0056DB78 /* EGODatabaseResult.m in Sources */,
 				D5BEDA99126F8C6A0056DB78 /* EGODatabaseRow.m in Sources */,
-				D5C47782127177D500CB008F /* GPS.m in Sources */,
 				D51EB90E127A297C0016E191 /* hardware.m in Sources */,
 				D544A08C127F5FAA00835938 /* DB.m in Sources */,
 				D544A08D127F5FAA00835938 /* DB_log.m in Sources */,
@@ -752,7 +744,7 @@
 				D52550B013C9C0950050DD86 /* Base64+ELHASO.m in Sources */,
 				D52550B113C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */,
 				D52550B213C9C0950050DD86 /* ELHASO.m in Sources */,
-				D5D216571B1A312800AB04AB /* SGPS.swift in Sources */,
+				D5D216571B1A312800AB04AB /* EHGPS.swift in Sources */,
 				D52550B313C9C0950050DD86 /* NSArray+ELHASO.m in Sources */,
 				D52550B413C9C0950050DD86 /* NSDictionary+ELHASO.m in Sources */,
 				D52550B513C9C0950050DD86 /* NSString+ELHASO.m in Sources */,
@@ -776,7 +768,6 @@
 				D59AAEF9134BC5BC00E81139 /* EGODatabaseRequest.m in Sources */,
 				D59AAEFA134BC5BC00E81139 /* EGODatabaseResult.m in Sources */,
 				D59AAEFB134BC5BC00E81139 /* EGODatabaseRow.m in Sources */,
-				D59AAEFD134BC5BC00E81139 /* GPS.m in Sources */,
 				D59AAEFE134BC5BC00E81139 /* hardware.m in Sources */,
 				D59AAEFF134BC5BC00E81139 /* DB.m in Sources */,
 				D59AAF00134BC5BC00E81139 /* DB_log.m in Sources */,
@@ -788,7 +779,7 @@
 				D59AAF07134BC5BC00E81139 /* Note_taking_controller.m in Sources */,
 				D59AAF08134BC5BC00E81139 /* View_controller.m in Sources */,
 				D52550C413C9C0950050DD86 /* Base64+ELHASO.m in Sources */,
-				D5D216591B1A312800AB04AB /* SGPS.swift in Sources */,
+				D5D216591B1A312800AB04AB /* EHGPS.swift in Sources */,
 				D52550C513C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */,
 				D52550C613C9C0950050DD86 /* ELHASO.m in Sources */,
 				D52550C713C9C0950050DD86 /* NSArray+ELHASO.m in Sources */,
@@ -814,7 +805,6 @@
 				D5B08A63133D30E700A60B34 /* EGODatabaseRequest.m in Sources */,
 				D5B08A64133D30E700A60B34 /* EGODatabaseResult.m in Sources */,
 				D5B08A65133D30E700A60B34 /* EGODatabaseRow.m in Sources */,
-				D5B08A67133D30E700A60B34 /* GPS.m in Sources */,
 				D5B08A68133D30E700A60B34 /* hardware.m in Sources */,
 				D5B08A69133D30E700A60B34 /* DB.m in Sources */,
 				D5B08A6A133D30E700A60B34 /* DB_log.m in Sources */,
@@ -826,7 +816,7 @@
 				D5B08A71133D30E700A60B34 /* Note_taking_controller.m in Sources */,
 				D5B08A72133D30E700A60B34 /* View_controller.m in Sources */,
 				D52550BA13C9C0950050DD86 /* Base64+ELHASO.m in Sources */,
-				D5D216581B1A312800AB04AB /* SGPS.swift in Sources */,
+				D5D216581B1A312800AB04AB /* EHGPS.swift in Sources */,
 				D52550BB13C9C0950050DD86 /* CLLocation+ELHASO.m in Sources */,
 				D52550BC13C9C0950050DD86 /* ELHASO.m in Sources */,
 				D52550BD13C9C0950050DD86 /* NSArray+ELHASO.m in Sources */,
