@@ -177,6 +177,13 @@ static GPS *g_;
 	[manager_ stopUpdatingLocation];
 }
 
+/** Returns the string used by add_watcher: and removeObserver:.
+ */
++ (NSString*)key_path
+{
+       return _KEY_PATH;
+}
+
 /** Registers an observer for changes to last_pos.
  * Observers will monitor the key_path value.
  */

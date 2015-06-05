@@ -47,6 +47,7 @@ typedef enum ACCURACY_ENUM ACCURACY;
 
 + (GPS*)get;
 + (NSString*)degrees_to_dms:(CLLocationDegrees)value latitude:(BOOL)latitude;
++ (NSString*)key_path;
 - (id)init;
 - (bool)start;
 - (void)stop;
