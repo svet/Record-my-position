@@ -120,7 +120,6 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 
 	[defaults setInteger:_DB_MODEL_VERSION forKey:_DB_MODEL_KEY];
 	DLOG(@"Disk db open at %@", path);
-    [EHGPS setMDB:db];
 	[[EHGPS get] addWatcher:db];
 	return db;
 }

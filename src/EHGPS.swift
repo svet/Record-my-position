@@ -14,7 +14,7 @@ import UIKit
     private let _KEY_SAVE_SINGLE_POSITION = "save_single_positions"
     private let _WATCHDOG_SECONDS = 60 * 60.0
     static internal let KEY_PATH = "lastPos"
-    static internal var mDB: DB?
+    static private var cDB: DB?
 
     static private let cInstance: EHGPS = EHGPS()
 
@@ -39,7 +39,6 @@ import UIKit
     {
         DLOG("Initializing EHGPS")
         mManager = CLLocationManager()
-        //assert(nil !== mManager) TODO: Why does the check fail?
         mAccuracy = .High
         super.init()
 
@@ -50,10 +49,11 @@ import UIKit
     }
 
     /** Finishes the initialization.
-     * Call this when the DB dependency is solved.
+     * Call this with the DB dependency to inject.
      */
-    func postInit()
+    func postInit(db: DB)
     {
+        EHGPS.cDB = db
         let defaults = NSUserDefaults.standardUserDefaults()
         if defaults.boolForKey(_GPS_IS_ON_KEY) {
             start()
@@ -124,9 +124,9 @@ import UIKit
     func start() -> Bool
     {
         if CLLocationManager.locationServicesEnabled() {
-            assert(nil != EHGPS.mDB)
+            assert(nil != EHGPS.cDB)
             if (!gpsIsOn && !mNoLog) {
-                EHGPS.mDB!.log("Starting to update location")
+                EHGPS.cDB!.log("Starting to update location")
             }
 
             pingWatchdog()
@@ -144,8 +144,8 @@ import UIKit
      */
     func stop() {
         if gpsIsOn && !mNoLog {
-            assert(nil != EHGPS.mDB)
-            EHGPS.mDB!.log("Stopping location updates");
+            assert(nil != EHGPS.cDB)
+            EHGPS.cDB!.log("Stopping location updates");
         }
         stopWatchdog()
         gpsIsOn = false
@@ -194,11 +194,11 @@ import UIKit
         }
 
         if gpsIsOn {
-            assert(nil != EHGPS.mDB)
+            assert(nil != EHGPS.cDB)
             if let reason = reason {
-                EHGPS.mDB!.log(String(format: "%@ Reason: %@", message, reason))
+                EHGPS.cDB!.log(String(format: "%@ Reason: %@", message, reason))
             } else {
-                EHGPS.mDB!.log(message)
+                EHGPS.cDB!.log(message)
             }
 
             mNoLog = true
@@ -218,8 +218,8 @@ import UIKit
             return
         }
 
-        assert(nil != EHGPS.mDB)
-        EHGPS.mDB!.log("location error: " + error.localizedDescription)
+        assert(nil != EHGPS.cDB)
+        EHGPS.cDB!.log("location error: " + error.localizedDescription)
     }
 
     /** Receives a location update.
@@ -289,8 +289,8 @@ import UIKit
      */
     func zasca()
     {
-        assert(nil != EHGPS.mDB)
-        EHGPS.mDB!.log("Watchdog timer kicking in due to inactivity.")
+        assert(nil != EHGPS.cDB)
+        EHGPS.cDB!.log("Watchdog timer kicking in due to inactivity.")
         mNoLog = true
         stop()
         start()
