@@ -25,11 +25,6 @@
 	}
 }
 
-- (void)dealloc
-{
-	[super dealloc];
-}
-
 #pragma mark UITableViewDelegate
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -40,9 +35,9 @@
 		dequeueReusableCellWithIdentifier:identifier];
 
 	if (cell == nil)
-		cell = [[[UITableViewCell alloc]
+		cell = [[UITableViewCell alloc]
 			initWithStyle:UITableViewCellStyleDefault
-			reuseIdentifier:identifier] autorelease];
+			reuseIdentifier:identifier];
 
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.textLabel.text = [self.items get:indexPath.row * 2];

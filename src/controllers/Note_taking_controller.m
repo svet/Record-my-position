@@ -30,9 +30,8 @@
 	UIImageView *background = [[UIImageView alloc]
 		initWithImage:[UIImage imageNamed:@"back.jpg"]];
 	[self.view addSubview:background];
-	[background release];
 
-	dismiss_ = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+	dismiss_ = [UIButton buttonWithType:UIButtonTypeCustom];
 	dismiss_.frame = self.view.frame;
 	[dismiss_ addTarget:self action:@selector(dismiss_touches)
 		forControlEvents:UIControlEventTouchDown];
@@ -40,7 +39,7 @@
 	[self.view addSubview:dismiss_];
 
 	// Cancel button.
-	cancel_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	cancel_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	cancel_.frame = CGRectMake(10, 10, 300, 40);
 	[cancel_ setTitle:@"Cancel note" forState:UIControlStateNormal];
 	[cancel_ addTarget:self action:@selector(cancel_note)
@@ -58,10 +57,9 @@
 		label.font = [UIFont systemFontOfSize:16];
 		_MAKE_DEFAULT_LABEL_COLOR(label);
 		[self.view addSubview:label];
-		[label release];
 
 		// Button to save a picture.
-		photo_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+		photo_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 		photo_.frame = CGRectMake(10, 140, 300, 40);
 		[photo_ setTitle:@"Take photo" forState:UIControlStateNormal];
 		[photo_ addTarget:self action:@selector(take_photo)
@@ -79,7 +77,7 @@
 	[self.view addSubview:text_];
 
 	// Button to save the current note.
-	save_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	save_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	save_.frame = CGRectMake(10, 400, 300, 40);
 	[save_ setTitle:@"Save note" forState:UIControlStateNormal];
 	[save_ addTarget:self action:@selector(save_note)
@@ -90,21 +88,11 @@
 	self.view.backgroundColor = [UIColor whiteColor];
 }
 
-- (void)dealloc
-{
-	[dismiss_ release];
-	[text_ release];
-	[photo_ release];
-	[save_ release];
-	[cancel_ release];
-	[location_ release];
-	[super dealloc];
-}
-
 /** Verify that the identifier is ok.
  */
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
 	if (location_id_ < 0)
 		[self warn:@"Couldn't get saved location id!" title:@"Error saving"];
 }
@@ -117,8 +105,6 @@
  */
 - (void)setLocation:(CLLocation*)location
 {
-	[location retain];
-	[location_ release];
 	location_ = location;
 
 	if (location)
@@ -154,8 +140,6 @@
 	picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 	picker.delegate = self;
 	[self presentModalViewController:picker animated:YES];
-
-	[picker release];
 }
 
 /** Handles the touching on any part of the interface not active.

@@ -48,7 +48,6 @@
 	UIImageView *background = [[UIImageView alloc]
 		initWithImage:[UIImage imageNamed:@"back.jpg"]];
 	[self.view addSubview:background];
-	[background release];
 
 	// Counter label.
 	counter_ = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 300, 40)];
@@ -57,7 +56,7 @@
 	[self.view addSubview:counter_];
 
 	// Button to share data through email.
-	share_mail_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	share_mail_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	share_mail_.frame = CGRectMake(20, 310, 120, 80);
 	share_mail_.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	share_mail_.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -70,7 +69,7 @@
 	[self.view addSubview:share_mail_];
 
 	// Button to share data through file.
-	share_file_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	share_file_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	share_file_.frame = CGRectMake(180, 310, 120, 80);
 	share_file_.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	share_file_.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -84,7 +83,7 @@
 	[self.view addSubview:share_file_];
 
 	// Button to purge disk database.
-	purge_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	purge_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	purge_.frame = CGRectMake(20, 220, 280, 40);
 	[purge_ setTitle:@"Purge database" forState:UIControlStateNormal];
 	[purge_ addTarget:self action:@selector(purge_database)
@@ -121,15 +120,6 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[activity_ release];
-	[shield_ release];
-	[gpx_switch_ release];
-	[remove_switch_ release];
-	[purge_ release];
-	[share_file_ release];
-	[share_mail_ release];
-	[counter_ release];
-	[super dealloc];
 }
 
 /** The view is going to be shown. Update it.
@@ -169,7 +159,6 @@
 	label.numberOfLines = 2;
 	_MAKE_DEFAULT_LABEL_COLOR(label);
 	[self.view addSubview:label];
-	[label release];
 
 	UISwitch *s = [[UISwitch alloc] initWithFrame:switch_rect];
 	s.center = CGPointMake(CGRectGetMidX(switch_rect),
@@ -219,7 +208,6 @@
 		message:@"Are you sure you want to purge the database?" delegate:self
 		cancelButtonTitle:@"Wait, no" otherButtonTitles:@"Yeah", nil];
 	[alert show];
-	[alert release];
 }
 
 /** User clicked on the share by file button. Save logs to device.
@@ -249,7 +237,6 @@
 			message:@"Uh oh, this thing can't send mail!" delegate:self
 			cancelButtonTitle:@"Hmmm..." otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 		return;
 	}
 
@@ -305,7 +292,6 @@
 	}
 
 	[self presentModalViewController:mail animated:YES];
-	[mail release];
 }
 
 /** Called when an exportation operation has finished without problems.
@@ -323,7 +309,6 @@
 				@"remaining data." delegate:self cancelButtonTitle:@"Will do"
 			otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 
 	if (remove_switch_.on) {
@@ -377,11 +362,9 @@
 			message:message delegate:self cancelButtonTitle:@"Will do"
 			otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 
 	// Clean up and return UI to normal.
-	[rows_to_attach_ release];
 	shield_.hidden = YES;
 	[activity_ stopAnimating];
 }
@@ -419,7 +402,6 @@
 		[self clean_up_remaining_attachments_on_success];
 	}
 
-	[rows_to_attach_ release];
 	shield_.hidden = YES;
 	[activity_ stopAnimating];
 }

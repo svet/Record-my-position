@@ -29,17 +29,6 @@
 		[web_view_ loadRequest:[NSURLRequest requestWithURL:
 			[NSURL fileURLWithPath:path]]];
 	[self.view addSubview:web_view_];
-	[web_view_ release];
-}
-
-- (void)dealloc
-{
-	[external_ release];
-	[title_ release];
-	[filename_ release];
-	[web_view_ stopLoading];
-	[web_view_ release];
-	[super dealloc];
 }
 
 #pragma mark -
@@ -55,7 +44,6 @@
 		delegate:self cancelButtonTitle:@"Cancel"
 		otherButtonTitles:@"Accept", nil];
 	[alert show];
-	[alert release];
 }
 
 - (void)alertView:(UIAlertView *)alertView
@@ -77,7 +65,6 @@
 		c.mailComposeDelegate = self;
 		[c setToRecipients:[NSArray arrayWithObject:address]];
 		[self presentModalViewController:c animated:YES];
-		[c release];
 	} else {
 		[self warn:@"You must have an email account in order to send an email"
 			title:@"No email"];

@@ -25,10 +25,4 @@
 	[self.view addSubview:todo_];
 }
 
-- (void)dealloc
-{
-	[todo_ release];
-	[super dealloc];
-}
-
 @end

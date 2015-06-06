@@ -47,8 +47,6 @@ static void _set_globals(void);
 
 @implementation App_delegate
 
-@synthesize db = db_;
-
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -68,18 +66,18 @@ static void _set_globals(void);
 	/** Set up the reachability class. This works slowly, so let it be first. */
 	[EHReachability init_with_host:REACH_HOST];
 
-	db_ = [DB open_database];
-	if (!db_) {
+	_db = [DB open_database];
+	if (!_db) {
 		[self handle_error:@"Couldn't open database" do_abort:YES];
 		return NO;
 	}
 
 	// For the moment we don't know what to do with this...
 	if (launch_options)
-		[db_ log:[NSString stringWithFormat:@"Launch options? %@",
+		[_db log:[NSString stringWithFormat:@"Launch options? %@",
 			launch_options]];
 
-    [[EHGPS get] postInit:db_];
+    [[EHGPS get] postInit:_db];
 
 	tab_controller_ = [Tab_controller new];
 	[window_ addSubview:tab_controller_.view];
@@ -95,7 +93,7 @@ static void _set_globals(void);
 - (void)applicationWillResignActive:(UIApplication *)application
 {
 	[[EHGPS get] setAccuracy:AccuracyMedium reason:@"Lost focus."];
-	[db_ flush];
+	[_db flush];
 }
 
 /** The application regained focus.
@@ -115,9 +113,9 @@ static void _set_globals(void);
  */
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-	db_.in_background = YES;
+	_db.in_background = YES;
 	[[EHGPS get] setAccuracy:AccuracyLow reason:@"Entering background mode."];
-	[db_ flush];
+	[_db flush];
 }
 
 /** We were raised from the dead.
@@ -125,7 +123,7 @@ static void _set_globals(void);
  */
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	db_.in_background = NO;
+	_db.in_background = NO;
 	[[EHGPS get] setAccuracy:AccuracyHigh reason:@"Raising from background."];
 }
 
@@ -139,10 +137,10 @@ static void _set_globals(void);
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	if ([EHGPS get].gpsIsOn)
-		[db_ log:@"Terminating app while GPS was on..."];
+		[_db log:@"Terminating app while GPS was on..."];
 
-	[db_ flush];
-	[db_ close];
+	[_db flush];
+	[_db close];
 
 	// Save pending changes to user defaults.
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -156,15 +154,9 @@ static void _set_globals(void);
  */
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[db_ flush];
+	[_db flush];
 }
 
-- (void)dealloc
-{
-	[tab_controller_ release];
-	[window_ release];
-	[super dealloc];
-}
 
 #pragma mark Normal methods
 
@@ -181,7 +173,6 @@ static void _set_globals(void);
 		message:NON_NIL_STRING(message) delegate:self
 		cancelButtonTitle:(do_abort ? @"Abort" : @"OK") otherButtonTitles:nil];
 	[alert show];
-	[alert release];
 	DLOG(@"Error: %@", message);
 }
 
@@ -192,15 +183,15 @@ static void _set_globals(void);
 - (void)purge_database
 {
 	DLOG(@"Purging database.");
-	[db_ flush];
-	[db_ close];
+	[_db flush];
+	[_db close];
 	EHGPS *gps = [EHGPS get];
 	const BOOL activate = gps.gpsIsOn;
 	[gps stop];
 
 	[DB purge];
 
-	db_ = [DB open_database];
+	_db = [DB open_database];
 	if (activate)
 		[gps start];
 }

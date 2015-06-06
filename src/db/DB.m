@@ -80,10 +80,9 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	}
 
 	NSString *path = [DB path];
-	DB *db = [[DB databaseWithPath:path] retain];
+	DB *db = [DB databaseWithPath:path];
 	if (![db open]) {
 		LOG(@"Couldn't open db %@", path);
-		[db release];
 		return nil;
 	}
 
@@ -113,7 +112,6 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 		result = [db executeQuery:query];
 		if (result.errorCode) {
 			LOG(@"Couldn't %@: %@", query, result.errorMessage);
-			[db release];
 			return nil;
 		}
 	}
@@ -195,7 +193,6 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 	if (db_log)
 		[[NSNotificationCenter defaultCenter]
 			postNotificationName:DB_bump_notification object:self];
-	[db_log release];
 }
 
 /** Stores the circular buffer to disk, freing the current buffer_.
@@ -209,63 +206,60 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 		return;
 
 	DLOG(@"Flushing %d entries to disk.", data.count);
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    @autoreleasepool {
+    	for (DB_log *db_log in data) {
+    		BOOL ret = NO;
+    		if (DB_ROW_TYPE_COORD == db_log->row_type_) {
+    			ret = [self executeUpdateWithParameters:@"INSERT into Positions "
+    				@"(id, type, text, longitude, latitude, h_accuracy,"
+    				@"v_accuracy, altitude, timestamp, in_background,"
+    				@"requested_accuracy, speed, direction, battery_level,"
+    				@"external_power, reachability) "
+    				@"VALUES (NULL, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
+    				@"?, ?)",
+    				[NSNumber numberWithInt:DB_ROW_TYPE_COORD],
+    				[NSNumber
+    					numberWithDouble:db_log.location.coordinate.longitude],
+    				[NSNumber numberWithDouble:db_log.location.coordinate.latitude],
+    				[NSNumber numberWithDouble:db_log.location.horizontalAccuracy],
+    				[NSNumber numberWithDouble:db_log.location.verticalAccuracy],
+    				[NSNumber numberWithDouble:db_log.location.altitude],
+    				[NSNumber numberWithInt:
+    					[db_log.location.timestamp timeIntervalSince1970]],
+    				[NSNumber numberWithBool:db_log->in_background_],
+    				[NSNumber numberWithInt:db_log->accuracy_],
+    				[NSNumber numberWithDouble:db_log.location.speed],
+    				[NSNumber numberWithDouble:db_log.location.course],
+    				[NSNumber numberWithFloat:db_log->battery_level_],
+    				[NSNumber numberWithBool:db_log->external_power_],
+    				[NSNumber numberWithBool:db_log->reachability_],
+    				nil];
+    		} else {
+    			NSAssert(DB_ROW_TYPE_LOG == db_log->row_type_, @"Bad log type?");
+    			ret = [self
+    				executeUpdateWithParameters:@"INSERT into Positions (id, type,"
+    				@"text, longitude, latitude, h_accuracy, v_accuracy,"
+    				@"altitude, timestamp, in_background,"
+    				@"requested_accuracy, speed, direction, battery_level,"
+    				@"external_power, reachability) "
+    				@"VALUES (NULL, ?, ?, 0, 0, -1, -1,-1, ?, ?, ?, ?, ?, ?,"
+    				@"?, ?)",
+    				[NSNumber numberWithInt:DB_ROW_TYPE_LOG], db_log.text,
+    				[NSNumber numberWithInt:db_log->timestamp_],
+    				[NSNumber numberWithBool:db_log->in_background_],
+    				[NSNumber numberWithInt:db_log->accuracy_],
+    				[NSNumber numberWithDouble:db_log.location.speed],
+    				[NSNumber numberWithDouble:db_log.location.course],
+    				[NSNumber numberWithFloat:db_log->battery_level_],
+    				[NSNumber numberWithBool:db_log->external_power_],
+    				[NSNumber numberWithBool:db_log->reachability_],
+    				nil];
+    		}
 
-	for (DB_log *db_log in data) {
-		BOOL ret = NO;
-		if (DB_ROW_TYPE_COORD == db_log->row_type_) {
-			ret = [self executeUpdateWithParameters:@"INSERT into Positions "
-				@"(id, type, text, longitude, latitude, h_accuracy,"
-				@"v_accuracy, altitude, timestamp, in_background,"
-				@"requested_accuracy, speed, direction, battery_level,"
-				@"external_power, reachability) "
-				@"VALUES (NULL, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,"
-				@"?, ?)",
-				[NSNumber numberWithInt:DB_ROW_TYPE_COORD],
-				[NSNumber
-					numberWithDouble:db_log.location.coordinate.longitude],
-				[NSNumber numberWithDouble:db_log.location.coordinate.latitude],
-				[NSNumber numberWithDouble:db_log.location.horizontalAccuracy],
-				[NSNumber numberWithDouble:db_log.location.verticalAccuracy],
-				[NSNumber numberWithDouble:db_log.location.altitude],
-				[NSNumber numberWithInt:
-					[db_log.location.timestamp timeIntervalSince1970]],
-				[NSNumber numberWithBool:db_log->in_background_],
-				[NSNumber numberWithInt:db_log->accuracy_],
-				[NSNumber numberWithDouble:db_log.location.speed],
-				[NSNumber numberWithDouble:db_log.location.course],
-				[NSNumber numberWithFloat:db_log->battery_level_],
-				[NSNumber numberWithBool:db_log->external_power_],
-				[NSNumber numberWithBool:db_log->reachability_],
-				nil];
-		} else {
-			NSAssert(DB_ROW_TYPE_LOG == db_log->row_type_, @"Bad log type?");
-			ret = [self
-				executeUpdateWithParameters:@"INSERT into Positions (id, type,"
-				@"text, longitude, latitude, h_accuracy, v_accuracy,"
-				@"altitude, timestamp, in_background,"
-				@"requested_accuracy, speed, direction, battery_level,"
-				@"external_power, reachability) "
-				@"VALUES (NULL, ?, ?, 0, 0, -1, -1,-1, ?, ?, ?, ?, ?, ?,"
-				@"?, ?)",
-				[NSNumber numberWithInt:DB_ROW_TYPE_LOG], db_log.text,
-				[NSNumber numberWithInt:db_log->timestamp_],
-				[NSNumber numberWithBool:db_log->in_background_],
-				[NSNumber numberWithInt:db_log->accuracy_],
-				[NSNumber numberWithDouble:db_log.location.speed],
-				[NSNumber numberWithDouble:db_log.location.course],
-				[NSNumber numberWithFloat:db_log->battery_level_],
-				[NSNumber numberWithBool:db_log->external_power_],
-				[NSNumber numberWithBool:db_log->reachability_],
-				nil];
-		}
-
-		if (!ret)
-			LOG(@"Couldn't insert %@:\n\t%@", db_log, [self lastErrorMessage]);
-	}
-
-	[pool drain];
-	[data release];
+    		if (!ret)
+    			LOG(@"Couldn't insert %@:\n\t%@", db_log, [self lastErrorMessage]);
+    	}
+    }
 }
 
 /** Returns the number of entries collected so far.
@@ -349,10 +343,8 @@ NSString *DB_bump_notification = @"DB_bump_notification";
 
 	if (!ret) {
 		LOG(@"Couldn't insert %@:\n\t%@", db_log, [self lastErrorMessage]);
-		[db_log release];
 		return -1;
 	}
-	[db_log release];
 
 	[[NSNotificationCenter defaultCenter]
 		postNotificationName:DB_bump_notification object:self];

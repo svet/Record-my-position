@@ -29,7 +29,6 @@
 	UITabBarItem *item = [[UITabBarItem alloc] initWithTitle:@"Info"
 		image:[UIImage imageNamed:@"info_icon.png"] tag:0];
 	info_tab.tabBarItem = item;
-	[item release];
 
 	if (!capture_tab_ || !share_tab_ || !info || !info_tab)
 		return nil;
@@ -38,33 +37,16 @@
 	item = [[UITabBarItem alloc] initWithTitle:@"Capture"
 		image:[UIImage imageNamed:@"capture_icon.png"] tag:0];
 	capture_tab_.tabBarItem = item;
-	[item release];
 
 	item = [[UITabBarItem alloc] initWithTitle:@"Share"
 		image:[UIImage imageNamed:@"share_icon.png"] tag:0];
 	share_tab_.tabBarItem = item;
-	[item release];
 
 	self.viewControllers = [NSArray arrayWithObjects:capture_tab_,
 		share_tab_, info_tab, nil];
 	self.delegate = self;
-	[info release];
-	[info_tab release];
 
 	return self;
-}
-
-- (void)dealloc
-{
-	[log_tab_ release];
-	[share_tab_ release];
-	[capture_tab_ release];
-	[super dealloc];
-}
-
-- (void)loadView
-{
-	[super loadView];
 }
 
 /** Support only the portrait orientation.

@@ -52,21 +52,6 @@
 	[record_type_switch_ removeTarget:self
 		action:@selector(record_type_switch_changed)
 		forControlEvents:UIControlEventValueChanged];
-	[clock_ release];
-	[ago_ release];
-	[note_ release];
-	[capabilities_ release];
-	[movement_ release];
-	[start_switch_ release];
-	[altitude_ release];
-	[precission_ release];
-	[latitude_ release];
-	[longitude_ release];
-	[start_title_ release];
-	[old_location_ release];
-	[record_type_switch_ release];
-	[explanation_label_ release];
-	[super dealloc];
 }
 
 - (void)loadView
@@ -76,9 +61,8 @@
 	UIImageView *background = [[UIImageView alloc]
 		initWithImage:[UIImage imageNamed:@"back.jpg"]];
 	[self.view addSubview:background];
-	[background release];
 
-	note_ = [[UIButton buttonWithType:UIButtonTypeRoundedRect] retain];
+	note_ = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	note_.frame = CGRectMake(5, 70, 310, 135);
 	[note_ setTitle:@"" forState:UIControlStateNormal];
 	[note_ addTarget:self action:@selector(add_note)
@@ -102,7 +86,6 @@
 	record_type_title.text = @"Save all GPS positions";
 	_MAKE_DEFAULT_LABEL_COLOR(record_type_title);
 	[self.view addSubview:record_type_title];
-	[record_type_title release];
 
 	record_type_switch_ = [[UISwitch alloc]
 		initWithFrame:CGRectMake(220, 245, 100, 30)];
@@ -231,7 +214,6 @@
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setTimeStyle:NSDateFormatterMediumStyle];
 	clock_.text = [formatter stringFromDate:now];
-	[formatter release];
 
 	// State of capture.
 	if (start_switch_.on)
@@ -358,7 +340,6 @@
 	Note_taking_controller *controller = [Note_taking_controller new];
 	controller.location = location;
 	[self presentModalViewController:controller animated:YES];
-	[controller release];
 }
 
 #pragma mark -

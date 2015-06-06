@@ -24,24 +24,24 @@
  */
 Hardware_info *get_hardware_info(void)
 {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	size_t size;
-	sysctlbyname("hw.machine", 0, &size, 0, 0);
-	Hardware_info *info = malloc(sizeof(Hardware_info));
-	if (!info) {
-		DLOG(@"Not enough memory to get_hardware_info().");
-		goto exit;
-	}
-	info->name = calloc(1, size);
-	if (!info->name) {
-		DLOG(@"Not enough memory to get hardware name (%ld).", size);
-		free(info);
-		info = 0;
-		goto exit;
-	}
+    @autoreleasepool {
+    	size_t size;
+    	sysctlbyname("hw.machine", 0, &size, 0, 0);
+    	Hardware_info *info = malloc(sizeof(Hardware_info));
+    	if (!info) {
+    		DLOG(@"Not enough memory to get_hardware_info().");
+    		goto exit;
+    	}
+    	info->name = calloc(1, size);
+    	if (!info->name) {
+    		DLOG(@"Not enough memory to get hardware name (%ld).", size);
+    		free(info);
+    		info = 0;
+    		goto exit;
+    	}
 
-	sysctlbyname("hw.machine", info->name, &size, 0, 0);
-	DLOG(@"Retrieved hardware string '%s'.", info->name);
+    	sysctlbyname("hw.machine", info->name, &size, 0, 0);
+    	DLOG(@"Retrieved hardware string '%s'.", info->name);
 
 #define RETURN(STR,FAMILY_ENUM,VER) do {									\
 	if (!strcmp(info->name, STR)) {											\
@@ -51,37 +51,37 @@ Hardware_info *get_hardware_info(void)
 	}																		\
 } while (0)
 
-	// Parse information.
-	RETURN("iPad1,1", HW_IPAD, 0);
-	RETURN("iPhone1,1", HW_IPHONE, 0);
-	RETURN("iPhone1,2", HW_IPHONE, 1);
-	RETURN("iPhone2,1", HW_IPHONE, 1);
-	RETURN("iPod1,1", HW_IPOD, 0);
-	RETURN("iPod2,1", HW_IPOD, 1);
-	RETURN("i386", HW_SIMULATOR, 0);
+    	// Parse information.
+    	RETURN("iPad1,1", HW_IPAD, 0);
+    	RETURN("iPhone1,1", HW_IPHONE, 0);
+    	RETURN("iPhone1,2", HW_IPHONE, 1);
+    	RETURN("iPhone2,1", HW_IPHONE, 1);
+    	RETURN("iPod1,1", HW_IPOD, 0);
+    	RETURN("iPod2,1", HW_IPOD, 1);
+    	RETURN("i386", HW_SIMULATOR, 0);
 
 #undef RETURN
 
-	// Failed, try to identify something else...
-	info->version = -1;
-	info->family = HW_UNKNOWN;
+    	// Failed, try to identify something else...
+    	info->version = -1;
+    	info->family = HW_UNKNOWN;
 
-	if (!strncmp(info->name, "iPhone", 6)) {
-		DLOG(@"Detected new iPhone model.");
-		info->family = HW_IPHONE;
-	} else if (!strncmp(info->name, "iPod", 4)) {
-		DLOG(@"Detected new iPhone model.");
-		info->family = HW_IPOD;
-	} else if (!strncmp(info->name, "iPad", 4)) {
-		DLOG(@"Detected new iPad model.");
-		info->family = HW_IPAD;
-	} else {
-		DLOG(@"Unknown hardware!!!");
-	}
+    	if (!strncmp(info->name, "iPhone", 6)) {
+    		DLOG(@"Detected new iPhone model.");
+    		info->family = HW_IPHONE;
+    	} else if (!strncmp(info->name, "iPod", 4)) {
+    		DLOG(@"Detected new iPhone model.");
+    		info->family = HW_IPOD;
+    	} else if (!strncmp(info->name, "iPad", 4)) {
+    		DLOG(@"Detected new iPad model.");
+    		info->family = HW_IPAD;
+    	} else {
+    		DLOG(@"Unknown hardware!!!");
+    	}
 
-exit:
-	[pool release];
-	return info;
+    exit:
+    	return info;
+    }
 }
 
 /// Frees the memory returned by get_hardware_info().
