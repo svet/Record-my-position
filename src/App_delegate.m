@@ -79,6 +79,8 @@ static void _set_globals(void);
 		[db_ log:[NSString stringWithFormat:@"Launch options? %@",
 			launch_options]];
 
+    [[EHGPS get] postInit];
+
 	tab_controller_ = [Tab_controller new];
 	[window_ addSubview:tab_controller_.view];
 

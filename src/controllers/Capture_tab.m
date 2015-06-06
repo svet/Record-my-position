@@ -46,7 +46,7 @@
 
 	[timer_ invalidate];
 	if (watching_)
-		[[EHGPS get] remove_watcher:self];
+		[[EHGPS get] removeWatcher:self];
 	[start_switch_ removeTarget:self action:@selector(gps_switch_changed)
 		forControlEvents:UIControlEventValueChanged];
 	[record_type_switch_ removeTarget:self
@@ -202,12 +202,12 @@
 			start_switch_.on = false;
 			[self warn:@"Couldn't start GPS" title:@"GPS"];
 		} else {
-			[gps add_watcher:self];
+			[gps addWatcher:self];
 			watching_ = YES;
 		}
 	} else {
 		if (watching_)
-			[gps remove_watcher:self];
+			[gps removeWatcher:self];
 		watching_ = NO;
 		[gps stop];
 	}
@@ -271,10 +271,10 @@
 	}
 
 	longitude_.text = [NSString stringWithFormat:@"Longitude: %@",
-		[EHGPS degrees_to_dms:location.coordinate.longitude latitude:NO]];
+		[EHGPS degreesToDms:location.coordinate.longitude latitude:NO]];
 
 	latitude_.text = [NSString stringWithFormat:@"Latitude: %@",
-		[EHGPS degrees_to_dms:location.coordinate.latitude latitude:YES]];
+		[EHGPS degreesToDms:location.coordinate.latitude latitude:YES]];
 
 	const CLLocationAccuracy v = (location.horizontalAccuracy +
 		location.horizontalAccuracy) / 2.0;
@@ -369,7 +369,7 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
 	change:(NSDictionary *)change context:(void *)context
 {
-	if ([keyPath isEqual:[EHGPS key_path]])
+	if ([keyPath isEqual:[EHGPS KEY_PATH]])
 		[self update_gui];
 	else
 		[super observeValueForKeyPath:keyPath ofObject:object change:change

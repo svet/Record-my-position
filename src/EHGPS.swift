@@ -31,9 +31,13 @@ import UIKit
         return cInstance
     }
 
+    /** Constructor for the class.
+     * The constructor avoids side effects moving some code to postInit()
+     * which you need to call.
+     */
     override init()
     {
-        println("Initializing EHGPS")
+        DLOG("Initializing EHGPS")
         mManager = CLLocationManager()
         //assert(nil !== mManager) TODO: Why does the check fail?
         mAccuracy = .High
@@ -43,7 +47,13 @@ import UIKit
         mManager.distanceFilter = kCLDistanceFilterNone
         mManager.desiredAccuracy = kCLLocationAccuracyBest
         mManager.delegate = self
+    }
 
+    /** Finishes the initialization.
+     * Call this when the DB dependency is solved.
+     */
+    func postInit()
+    {
         let defaults = NSUserDefaults.standardUserDefaults()
         if defaults.boolForKey(_GPS_IS_ON_KEY) {
             start()
