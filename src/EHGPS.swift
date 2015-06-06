@@ -166,6 +166,17 @@ import UIKit
         removeObserver(watcher, forKeyPath: EHGPS.KEY_PATH)
     }
 
+    /** Converts an accuracy enum to a loggable string.
+     */
+    func toString(accuracy: Accuracy) -> String
+    {
+        switch(accuracy) {
+        case .High: return "High"
+        case .Medium: return "Medium"
+        case .Low: return "Low"
+        }
+    }
+
     /** Changes the desired accuracy of the GPS readings.
      * If the GPS is on, it will be reset just in case. Provide a reason
      * for the change or nil if you don't want to log the change.
@@ -177,7 +188,7 @@ import UIKit
         }
 
         mAccuracy = accuracy
-        let message = "Setting accuracy to \(accuracy)";
+        let message = "Setting accuracy to \(toString(accuracy)).";
 
         switch accuracy {
         case .High:
