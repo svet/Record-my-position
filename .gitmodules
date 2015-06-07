@@ -7,3 +7,6 @@
 [submodule "external/EHReachability"]
 	path = external/EHReachability
 	url = git://github.com/gradha/EHReachability.git
+[submodule "external/SQLite.swift"]
+	path = external/SQLite.swift
+	url = https://github.com/gradha/SQLite.swift.git
