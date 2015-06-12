@@ -34,5 +34,7 @@
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow constant tracking of your position at the expense of your battery life?</string>
 </dict>
 </plist>

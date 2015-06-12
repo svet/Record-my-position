@@ -123,6 +123,13 @@ import UIKit
      */
     func start() -> Bool
     {
+        if mManager.respondsToSelector(Selector("requestAlwaysAuthorization")) {
+            let status = CLLocationManager.authorizationStatus()
+            if status == .NotDetermined {
+                mManager.requestAlwaysAuthorization()
+            }
+        }
+
         if CLLocationManager.locationServicesEnabled() {
             assert(nil != EHGPS.cDB)
             if (!gpsIsOn && !mNoLog) {
