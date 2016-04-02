@@ -101,7 +101,7 @@ static NSString *gpx_timestamp(const time_t timestamp);
 				[gpx_strings addObject:@"<?xml version=\"1.0\" encoding=\"UTF-"
 					@"8\" standalone=\"no\" ?>\n<gpx xmlns=\"http://www."
 					@"topografix.com/GPX/1/1\">\n\t<metadata><link href=\""
-					@"https://github.com/gradha/Record-my-position/\">\n\t"
+					@"https://github.com/svet/Record-my-position/\">\n\t"
 					@"<text>Record-my-position</text></link>"];
 				[gpx_strings addObject:[NSString stringWithFormat:@"\t<time>%@"
 					@"</time></metadata>\n<trk><name>%@</name><trkseg>",

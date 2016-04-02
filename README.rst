@@ -53,22 +53,19 @@ __ http://efaber.net/
 App store
 =========
 
-.. image:: https://github.com/downloads/gradha/Record-my-position/record_my_gps_position_qr_appstore.png
+.. image:: https://github.com/downloads/svet/Record-my-position/record_my_gps_position_qr_appstore.png
    :align: right
 
 Record my GPS position can be downloaded for free from the Apple
 App Store
-(http://itunes.com/apps/electrichandssoftware/recordmygpsposition/). You
-can find other of my creations on the App Store under my Electric
-Hands Software brand (http://itunes.com/apps/electrichandssoftware/)
-which you can also find at http://elhaso.es/.
+(http://itunes.com/apps/electrichandssoftware/recordmygpsposition/).
 
 
 Requests and issues
 ===================
 
-For requests and problems, feel free to use github's tracker at
-https://github.com/gradha/Record-my-position/issues.
+For requests and problems, feel free to use Github's tracker at
+https://github.com/svet/Record-my-position/issues.
 
 
 Source code
@@ -91,7 +88,7 @@ Here are the steps to compile and build yourself everything:
 
 * Perform some terminal magic::
 
-    git clone git://github.com/gradha/Record-my-position.git
+    git clone git://github.com/svet/Record-my-position.git
     cd Record-my-position
     git submodule init
     git submodule update

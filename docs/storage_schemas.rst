@@ -4,7 +4,7 @@ Record my position: Internal db schema
 
 .. vim:tabstop=4 shiftwidth=4 encoding=utf-8 noexpandtab
 
-:author: Grzegorz Adam Hankiewicz <gradha@titanium.sabren.com>
+:author: Grzegorz Adam Hankiewicz <gradha@imap.cc>
 
 .. contents::
 
@@ -18,7 +18,7 @@ General
 =======
 
 Information on the sqlite database file format for the Record-my-position
-app (https://github.com/gradha/Record-my-position).
+app (https://github.com/svet/Record-my-position).
 
 There is a single table to record events, but depending on the type
 of the row it may contain a coordinate event or a log event.

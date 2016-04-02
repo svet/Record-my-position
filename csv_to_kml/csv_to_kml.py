@@ -248,7 +248,7 @@ def convert_to_gpx(filename):
 	output.write("""<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 
 <gpx xmlns="http://www.topografix.com/GPX/1/1">
-	<metadata><link href="https://github.com/gradha/Record-my-position/">
+	<metadata><link href="https://github.com/svet/Record-my-position/">
 	<text>Record-my-position</text></link><time>%s</time></metadata>
 """ % internal_time_to_gpx_timestamp(tracks[0].positions[0][9]))
 
@@ -330,7 +330,7 @@ def convert_to_kml(filename, do_zip):
 	output.write("""<?xml version='1.0' encoding='latin1'?>
 <kml xmlns='http://earth.google.com/kml/2.2'>
 <Document><name>%s</name><open>1</open>
- <description>Positions recorded with http://github.com/gradha/Record-my-position</description>
+ <description>Positions recorded with http://github.com/svet/Record-my-position</description>
  <Style id='r1'><LineStyle><color>bb0000ff</color><width>5</width></LineStyle></Style>
  <Style id='r2'><LineStyle><color>bb5a5aff</color><width>5</width></LineStyle></Style>
  <Style id='r3'><LineStyle><color>bb688bff</color><width>5</width></LineStyle></Style>
